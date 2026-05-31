@@ -18,11 +18,13 @@ const fadeUp = {
 export default function Hero() {
   return (
     <section
-      id="home"
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 overflow-hidden"
-      style={{ backgroundColor: "var(--cream)" }}
+  id="home"
+  className="relative min-h-screen flex flex-col justify-center overflow-hidden pb-20"
+  style={{ backgroundColor: "var(--cream)" }}
     >
-      {/* Top label */}
+
+      <div className="w-full px-6 md:px-16 lg:px-24">
+        {/* Top label */}
       <motion.p
         variants={fadeUp}
         initial="hidden"
@@ -119,7 +121,8 @@ export default function Hero() {
           </a>
         </motion.div>
       </div>
-
+      </div>
+      
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
