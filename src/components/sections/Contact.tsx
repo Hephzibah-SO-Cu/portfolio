@@ -70,7 +70,7 @@ export default function Contact() {
           className="text-xs tracking-[0.25em] uppercase"
           style={{ color: "rgba(245, 240, 232, 0.3)", fontFamily: "var(--font-inter)" }}
         >
-          04
+          05
         </span>
       </div>
 
@@ -199,7 +199,7 @@ export default function Contact() {
           transform: "translateY(-50%)",
         }}
       >
-        04
+        05
       </div>
     </section>
   );
