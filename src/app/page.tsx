@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Experience from "@/components/sections/Experience";
 import TechMarquee from "@/components/sections/TechMarquee";
+import BeyondCode from "@/components/sections/BeyondCode";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <TechMarquee />
       <Projects />
       <Experience />
+      <BeyondCode />
       <Contact />
       <Footer />
     </main>

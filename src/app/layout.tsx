@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hephzibah Oluwabusayo — Frontend Developer",
-  description: "Frontend & Product Engineer based in Lagos, Nigeria.",
+  title: "Oluwabusayo Sina-Olulana — Frontend Developer",
+  description: "Frontend & Product Engineer",
 };
 
 export default function RootLayout({

@@ -11,18 +11,19 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-const statusConfig = {
-  live: { label: "Live", color: "#3B6D11", bg: "#EAF3DE" },
-  "case-study": { label: "Case Study", color: "#185FA5", bg: "#E6F1FB" },
-  "in-progress": { label: "In Progress", color: "#8B5E3C", bg: "#F5EDE4" },
-};
-
-export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+export default function ProjectModal({
+  project,
+  onClose,
+}: ProjectModalProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const currentProjectId = project?.id;
+
   useEffect(() => {
+  if (project) {
     setActiveIndex(0);
-  }, [project?.id]);
+  }
+}, [currentProjectId]);
 
   useEffect(() => {
     if (project) {
@@ -30,418 +31,619 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [project]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight" && project)
-        setActiveIndex((i) => (i + 1) % project.screenshots.length);
-      if (e.key === "ArrowLeft" && project)
-        setActiveIndex((i) => (i - 1 + project.screenshots.length) % project.screenshots.length);
+      if (!project) return;
+
+      if (e.key === "Escape") {
+        onClose();
+      }
+
+      if (
+        e.key === "ArrowRight" &&
+        project.screenshots.length > 1
+      ) {
+        setActiveIndex(
+          (prev) =>
+            (prev + 1) % project.screenshots.length
+        );
+      }
+
+      if (
+        e.key === "ArrowLeft" &&
+        project.screenshots.length > 1
+      ) {
+        setActiveIndex(
+          (prev) =>
+            (prev - 1 + project.screenshots.length) %
+            project.screenshots.length
+        );
+      }
     },
-    [onClose, project]
+    [project, onClose]
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
   }, [handleKeyDown]);
 
-  const hasMultiple = project ? project.screenshots.length > 1 : false;
+  if (!project) return null;
+  
+
+  const isMobile =
+    project.displayType === "mobile";
+
+  const hasMultipleScreenshots =
+    project.screenshots.length > 1;
 
   return (
     <AnimatePresence>
-      {project && (() => {
-        const status = statusConfig[project.status];
-        return (
-          // Overlay is the flex container — it centers the panel
-          <motion.div
-            key="modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={onClose}
+      <motion.div
+        key="overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background:
+            "rgba(28,28,26,0.78)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter:
+            "blur(8px)",
+          zIndex: 100,
+          overflowY: "auto",
+          padding: "32px 16px",
+        }}
+      >
+        <motion.div
+          initial={{
+            opacity: 0,
+            scale: 0.97,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
+          exit={{
+            opacity: 0,
+            scale: 0.97,
+          }}
+          transition={{
+            duration: 0.25,
+          }}
+          onClick={(e) =>
+            e.stopPropagation()
+          }
+          style={{
+            width: "100%",
+            maxWidth: "840px",
+            margin: "0 auto",
+            background:
+              "var(--cream)",
+            position: "relative",
+          }}
+        >
+          {/* CLOSE BUTTON */}
+
+          <div
             style={{
-              position: "fixed",
-              inset: 0,
-              backgroundColor: "rgba(28, 28, 26, 0.75)",
-              backdropFilter: "blur(4px)",
-              WebkitBackdropFilter: "blur(4px)",
-              zIndex: 60,
+              position: "sticky",
+              top: 0,
+              zIndex: 10,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "24px",
+              justifyContent: "flex-end",
+              padding: "20px 20px 0",
+              pointerEvents: "none",
             }}
           >
-            {/* Panel — no position/transform needed, flex parent centers it */}
-            <motion.div
-              key="panel"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 24 }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              onClick={(e) => e.stopPropagation()}
+            <button
+              onClick={onClose}
               style={{
-                width: "100%",
-                maxWidth: "1000px",
-                maxHeight: "85vh",
-                backgroundColor: "var(--cream)",
-                overflowY: "auto",
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                width: "42px",
+                height: "42px",
+                borderRadius: "999px",
+                border:
+                  "1px solid rgba(107,101,96,0.15)",
+                background:
+                  "rgba(241,236,228,0.92)",
+                backdropFilter:
+                  "blur(10px)",
+                cursor: "pointer",
+                pointerEvents: "auto",
               }}
             >
-              {/* Left — Gallery */}
-              <div
-                style={{
-                  backgroundColor: project.displayType === "mobile" ? "#1C1C1A" : "#F0EBE3",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: project.displayType === "mobile" ? "40px 24px" : "0",
-                  position: "relative",
-                  minHeight: "400px",
-                }}
-              >
-                {project.displayType === "mobile" ? (
+              ✕
+            </button>
+          </div>
+
+          <div
+            style={{
+              padding:
+                "0 24px 48px",
+            }}
+          >
+            {/* IMAGE */}
+
+            <div
+              style={{
+                marginBottom: "24px",
+              }}
+            >
+              {isMobile ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent:
+                      "center",
+                  }}
+                >
                   <div
                     style={{
-                      width: "200px",
-                      borderRadius: "36px",
-                      border: "2px solid rgba(255,255,255,0.15)",
-                      overflow: "hidden",
-                      position: "relative",
-                      boxShadow: "0 32px 64px rgba(0,0,0,0.5)",
-                      backgroundColor: "#000",
+                      width: "280px",
+                      borderRadius:
+                        "32px",
+                      overflow:
+                        "hidden",
+                      background:
+                        "#FFFFFF",
+                      boxShadow:
+                        "0 24px 60px rgba(0,0,0,0.15)",
                     }}
                   >
                     <div
                       style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "64px",
-                        height: "16px",
-                        backgroundColor: "#000",
-                        borderRadius: "8px",
-                        zIndex: 2,
+                        aspectRatio:
+                          "9 / 19.5",
+                        position:
+                          "relative",
                       }}
-                    />
-                    <div style={{ aspectRatio: "9/19.5", position: "relative" }}>
+                    >
                       <Image
-                        src={project.screenshots[activeIndex]}
-                        alt={`${project.title} screenshot ${activeIndex + 1}`}
+                        src={
+                          project
+                            .screenshots[
+                            activeIndex
+                          ]
+                        }
+                        alt={
+                          project.title
+                        }
                         fill
-                        style={{ objectFit: "cover" }}
-                        sizes="200px"
+                        sizes="280px"
+                        style={{
+                          objectFit:
+                            "cover",
+                        }}
                       />
                     </div>
                   </div>
-                ) : (
-                  <div style={{ width: "100%" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        padding: "10px 14px",
-                        backgroundColor: "#E8E3DC",
-                      }}
-                    >
-                      {["#E57373", "#FFB74D", "#81C784"].map((c, i) => (
-                        <div
-                          key={i}
-                          style={{
-                            width: "10px",
-                            height: "10px",
-                            borderRadius: "50%",
-                            backgroundColor: c,
-                            opacity: 0.7,
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <div style={{ aspectRatio: "16/9", position: "relative" }}>
-                      <Image
-                        src={project.screenshots[activeIndex]}
-                        alt={`${project.title} screenshot ${activeIndex + 1}`}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        sizes="500px"
-                      />
-                    </div>
-                  </div>
-                )}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    position:
+                      "relative",
+                    aspectRatio:
+                      "16 / 9",
+                    overflow:
+                      "hidden",
+                  }}
+                >
+                  <Image
+                    src={
+                      project
+                        .screenshots[
+                        activeIndex
+                      ]
+                    }
+                    alt={
+                      project.title
+                    }
+                    fill
+                    sizes="840px"
+                    style={{
+                      objectFit:
+                        "cover",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
 
-                {/* Navigation arrows */}
-                {hasMultiple && (
-                  <>
-                    <button
-                      onClick={() =>
-                        setActiveIndex((i) => (i - 1 + project.screenshots.length) % project.screenshots.length)
-                      }
-                      style={{
-                        position: "absolute",
-                        left: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        background: "rgba(255,255,255,0.15)",
-                        border: "1px solid rgba(255,255,255,0.25)",
-                        borderRadius: "50%",
-                        width: "36px",
-                        height: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        color: project.displayType === "mobile" ? "#fff" : "var(--charcoal)",
-                        fontSize: "1.2rem",
-                        lineHeight: 1,
-                      }}
-                      aria-label="Previous"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      onClick={() =>
-                        setActiveIndex((i) => (i + 1) % project.screenshots.length)
-                      }
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        background: "rgba(255,255,255,0.15)",
-                        border: "1px solid rgba(255,255,255,0.25)",
-                        borderRadius: "50%",
-                        width: "36px",
-                        height: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        color: project.displayType === "mobile" ? "#fff" : "var(--charcoal)",
-                        fontSize: "1.2rem",
-                        lineHeight: 1,
-                      }}
-                      aria-label="Next"
-                    >
-                      ›
-                    </button>
+            {/* SCREENSHOT DOTS */}
 
-                    {/* Dot indicators */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "16px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        display: "flex",
-                        gap: "6px",
-                      }}
-                    >
-                      {project.screenshots.map((_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setActiveIndex(i)}
-                          style={{
-                            width: i === activeIndex ? "20px" : "6px",
-                            height: "6px",
-                            borderRadius: "3px",
-                            backgroundColor:
-                              i === activeIndex ? "var(--accent)" : "rgba(255,255,255,0.4)",
-                            border: "none",
-                            cursor: "pointer",
-                            padding: 0,
-                            transition: "width 0.3s ease, background 0.3s ease",
-                          }}
-                          aria-label={`Screenshot ${i + 1}`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Right — Details */}
+            {hasMultipleScreenshots && (
               <div
                 style={{
-                  padding: "32px 28px",
                   display: "flex",
-                  flexDirection: "column",
-                  gap: "20px",
-                  overflowY: "auto",
+                  justifyContent:
+                    "center",
+                  gap: "10px",
+                  marginBottom:
+                    "40px",
                 }}
               >
-                {/* Close button */}
-                <button
-                  onClick={onClose}
-                  style={{
-                    alignSelf: "flex-end",
-                    background: "none",
-                    border: "1px solid rgba(107, 101, 96, 0.2)",
-                    borderRadius: "50%",
-                    width: "32px",
-                    height: "32px",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "var(--warm-grey)",
-                    fontSize: "0.9rem",
-                    flexShrink: 0,
-                  }}
-                  aria-label="Close modal"
-                >
-                  ✕
-                </button>
-
-                {/* Status + title */}
-                <div>
-                  <span
-                    style={{
-                      fontSize: "0.65rem",
-                      fontFamily: "var(--font-inter)",
-                      fontWeight: 500,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      padding: "4px 10px",
-                      borderRadius: "4px",
-                      backgroundColor: status.bg,
-                      color: status.color,
-                      display: "inline-block",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    {status.label}
-                  </span>
-                  <h2
-                    style={{
-                      fontFamily: "var(--font-playfair)",
-                      fontSize: "1.75rem",
-                      fontWeight: 700,
-                      color: "var(--charcoal)",
-                      lineHeight: 1.1,
-                      marginBottom: "6px",
-                    }}
-                  >
-                    {project.title}
-                  </h2>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-inter)",
-                      fontSize: "0.8rem",
-                      color: "var(--warm-grey)",
-                    }}
-                  >
-                    {project.tagline}
-                  </p>
-                </div>
-
-                {/* Description */}
-                <p
-                  style={{
-                    fontFamily: "var(--font-inter)",
-                    fontSize: "0.85rem",
-                    color: "var(--warm-grey)",
-                    lineHeight: 1.8,
-                  }}
-                >
-                  {project.description}
-                </p>
-
-                {/* Contributions */}
-                {project.isTeamProject && project.contributions && (
-                  <div>
-                    <p
+                {project.screenshots.map(
+                  (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        setActiveIndex(
+                          index
+                        )
+                      }
                       style={{
-                        fontFamily: "var(--font-inter)",
-                        fontSize: "0.65rem",
-                        letterSpacing: "0.15em",
-                        textTransform: "uppercase",
-                        color: "var(--accent)",
-                        marginBottom: "12px",
+                        width:
+                          index ===
+                          activeIndex
+                            ? "24px"
+                            : "8px",
+                        height: "8px",
+                        borderRadius:
+                          "999px",
+                        border:
+                          "none",
+                        cursor:
+                          "pointer",
+                        transition:
+                          "all 0.25s ease",
+                        background:
+                          index ===
+                          activeIndex
+                            ? "var(--charcoal)"
+                            : "rgba(107,101,96,0.3)",
                       }}
-                    >
-                      My contributions
-                    </p>
-                    <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                      {project.contributions.map((item, i) => (
-                        <li
-                          key={i}
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            fontFamily: "var(--font-inter)",
-                            fontSize: "0.8rem",
-                            color: "var(--warm-grey)",
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          <span style={{ color: "var(--accent)", flexShrink: 0, marginTop: "2px" }}>—</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    />
+                  )
                 )}
+              </div>
+            )}
 
-                {/* Tags */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {project.tags.map((tag) => (
+            {/* HEADER */}
+
+            <div
+              style={{
+                marginBottom:
+                  "40px",
+              }}
+            >
+              <h2
+                style={{
+                  margin: 0,
+                  marginBottom:
+                    "12px",
+
+                  fontFamily:
+                    "var(--font-inter)",
+
+                  fontSize:
+                    "0.9rem",
+
+                  letterSpacing:
+                    "0.22em",
+
+                  textTransform:
+                    "uppercase",
+
+                  color:
+                    "var(--charcoal)",
+                }}
+              >
+                {project.title}
+              </h2>
+
+              <p
+                style={{
+                  margin: 0,
+                  marginBottom:
+                    "20px",
+
+                  color:
+                    "var(--warm-grey)",
+
+                  fontSize:
+                    "1rem",
+
+                  lineHeight:
+                    1.8,
+                }}
+              >
+                {project.tagline}
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap:
+                    "wrap",
+                  gap: "8px",
+                }}
+              >
+                {project.tags.map(
+                  (tag) => (
                     <span
                       key={tag}
                       style={{
-                        fontFamily: "var(--font-inter)",
-                        fontSize: "0.65rem",
-                        letterSpacing: "0.08em",
-                        color: "var(--warm-grey)",
-                        border: "1px solid rgba(107, 101, 96, 0.25)",
-                        padding: "4px 10px",
+                        padding:
+                          "6px 12px",
+                        border:
+                          "1px solid rgba(107,101,96,0.15)",
+                        fontSize:
+                          "0.75rem",
+                        color:
+                          "var(--warm-grey)",
                       }}
                     >
                       {tag}
                     </span>
-                  ))}
-                </div>
-
-                {/* CTAs */}
-                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", paddingTop: "8px" }}>
-                  {project.liveUrl && (
-                    <Button
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="filled"
-                      size="sm"
-                      showArrow
-                    >
-                      Live Site
-                    </Button>
-                  )}
-                  {project.githubUrl && (
-                    <Button
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outline"
-                      size="sm"
-                    >
-                      {project.isTeamProject ? "View Repo" : "GitHub"}
-                    </Button>
-                  )}
-                </div>
+                  )
+                )}
               </div>
-            </motion.div>
-          </motion.div>
-        );
-      })()}
+            </div>
+
+            {/* STORY */}
+
+            <section
+              style={{
+                marginBottom:
+                  "40px",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize:
+                    "0.75rem",
+
+                  letterSpacing:
+                    "0.18em",
+
+                  textTransform:
+                    "uppercase",
+
+                  color:
+                    "var(--accent)",
+
+                  marginBottom:
+                    "16px",
+                }}
+              >
+                Story
+              </h3>
+
+              <p
+                style={{
+                  color:
+                    "var(--warm-grey)",
+                  lineHeight:
+                    1.9,
+                }}
+              >
+                {project.story}
+              </p>
+            </section>
+
+            {/* ROLE */}
+
+            {project.role && (
+              <section
+                style={{
+                  marginBottom:
+                    "40px",
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize:
+                      "0.75rem",
+                    letterSpacing:
+                      "0.18em",
+                    textTransform:
+                      "uppercase",
+                    color:
+                      "var(--accent)",
+                    marginBottom:
+                      "16px",
+                  }}
+                >
+                  Role
+                </h3>
+
+                <p
+                  style={{
+                    color:
+                      "var(--warm-grey)",
+                    lineHeight:
+                      1.9,
+                  }}
+                >
+                  {project.role}
+                </p>
+              </section>
+            )}
+
+            {/* HIGHLIGHTS */}
+
+            {project.highlights &&
+              project.highlights
+                .length > 0 && (
+                <section
+                  style={{
+                    marginBottom:
+                      "40px",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize:
+                        "0.75rem",
+                      letterSpacing:
+                        "0.18em",
+                      textTransform:
+                        "uppercase",
+                      color:
+                        "var(--accent)",
+                      marginBottom:
+                        "16px",
+                    }}
+                  >
+                    Highlights
+                  </h3>
+
+                  <ul
+                    style={{
+                      display:
+                        "flex",
+                      flexDirection:
+                        "column",
+                      gap: "12px",
+                    }}
+                  >
+                    {project.highlights.map(
+                      (
+                        item
+                      ) => (
+                        <li
+                          key={
+                            item
+                          }
+                          style={{
+                            color:
+                              "var(--warm-grey)",
+                            lineHeight:
+                              1.8,
+                          }}
+                        >
+                          {item}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </section>
+              )}
+
+            {/* CONTRIBUTIONS */}
+
+            {project
+              .contributions &&
+              project.contributions
+                .length > 0 && (
+                <section
+                  style={{
+                    marginBottom:
+                      "40px",
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize:
+                        "0.75rem",
+                      letterSpacing:
+                        "0.18em",
+                      textTransform:
+                        "uppercase",
+                      color:
+                        "var(--accent)",
+                      marginBottom:
+                        "16px",
+                    }}
+                  >
+                    Contributions
+                  </h3>
+
+                  <ul
+                    style={{
+                      display:
+                        "flex",
+                      flexDirection:
+                        "column",
+                      gap: "14px",
+                    }}
+                  >
+                    {project.contributions.map(
+                      (
+                        item
+                      ) => (
+                        <li
+                          key={
+                            item
+                          }
+                          style={{
+                            color:
+                              "var(--warm-grey)",
+                            lineHeight:
+                              1.9,
+                          }}
+                        >
+                          {item}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </section>
+              )}
+
+            {/* ACTIONS */}
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "12px",
+                paddingTop:
+                  "12px",
+              }}
+            >
+              {project.liveUrl && (
+                <Button
+                  href={
+                    project.liveUrl
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="filled"
+                  size="sm"
+                  showArrow
+                >
+                  Live Site
+                </Button>
+              )}
+
+              {project.githubUrl && (
+                <Button
+                  href={
+                    project.githubUrl
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outline"
+                  size="sm"
+                >
+                  GitHub
+                </Button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </AnimatePresence>
   );
 }
