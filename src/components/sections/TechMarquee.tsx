@@ -1,116 +1,75 @@
 "use client";
 
+import Image from "next/image";
+
 const row1 = [
-  { name: "Next.js", slug: "nextdotjs" },
-  { name: "React", slug: "react" },
-  { name: "TypeScript", slug: "typescript" },
-  { name: "Tailwind CSS", slug: "tailwindcss" },
-  { name: "Supabase", slug: "supabase" },
-  { name: "Firebase", slug: "firebase" },
-  { name: "PostgreSQL", slug: "postgresql" },
-  { name: "Vercel", slug: "vercel" },
-  { name: "Framer Motion", slug: "framer" },
-  { name: "GSAP", slug: "greensock" },
+  "nextjs",
+  "reactjs",
+  "typescript",
+  "javascript",
+  "tailwindcss",
+  "redux",
+  "zustand",
+  "framermotion",
+  "gsap",
+  "reactnative",
+  "expo",
 ];
 
 const row2 = [
-  { name: "Vue.js", slug: "vuedotjs" },
-  { name: "Nuxt.js", slug: "nuxt" },
-  { name: "Angular", slug: "angular" },
-  { name: "Expo", slug: "expo" },
-  { name: "Redux", slug: "redux" },
-  { name: "Figma", slug: "figma" },
-  { name: "Git", slug: "git" },
-  { name: "Convex", slug: "convex" },
-  { name: "VS Code", slug: "vscode" },
-  { name: "Zod", slug: "zod" },
+  "supabase",
+  "firebase",
+  "mongodb",
+  "postgresql",
+  "convex",
+  "git",
+  "github",
+  "vercel",
+  "figma",
+  "vscode",
+  "zod",
 ];
-
-function LogoItem({ name, slug }: { name: string; slug: string }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "10px",
-        padding: "0 32px",
-        flexShrink: 0,
-        cursor: "default",
-      }}
-      onMouseEnter={(e) => {
-        const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-        const label = e.currentTarget.querySelector("span") as HTMLElement;
-        if (img) { img.style.filter = "none"; img.style.opacity = "1"; }
-        if (label) label.style.color = "var(--charcoal)";
-      }}
-      onMouseLeave={(e) => {
-        const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-        const label = e.currentTarget.querySelector("span") as HTMLElement;
-        if (img) { img.style.filter = "grayscale(100%)"; img.style.opacity = "0.45"; }
-        if (label) label.style.color = "var(--warm-grey)";
-      }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`https://cdn.simpleicons.org/${slug}`}
-        alt={name}
-        width={32}
-        height={32}
-        style={{
-          width: "32px",
-          height: "32px",
-          objectFit: "contain",
-          filter: "grayscale(100%)",
-          opacity: 0.45,
-          transition: "filter 0.3s ease, opacity 0.3s ease",
-        }}
-      />
-      <span
-        style={{
-          fontFamily: "var(--font-inter)",
-          fontSize: "0.65rem",
-          letterSpacing: "0.08em",
-          color: "var(--warm-grey)",
-          whiteSpace: "nowrap",
-          transition: "color 0.3s ease",
-        }}
-      >
-        {name}
-      </span>
-    </div>
-  );
-}
 
 function MarqueeRow({
   items,
-  direction = "left",
+  direction,
 }: {
-  items: typeof row1;
-  direction?: "left" | "right";
+  items: string[];
+  direction: "left" | "right";
 }) {
   const doubled = [...items, ...items];
+
   return (
-    <div
-      style={{
-        overflow: "hidden",
-        width: "100%",
-        maskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
-      }}
-    >
+    <div className="marquee-row">
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "max-content",
-          animation: `marquee-${direction} 30s linear infinite`,
-        }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "paused"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = "running"; }}
+        className={`marquee-track ${
+          direction === "left"
+            ? "marquee-left"
+            : "marquee-right"
+        }`}
       >
-        {doubled.map((item, i) => (
-          <LogoItem key={`${item.slug}-${i}`} name={item.name} slug={item.slug} />
+        {doubled.map((logo, index) => (
+          <div
+            key={`${logo}-${index}`}
+            className="marquee-logo"
+          >
+            <Image
+              src={`/marquee/${logo}.${
+                logo === "javascript" ||
+                logo === "supabase"
+                  ? "jpg"
+                  : "png"
+              }`}
+              alt={logo}
+              width={120}
+              height={60}
+              style={{
+                width: "auto",
+                height: "90px",
+                objectFit: "contain",
+              }}
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -122,24 +81,86 @@ export default function TechMarquee() {
     <section
       style={{
         backgroundColor: "var(--cream)",
-        paddingBottom: "80px",
-        borderTop: "1px solid rgba(107, 101, 96, 0.08)",
+        paddingBottom: "60px",
       }}
     >
       <style>{`
-        @keyframes marquee-left {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+        .marquee-container:hover .marquee-track {
+          animation-play-state: paused;
         }
+
+        .marquee-row {
+          overflow: hidden;
+          width: 100%;
+          mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 8%,
+            black 92%,
+            transparent 100%
+          );
+          -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 8%,
+            black 92%,
+            transparent 100%
+          );
+        }
+
+        .marquee-track {
+          display: flex;
+          align-items: center;
+          gap: 72px;
+          width: max-content;
+          padding: 12px 0;
+        }
+
+        .marquee-left {
+          animation: marquee-left 45s linear infinite;
+        }
+
+        .marquee-right {
+          animation: marquee-right 45s linear infinite;
+        }
+
+        .marquee-logo {
+          opacity: .65;
+          transition:
+            opacity .25s ease,
+            transform .25s ease;
+          flex-shrink: 0;
+        }
+
+        .marquee-logo:hover {
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+
+        @keyframes marquee-left {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+
         @keyframes marquee-right {
-          from { transform: translateX(-50%); }
-          to { transform: translateX(0); }
+          from {
+            transform: translateX(-50%);
+          }
+          to {
+            transform: translateX(0);
+          }
         }
       `}</style>
 
       <div
         className="px-6 md:px-16 lg:px-24"
-        style={{ padding: "48px 0 40px", display: "flex", alignItems: "center", gap: "16px" }}
+        style={{
+          padding: "12px 0 32px",
+        }}
       >
         <div className="px-6 md:px-16 lg:px-24 w-full flex items-center gap-4">
           <span
@@ -151,15 +172,37 @@ export default function TechMarquee() {
               color: "var(--accent)",
             }}
           >
-            Tech Stack
+            What I Build With
           </span>
-          <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(107, 101, 96, 0.12)" }} />
+
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              backgroundColor:
+                "rgba(107,101,96,.12)",
+            }}
+          />
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-        <MarqueeRow items={row1} direction="left" />
-        <MarqueeRow items={row2} direction="right" />
+      <div
+        className="marquee-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
+      >
+        <MarqueeRow
+          items={row1}
+          direction="left"
+        />
+
+        <MarqueeRow
+          items={row2}
+          direction="right"
+        />
       </div>
     </section>
   );

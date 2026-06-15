@@ -9,7 +9,7 @@ export default function BeyondCode() {
       id="beyond-code"
       style={{
         background: "#141414",
-        padding: "8rem 0",
+        padding: "5rem 0",
         overflow: "hidden",
       }}
     >
@@ -37,7 +37,7 @@ export default function BeyondCode() {
         <h2
           style={{
             fontFamily: "var(--font-playfair)",
-            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
             color: "#F5F1EB",
             marginBottom: "18px",
           }}

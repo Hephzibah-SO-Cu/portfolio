@@ -42,7 +42,7 @@ export const projects: Project[] = [
       "A mobile-first social platform",
 
     tagline:
-      "A full-featured social media app built in 72 hours.",
+      "A full-featured social media app concept built from scratch",
 
     description:
       "Framez is a mobile-first social platform where every post is a frame.",

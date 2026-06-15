@@ -10,6 +10,7 @@ const navLinks = [
   { label: "About", href: "#about" },
   { label: "Work", href: "#projects" },
   { label: "Experience", href: "#experience" },
+  { label: "Beyond Code", href: "#beyond-code" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -46,23 +47,21 @@ export default function Navbar() {
           left: "50%",
           transform: "translateX(-50%)",
           width: "calc(100% - 48px)",
-          maxWidth: "1200px",
-          height: "60px",
+          maxWidth: "950px",
+          height: "52px",
           borderRadius: "9999px",
           background: scrolled
-            ? "rgba(245, 240, 232, 0.82)"
-            : "rgba(245, 240, 232, 0.60)",
-          backdropFilter: scrolled ? "blur(20px)" : "blur(12px)",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "blur(12px)",
-          border: "1px solid rgba(255, 255, 255, 0.45)",
-          boxShadow: scrolled
-            ? "0 8px 32px rgba(0, 0, 0, 0.10)"
-            : "0 4px 20px rgba(0, 0, 0, 0.06)",
+          ? "rgba(255,255,255,.10)"
+          : "rgba(255,255,255,.06)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          border: "1px solid rgba(255, 255, 255, 0.18)",
+          boxShadow:"0 8px 32px rgba(0,0,0,.20), inset 0 1px rgba(255,255,255,.15)",
           zIndex: 50,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 28px",
+          padding: "0 22px",
           transition:
             "background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease",
           overflow: "hidden",

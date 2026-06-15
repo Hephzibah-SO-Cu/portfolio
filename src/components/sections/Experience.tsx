@@ -3,29 +3,51 @@
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
+type Experience =
+  | {
+      id: "cardinal";
+      title: string;
+      type: string;
+      company: string;
+      location: string;
+      period: string;
+      softwareBullets: string[];
+      mediaBullets: string[];
+    }
+  | {
+      id: string;
+      title: string;
+      type: string;
+      company: string;
+      location: string;
+      period: string;
+      bullets: string[];
+    };
+
 const experiences = [
   {
-    id: "cardinal-dev",
-    title: "Junior Software Developer",
-    type: "Internship",
-    company: "Cardinal Educational Technology (American Open University)",
+    id: "cardinal",
+
+    title:
+      "Dual Role • Software Development & Media Operations",
+
+    type: "NYSC Internship",
+
+    company:
+      "Cardinal Educational Technology (American Open University)",
+
     location: "Ibadan, Nigeria",
+
     period: "Sep 2025 – May 2026",
-    bullets: [
+
+    softwareBullets: [
       "Built and deployed a university application portal using Microsoft Power Pages and Power Apps, enabling structured student onboarding workflows.",
       "Structured and managed course content on Canvas LMS to support digital academic delivery.",
       "Collaborated with cross-functional teams to deliver responsive, user-focused web solutions.",
       "Provided technical support for digital systems during institutional events and operations.",
     ],
-  },
-  {
-    id: "cardinal-social",
-    title: "Social Media Manager",
-    type: "Internship",
-    company: "Cardinal Educational Technology (American Open University)",
-    location: "Ibadan, Nigeria",
-    period: "Feb 2026 – May 2026",
-    bullets: [
+
+    mediaBullets: [
       "Managed and grew social media platforms through digital engagement strategy across multiple channels.",
       "Designed and produced digital assets and campaign materials for marketing and outreach.",
       "Managed and directed technical setup for media production, studio operations, and live streaming workflows — overseeing production and post-production.",
@@ -33,6 +55,7 @@ const experiences = [
       "Coordinated live sessions and online events, handling technical execution and audience engagement.",
     ],
   },
+
   {
     id: "hng",
     title: "Frontend Developer",
@@ -49,6 +72,7 @@ const experiences = [
       "Worked with professional Git workflows, pull requests, and code reviews throughout the cohort.",
     ],
   },
+
   {
     id: "edurex",
     title: "Frontend Engineer",
@@ -62,6 +86,7 @@ const experiences = [
       "Assisted in outreach activities and company research.",
     ],
   },
+
   {
     id: "cloudware-siwes",
     title: "Junior Frontend Developer",
@@ -75,6 +100,7 @@ const experiences = [
       "Refined UI/UX through supervisor feedback, enhancing usability and navigation.",
     ],
   },
+
   {
     id: "cloudware-trainee",
     title: "Web Development Trainee",
@@ -90,7 +116,7 @@ const experiences = [
 ];
 
 export default function Experience() {
-  const [expanded, setExpanded] = useState<string | null>("cardinal-dev");
+  const [expanded, setExpanded] = useState<string | null>("cardinal");
 
   const sectionRef = useScrollAnimation({ variant: "fadeUp" });
   const listRef = useScrollAnimation({
@@ -103,73 +129,26 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="relative px-6 md:px-16 lg:px-24 py-24 md:py-36"
+      className="relative px-6 md:px-16 lg:px-24 py-16 md:py-20"
       style={{ backgroundColor: "var(--cream)" }}
     >
       {/* Section label */}
-      <div className="flex items-center gap-4 mb-16">
+      <div className="flex items-center gap-4 mb-10">
         <span
           className="text-xs tracking-[0.25em] uppercase"
           style={{ color: "var(--accent)", fontFamily: "var(--font-inter)" }}
         >
-          Experience
+          Where I&apos;ve Worked
         </span>
-        <div className="h-px w-12" style={{ backgroundColor: "var(--accent)" }} />
-        <span
-          className="text-xs tracking-[0.25em] uppercase"
-          style={{ color: "var(--warm-grey)", fontFamily: "var(--font-inter)" }}
-        >
-          04
-        </span>
-      </div>
-
-      {/* Heading */}
-      <div className="max-w-2xl mb-16">
-        <h2
-          className="font-bold leading-tight"
-          style={{
-            fontFamily: "var(--font-playfair)",
-            color: "var(--charcoal)",
-            fontSize: "clamp(2rem, 4vw, 3.25rem)",
-          }}
-        >
-          The journey
-          <br />
-          <span style={{ color: "var(--warm-grey)" }}>so far.</span>
-        </h2>
       </div>
 
       {/* Experience list */}
-      <div ref={listRef as React.RefObject<HTMLDivElement>} className="max-w-4xl">
-        {experiences.map((exp, index) => {
+      <div ref={listRef as React.RefObject<HTMLDivElement>} className="max-w-5xl">
+        {experiences.map((exp) => {
           const isOpen = expanded === exp.id;
-          const isCardinal = exp.id === "cardinal-dev" || exp.id === "cardinal-social";
-          const showCardinalLabel = exp.id === "cardinal-dev";
-          const prevIsCardinal =
-            index > 0 &&
-            (experiences[index - 1].id === "cardinal-dev" ||
-              experiences[index - 1].id === "cardinal-social");
 
           return (
             <div key={exp.id} className="exp-entry">
-              {/* Cardinal group label */}
-              {showCardinalLabel && (
-                <div className="flex items-center gap-3 mb-2 mt-2" style={{ opacity: 0.4 }}>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-inter)",
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      color: "var(--warm-grey)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Concurrent roles
-                  </span>
-                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(107, 101, 96, 0.15)" }} />
-                </div>
-              )}
 
               {/* Entry row */}
               <button
@@ -178,12 +157,9 @@ export default function Experience() {
                 style={{
                   background: "none",
                   border: "none",
-                  borderTop:
-                    isCardinal && exp.id === "cardinal-social"
-                      ? "1px solid rgba(107, 101, 96, 0.06)"
-                      : "1px solid rgba(107, 101, 96, 0.12)",
+                  borderTop:"1px solid rgba(107, 101, 96, 0.12)",
                   cursor: "pointer",
-                  padding: "24px 0",
+                  padding: "18px 0",
                   display: "grid",
                   gridTemplateColumns: "1fr auto",
                   alignItems: "start",
@@ -223,9 +199,10 @@ export default function Experience() {
                   {/* Title */}
                   <h3
                     style={{
-                      fontFamily: "var(--font-playfair)",
-                      fontSize: "1.15rem",
+                      fontFamily: "var(--font-inter)",
                       fontWeight: 700,
+                      letterSpacing: "-0.02em",
+                      fontSize: "1.05rem",
                       color: "var(--charcoal)",
                       lineHeight: 1.3,
                       marginBottom: "4px",
@@ -262,7 +239,7 @@ export default function Experience() {
                     transition: "color 0.2s ease",
                   }}
                 >
-                  {isOpen ? "Less" : "More"}
+                  {isOpen ? "Hide Details" : "View Details"}
                   <span
                     style={{
                       display: "inline-block",
@@ -278,61 +255,161 @@ export default function Experience() {
 
               {/* Expanded bullets */}
               <div
+  style={{
+    maxHeight: isOpen ? "1400px" : "0px",
+    overflow: "hidden",
+    transition: "max-height 0.4s ease",
+  }}
+>
+  {exp.id === "cardinal" ? (
+    <div
+      style={{
+        paddingBottom: "18px",
+      }}
+    >
+      <div style={{ marginBottom: "24px" }}>
+        <h4
+          style={{
+            fontFamily: "var(--font-inter)",
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--accent)",
+            marginBottom: "12px",
+          }}
+        >
+          Software Development
+        </h4>
+
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          {exp.softwareBullets?.map((bullet, i) => (
+            <li
+              key={i}
+              style={{
+                display: "flex",
+                gap: "12px",
+                fontFamily: "var(--font-inter)",
+                fontSize: "0.85rem",
+                color: "var(--warm-grey)",
+                lineHeight: 1.75,
+              }}
+            >
+              <span
                 style={{
-                  maxHeight: isOpen ? "600px" : "0px",
-                  overflow: "hidden",
-                  transition: "max-height 0.4s ease",
+                  color: "var(--accent)",
+                  flexShrink: 0,
+                  marginTop: "3px",
                 }}
               >
-                <ul
-                  style={{
-                    paddingBottom: "24px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                  }}
-                >
-                  {exp.bullets.map((bullet, i) => (
-                    <li
-                      key={i}
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        fontFamily: "var(--font-inter)",
-                        fontSize: "0.85rem",
-                        color: "var(--warm-grey)",
-                        lineHeight: 1.75,
-                      }}
-                    >
-                      <span style={{ color: "var(--accent)", flexShrink: 0, marginTop: "3px" }}>—</span>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                —
+              </span>
+
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4
+          style={{
+            fontFamily: "var(--font-inter)",
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--accent)",
+            marginBottom: "12px",
+          }}
+        >
+          Media & Communications
+        </h4>
+
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          {exp.mediaBullets?.map((bullet, i) => (
+            <li
+              key={i}
+              style={{
+                display: "flex",
+                gap: "12px",
+                fontFamily: "var(--font-inter)",
+                fontSize: "0.85rem",
+                color: "var(--warm-grey)",
+                lineHeight: 1.75,
+              }}
+            >
+              <span
+                style={{
+                  color: "var(--accent)",
+                  flexShrink: 0,
+                  marginTop: "3px",
+                }}
+              >
+                —
+              </span>
+
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  ) : (
+    <ul
+      style={{
+        paddingBottom: "18px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+      }}
+    >
+      {exp.bullets?.map((bullet, i) => (
+        <li
+          key={i}
+          style={{
+            display: "flex",
+            gap: "12px",
+            fontFamily: "var(--font-inter)",
+            fontSize: "0.85rem",
+            color: "var(--warm-grey)",
+            lineHeight: 1.75,
+          }}
+        >
+          <span
+            style={{
+              color: "var(--accent)",
+              flexShrink: 0,
+              marginTop: "3px",
+            }}
+          >
+            —
+          </span>
+
+          {bullet}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
             </div>
           );
         })}
 
         {/* Bottom border */}
         <div style={{ borderTop: "1px solid rgba(107, 101, 96, 0.12)" }} />
-      </div>
-
-      {/* Background number */}
-      <div
-        className="absolute right-6 md:right-16 pointer-events-none select-none"
-        style={{
-          fontFamily: "var(--font-playfair)",
-          fontSize: "clamp(6rem, 18vw, 16rem)",
-          fontWeight: 700,
-          color: "var(--charcoal)",
-          opacity: 0.03,
-          lineHeight: 1,
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      >
-        04
       </div>
     </section>
   );

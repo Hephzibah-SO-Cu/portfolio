@@ -37,9 +37,16 @@ if (index === total - 1) {
           cursor: "pointer",
 
           clipPath:
-            clipPath,
+            typeof window !== "undefined" && window.innerWidth <= 768
+              ? "none"
+              : clipPath,
 
-          marginLeft: index === 0 ? "0" : "-40px",
+          marginLeft:
+              typeof window !== "undefined" && window.innerWidth <= 768
+                ? "0"
+                : index === 0
+                  ? "0"
+                  : "-40px",
         }}
       >
       <Image

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Project } from "@/lib/data/projects";
 
@@ -14,25 +15,41 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const isMobile = project.displayType === "mobile";
 
+  const [hovered, setHovered] = useState(false);
+
   return (
     <article
       style={{
         position: "relative",
         cursor: "pointer",
-        transition: "transform 0.35s ease",
+
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        paddingBottom: "20px",
+        transition:
+          "transform 0.35s ease, box-shadow 0.35s ease",
+
+        transform:
+          hovered
+            ? project.id === "framez"
+              ? "scale(1.07)"
+              : "scale(1.03)"
+            : project.id === "framez"
+              ? "scale(1.05)"
+              : "scale(1)",
+
+        boxShadow:
+          hovered
+            ? "0 30px 80px rgba(0,0,0,0.22)"
+            : project.id === "framez"
+              ? "0 24px 60px rgba(0,0,0,0.15)"
+              : "0 10px 30px rgba(0,0,0,0.08)",
+
+        zIndex: hovered ? 20 : 1,
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-8px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform =
-          project.id === "framez"
-            ? "translateY(24px)"
-            : "translateY(0)";
-      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* IMAGE AREA */}
       <div
@@ -41,16 +58,11 @@ export default function ProjectCard({
           width: "100%",
           aspectRatio: isMobile ? "4 / 5" : "4 / 3",
           overflow: "hidden",
-          background: "#F1ECE4",
+          background: "var(--cream)",
 
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          transform:
-            project.id === "framez"
-              ? "translateY(-24px)"
-              : "translateY(0)",
 
           transition: "all 0.35s ease",
         }}
@@ -65,7 +77,7 @@ export default function ProjectCard({
               borderRadius: "32px",
               overflow: "hidden",
 
-              background: "#FFFFFF",
+              background: "var(--cream)",
 
               boxShadow: "0 24px 60px rgba(0,0,0,0.15)",
 
@@ -79,6 +91,8 @@ export default function ProjectCard({
               sizes="190px"
               style={{
                 objectFit: "cover",
+                transition: "transform 0.45s ease",
+                transform: hovered ? "scale(1.08)" : "scale(1)",
               }}
             />
           </div>
@@ -90,6 +104,8 @@ export default function ProjectCard({
             sizes="(max-width:768px) 100vw, 40vw"
             style={{
               objectFit: "cover",
+              transition: "transform 0.45s ease",
+              transform: hovered ? "scale(1.08)" : "scale(1)",
             }}
           />
         )}
@@ -101,9 +117,9 @@ export default function ProjectCard({
             inset: 0,
 
             background:
-              "linear-gradient(to top, rgba(28,28,26,0.92), rgba(28,28,26,0.45))",
+              "linear-gradient(to top, rgba(28,28,26,0.72), rgba(28,28,26,0.35))",
 
-            opacity: 0,
+            opacity: hovered ? 1 : 0,
             transition: "opacity 0.3s ease",
 
             display: "flex",
@@ -116,25 +132,8 @@ export default function ProjectCard({
             padding: "32px",
           }}
           className="project-overlay"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = "1";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.opacity = "0";
-          }}
+
         >
-          <p
-            style={{
-              color: "#FFFFFF",
-              fontSize: "1rem",
-              lineHeight: 1.8,
-              marginBottom: "24px",
-              fontFamily: "var(--font-inter)",
-              maxWidth: "85%",
-            }}
-          >
-            {project.tagline}
-          </p>
 
           <div
             style={{
@@ -163,6 +162,29 @@ export default function ProjectCard({
                 }}
               >
                 Live Site
+              </a>
+            )}
+
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  padding: "12px 18px",
+                  background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.35)",
+                  color: "#FFFFFF",
+                  textDecoration: "none",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                  fontFamily: "var(--font-inter)",
+                }}
+              >
+                GitHub
               </a>
             )}
 
@@ -215,7 +237,7 @@ export default function ProjectCard({
 
         <p
           style={{
-            margin: 0,
+            margin: 20,
             fontFamily: "var(--font-inter)",
             color: "var(--warm-grey)",
             fontSize: "0.9rem",

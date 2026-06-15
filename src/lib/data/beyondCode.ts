@@ -36,7 +36,7 @@ export const beyondCodeItems: BeyondCodeItem[] = [
   },
 
   {
-    title: "TECH SUPPORT",
+    title: "TINKERING",
     image: "/beyond/Consulting.jpg",
     subtitle: [
       "Consulting",
