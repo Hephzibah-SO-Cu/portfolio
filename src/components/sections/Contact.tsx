@@ -46,9 +46,8 @@ export default function Contact() {
 const sectionRef = useScrollAnimation({ variant: "fadeUp" });
 
 const listRef = useScrollAnimation({
-variant: "stagger",
-staggerChildren: ".contact-item",
-delay: 0.15,
+  variant: "fadeUp",
+  delay: 0.2,
 });
 
 return (

@@ -54,6 +54,7 @@ export default function Projects() {
     <>
       <section
         id="projects"
+        className="relative py-24 md:py-24"
         style={{
           background: "var(--cream)",
           overflow: "hidden",
