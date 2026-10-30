@@ -210,6 +210,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             background: "var(--cream)",
             position: "relative",
             overflow: "hidden",
+            /*
+              A flex column, so the grid below gets a DEFINITE height to be
+              bounded by. With only max-height here, the grid's own
+              `height: 100%` stayed indefinite, its row resolved to
+              max-content, and the bottom of every case study was clipped
+              away unreachably. The close button is absolutely positioned,
+              so the grid is the only child this has to size.
+            */
+            display: "flex",
+            flexDirection: "column",
             outline: "none",
             boxShadow: "0 40px 120px rgba(0,0,0,0.45)",
           }}
@@ -363,7 +373,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
 
             {/* WRITING — the pane that scrolls */}
-            <div className="project-dialog-copy">
+            {/*
+              Focusable, because it is now a scrollable region: before the
+              grid was bounded nothing in this dialog scrolled at all, so
+              there was nothing for a keyboard user to miss. There is now,
+              and a pane you can only read with a mouse is a pane some
+              readers do not have.
+            */}
+            <div
+              className="project-dialog-copy"
+              tabIndex={0}
+              role="region"
+              aria-label="Case study details"
+            >
               <p
                 style={{
                   ...LABEL,

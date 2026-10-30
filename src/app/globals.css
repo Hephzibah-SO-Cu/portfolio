@@ -285,8 +285,15 @@ body {
 .project-dialog-grid {
   display: grid;
   grid-template-rows: auto 1fr;
-  max-height: inherit;
-  height: 100%;
+  /*
+    flex child of .project-dialog, with min-height: 0 so it is allowed to
+    be shorter than its contents. `height: 100%` was here before and did
+    nothing: the parent had only a max-height, which does not make a
+    height definite, so this resolved to auto and the grid grew to its
+    content instead of scrolling inside the dialog.
+  */
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -304,7 +311,18 @@ body {
 
 @media (min-width: 1024px) {
   .project-dialog-grid {
-    grid-template-rows: none;
+    /*
+      NOT `none`. With no row sizing the single implicit row takes
+      max-content — 828px of copy inside a dialog capped at 94vh — so on a
+      557px-tall window the grid overflowed its own `overflow: hidden` and
+      the bottom of every case study was unreachable: the live-site link,
+      the repo link and the "1 of 6" screenshot dots, with no scrollbar and
+      a mouse wheel that did nothing. The copy column's own `overflow-y:
+      auto` never engaged, because the column was never shorter than its
+      contents. minmax(0, 1fr) bounds the row to the dialog, which is what
+      makes that scroll start working.
+    */
+    grid-template-rows: minmax(0, 1fr);
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
     overflow: hidden;
   }
