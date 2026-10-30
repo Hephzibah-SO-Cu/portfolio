@@ -43,22 +43,14 @@ function MarqueeRow({
     <div className="marquee-row">
       <div
         className={`marquee-track ${
-          direction === "left"
-            ? "marquee-left"
-            : "marquee-right"
+          direction === "left" ? "marquee-left" : "marquee-right"
         }`}
       >
         {doubled.map((logo, index) => (
-          <div
-            key={`${logo}-${index}`}
-            className="marquee-logo"
-          >
+          <div key={`${logo}-${index}`} className="marquee-logo">
             <Image
               src={`/marquee/${logo}.${
-                logo === "javascript" ||
-                logo === "supabase"
-                  ? "jpg"
-                  : "png"
+                logo === "javascript" || logo === "supabase" ? "jpg" : "png"
               }`}
               alt={logo}
               width={120}
@@ -157,19 +149,19 @@ export default function TechMarquee() {
       `}</style>
 
       <div
-        className="px-6 md:px-16 lg:px-24"
+        data-gutter=""
         style={{
           padding: "12px 0 32px",
         }}
       >
-        <div className="px-6 md:px-16 lg:px-24 w-full flex items-center gap-4">
+        <div data-gutter="" className="w-full flex items-center gap-4">
           <span
             style={{
               fontFamily: "var(--font-inter)",
               fontSize: "0.65rem",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
-              color: "var(--accent)",
+              color: "var(--accent-ink)",
             }}
           >
             What I Build With
@@ -179,8 +171,7 @@ export default function TechMarquee() {
             style={{
               flex: 1,
               height: "1px",
-              backgroundColor:
-                "rgba(107,101,96,.12)",
+              backgroundColor: "rgba(107,101,96,.12)",
             }}
           />
         </div>
@@ -194,15 +185,9 @@ export default function TechMarquee() {
           gap: "12px",
         }}
       >
-        <MarqueeRow
-          items={row1}
-          direction="left"
-        />
+        <MarqueeRow items={row1} direction="left" />
 
-        <MarqueeRow
-          items={row2}
-          direction="right"
-        />
+        <MarqueeRow items={row2} direction="right" />
       </div>
     </section>
   );

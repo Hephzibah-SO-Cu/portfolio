@@ -12,43 +12,44 @@ interface BeyondCodePanelProps {
 export default function BeyondCodePanel({
   item,
   index,
-  total
+  total,
 }: BeyondCodePanelProps) {
-  let clipPath =
-  "polygon(18% 0%, 100% 0%, 82% 100%, 0% 100%)";
+  let clipPath = "polygon(18% 0%, 100% 0%, 82% 100%, 0% 100%)";
 
-if (index === 0) {
-  clipPath =
-    "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)";
-}
+  if (index === 0) {
+    clipPath = "polygon(0% 0%, 100% 0%, 82% 100%, 0% 100%)";
+  }
 
-if (index === total - 1) {
-  clipPath =
-    "polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)";
-}
+  if (index === total - 1) {
+    clipPath = "polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%)";
+  }
   return (
     <div
-        className="beyond-panel"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          minHeight: "70vh",
-          transition: "all 0.45s ease",
-          cursor: "pointer",
+      className="beyond-panel"
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        minHeight: "70vh",
+        transition: "all 0.45s ease",
+        cursor: "pointer",
 
-          clipPath:
-            typeof window !== "undefined" && window.innerWidth <= 768
-              ? "none"
-              : clipPath,
+        /*
+            These were read off window.innerWidth during render. The server
+            has no window, so it always rendered the angled shape; the
+            client on a narrow screen rendered the square one — a hydration
+            mismatch, and a React error on every single page load.
 
-          marginLeft:
-              typeof window !== "undefined" && window.innerWidth <= 768
-                ? "0"
-                : index === 0
-                  ? "0"
-                  : "-40px",
-        }}
-      >
+            They are now custom properties that CSS overrides at the
+            breakpoint, so both renders agree and the panels also respond to
+            a resize, which the JavaScript version never did.
+          */
+        ["--panel-clip" as string]: clipPath,
+        ["--panel-overlap" as string]: index === 0 ? "0px" : "-40px",
+
+        clipPath: "var(--panel-clip)",
+        marginLeft: "var(--panel-overlap)",
+      }}
+    >
       <Image
         src={item.image}
         alt={item.title}
@@ -95,9 +96,7 @@ if (index === total - 1) {
           {item.title}
         </h3>
 
-        <div
-          className="beyond-subtitle"
-        >
+        <div className="beyond-subtitle">
           {item.subtitle.map((line) => (
             <p
               key={line}

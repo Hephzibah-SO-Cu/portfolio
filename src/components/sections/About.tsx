@@ -11,7 +11,8 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="px-6 md:px-16 lg:px-24 py-12 md:py-12"
+      className="py-12 md:py-12"
+      data-gutter=""
       style={{ backgroundColor: "var(--cream)" }}
     >
       {/* Section Label */}
@@ -25,7 +26,7 @@ export default function About() {
         <span
           className="text-xs tracking-[0.25em] uppercase"
           style={{
-            color: "var(--accent)",
+            color: "var(--accent-ink)",
             fontFamily: "var(--font-inter)",
           }}
         >
@@ -119,19 +120,19 @@ export default function About() {
           >
             <p>
               We live in an age where AI can generate almost anything in
-              seconds. Code, design, writing, music. But what it cannot give
-              you is spontaneity, intuition and the ability to connect
-              seemingly unrelated ideas into something meaningful. That kind of
-              creativity is deeply human, and it is something I value and work
-              towards every day.
+              seconds. Code, design, writing, music. But what it cannot give you
+              is spontaneity, intuition and the ability to connect seemingly
+              unrelated ideas into something meaningful. That kind of creativity
+              is deeply human, and it is something I value and work towards
+              every day.
             </p>
 
             <p>
               I focus primarily on frontend development because it allows me to
               bring ideas and solutions to life through functional, intuitive
-              and beautiful interfaces. It sits at the intersection of logic
-              and creativity, where imagination becomes something people can
-              see, use and benefit from.
+              and beautiful interfaces. It sits at the intersection of logic and
+              creativity, where imagination becomes something people can see,
+              use and benefit from.
               <br />
               However, code is just one of the languages I speak.
             </p>
@@ -146,8 +147,8 @@ export default function About() {
 
             <p>
               I work thoroughly and take attention to detail seriously. I enjoy
-              working with people who know where they want to go, remain open
-              to new ideas and are willing to think differently. People whose
+              working with people who know where they want to go, remain open to
+              new ideas and are willing to think differently. People whose
               imagination can go far, but who also care about execution and
               doing things well.
             </p>

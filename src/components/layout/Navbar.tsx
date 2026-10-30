@@ -51,12 +51,13 @@ export default function Navbar() {
           height: "52px",
           borderRadius: "9999px",
           background: scrolled
-          ? "rgba(255,255,255,.10)"
-          : "rgba(255,255,255,.06)",
+            ? "rgba(255,255,255,.10)"
+            : "rgba(255,255,255,.06)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           border: "1px solid rgba(255, 255, 255, 0.18)",
-          boxShadow:"0 8px 32px rgba(0,0,0,.20), inset 0 1px rgba(255,255,255,.15)",
+          boxShadow:
+            "0 8px 32px rgba(0,0,0,.20), inset 0 1px rgba(255,255,255,.15)",
           zIndex: 50,
           display: "flex",
           alignItems: "center",
@@ -201,7 +202,9 @@ export default function Navbar() {
                 height: "1.5px",
                 backgroundColor: "var(--charcoal)",
                 transition: "transform 0.3s ease, opacity 0.3s ease",
-                transform: menuOpen ? "translateY(6.5px) rotate(45deg)" : "none",
+                transform: menuOpen
+                  ? "translateY(6.5px) rotate(45deg)"
+                  : "none",
               }}
             />
             <span
@@ -221,7 +224,9 @@ export default function Navbar() {
                 height: "1.5px",
                 backgroundColor: "var(--charcoal)",
                 transition: "transform 0.3s ease, opacity 0.3s ease",
-                transform: menuOpen ? "translateY(-6.5px) rotate(-45deg)" : "none",
+                transform: menuOpen
+                  ? "translateY(-6.5px) rotate(-45deg)"
+                  : "none",
               }}
             />
           </button>

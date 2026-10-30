@@ -7,7 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-type AnimationVariant = "fadeUp" | "fadeIn" | "slideLeft" | "slideRight" | "stagger";
+type AnimationVariant =
+  | "fadeUp"
+  | "fadeIn"
+  | "slideLeft"
+  | "slideRight"
+  | "stagger";
 
 interface UseScrollAnimationOptions {
   variant?: AnimationVariant;
@@ -127,7 +132,7 @@ export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
           break;
       }
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return containerRef;

@@ -26,15 +26,32 @@ type Experience =
 
 const experiences = [
   {
+    id: "zowasel",
+    title: "Frontend Software Engineer",
+    type: "Full-time",
+    company: "Zowasel.com Limited",
+    location: "Lagos, Nigeria",
+    period: "Jul 2026 \u2013 Present",
+    bullets: [
+      "Sole frontend engineer on the company's B2B agricultural marketplace: redesigned it from a login-gated dashboard into a public storefront with a separate signed-in workspace, so buyers can browse before they register.",
+      "Cut a 60-page executive blueprint into a buildable scope, recorded every decision and its reasoning in a dated log, and wrote 80 API specifications for the backend team to build against.",
+      "Built a shared TypeScript core package \u2014 domain types, API client, mock data layer, translations \u2014 consumed by both the Next.js web app and a React Native app, so the business rules exist in one place.",
+      "Shipped in 19 languages including right-to-left, on design tokens generated from a single TypeScript source, with a contrast checker that fails the build if any text/background pair drops below WCAG AA in either theme.",
+      "Wrote and maintained 630+ Playwright end-to-end tests across desktop, Android and iPhone viewports, with axe-core accessibility checks on every run.",
+      "Primary frontend author of the company website, zowasel.com, built from slide decks and management briefs with no designer on the team.",
+      "Led the redesign of the multi-tenant super-admin after taking over a part-built frontend from a backend engineer: authentication, a Finance Hub with a requisitions pipeline and multi-bank aggregation, subscriptions, transactions and payment providers.",
+      "Directed AI-assisted development with a verification discipline: reviewed every change, required a failing test for each fix, and enforced feature parity on every page ported from the legacy system.",
+    ],
+  },
+
+  {
     id: "cardinal",
 
-    title:
-      "Dual Role • Software Development & Media Operations",
+    title: "Dual Role • Software Development & Media Operations",
 
     type: "NYSC Internship",
 
-    company:
-      "Cardinal Educational Technology (American Open University)",
+    company: "Cardinal Educational Technology (American Open University)",
 
     location: "Ibadan, Nigeria",
 
@@ -116,7 +133,7 @@ const experiences = [
 ];
 
 export default function Experience() {
-  const [expanded, setExpanded] = useState<string | null>("cardinal");
+  const [expanded, setExpanded] = useState<string | null>("zowasel");
 
   const sectionRef = useScrollAnimation({ variant: "fadeUp" });
   const listRef = useScrollAnimation({
@@ -129,27 +146,33 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="relative px-6 md:px-16 lg:px-24 py-16 md:py-20"
+      className="relative py-16 md:py-20"
+      data-gutter=""
       style={{ backgroundColor: "var(--cream)" }}
     >
       {/* Section label */}
       <div className="flex items-center gap-4 mb-10">
         <span
           className="text-xs tracking-[0.25em] uppercase"
-          style={{ color: "var(--accent)", fontFamily: "var(--font-inter)" }}
+          style={{
+            color: "var(--accent-ink)",
+            fontFamily: "var(--font-inter)",
+          }}
         >
           Where I&apos;ve Worked
         </span>
       </div>
 
       {/* Experience list */}
-      <div ref={listRef as React.RefObject<HTMLDivElement>} className="max-w-5xl">
+      <div
+        ref={listRef as React.RefObject<HTMLDivElement>}
+        className="max-w-5xl"
+      >
         {experiences.map((exp) => {
           const isOpen = expanded === exp.id;
 
           return (
             <div key={exp.id} className="exp-entry">
-
               {/* Entry row */}
               <button
                 onClick={() => setExpanded(isOpen ? null : exp.id)}
@@ -157,7 +180,7 @@ export default function Experience() {
                 style={{
                   background: "none",
                   border: "none",
-                  borderTop:"1px solid rgba(107, 101, 96, 0.12)",
+                  borderTop: "1px solid rgba(107, 101, 96, 0.12)",
                   cursor: "pointer",
                   padding: "18px 0",
                   display: "grid",
@@ -168,14 +191,17 @@ export default function Experience() {
               >
                 <div>
                   {/* Period + type badge */}
-                  <div className="flex items-center gap-3 mb-2" style={{ flexWrap: "wrap" }}>
+                  <div
+                    className="flex items-center gap-3 mb-2"
+                    style={{ flexWrap: "wrap" }}
+                  >
                     <span
                       style={{
                         fontFamily: "var(--font-inter)",
                         fontSize: "0.65rem",
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
-                        color: "var(--accent)",
+                        color: "var(--accent-ink)",
                       }}
                     >
                       {exp.period}
@@ -186,8 +212,13 @@ export default function Experience() {
                         fontSize: "0.6rem",
                         letterSpacing: "0.1em",
                         textTransform: "uppercase",
-                        color: "rgba(107, 101, 96, 0.5)",
-                        border: "1px solid rgba(107, 101, 96, 0.2)",
+                        /*
+                          Was rgba(107,101,96,0.5), which blends to 2.05:1 on
+                          cream — half what AA asks for at this size. The
+                          solid warm grey is 5.05:1 and looks the same shape.
+                        */
+                        color: "var(--warm-grey)",
+                        border: "1px solid rgba(107, 101, 96, 0.35)",
                         padding: "2px 8px",
                         borderRadius: "2px",
                       }}
@@ -255,155 +286,155 @@ export default function Experience() {
 
               {/* Expanded bullets */}
               <div
-  style={{
-    maxHeight: isOpen ? "1400px" : "0px",
-    overflow: "hidden",
-    transition: "max-height 0.4s ease",
-  }}
->
-  {exp.id === "cardinal" ? (
-    <div
-      style={{
-        paddingBottom: "18px",
-      }}
-    >
-      <div style={{ marginBottom: "24px" }}>
-        <h4
-          style={{
-            fontFamily: "var(--font-inter)",
-            fontSize: "0.75rem",
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--accent)",
-            marginBottom: "12px",
-          }}
-        >
-          Software Development
-        </h4>
-
-        <ul
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          {exp.softwareBullets?.map((bullet, i) => (
-            <li
-              key={i}
-              style={{
-                display: "flex",
-                gap: "12px",
-                fontFamily: "var(--font-inter)",
-                fontSize: "0.85rem",
-                color: "var(--warm-grey)",
-                lineHeight: 1.75,
-              }}
-            >
-              <span
                 style={{
-                  color: "var(--accent)",
-                  flexShrink: 0,
-                  marginTop: "3px",
+                  maxHeight: isOpen ? "2600px" : "0px",
+                  overflow: "hidden",
+                  transition: "max-height 0.4s ease",
                 }}
               >
-                —
-              </span>
+                {exp.id === "cardinal" ? (
+                  <div
+                    style={{
+                      paddingBottom: "18px",
+                    }}
+                  >
+                    <div style={{ marginBottom: "24px" }}>
+                      <h4
+                        style={{
+                          fontFamily: "var(--font-inter)",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                          color: "var(--accent-ink)",
+                          marginBottom: "12px",
+                        }}
+                      >
+                        Software Development
+                      </h4>
 
-              {bullet}
-            </li>
-          ))}
-        </ul>
-      </div>
+                      <ul
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        {exp.softwareBullets?.map((bullet, i) => (
+                          <li
+                            key={i}
+                            style={{
+                              display: "flex",
+                              gap: "12px",
+                              fontFamily: "var(--font-inter)",
+                              fontSize: "0.85rem",
+                              color: "var(--warm-grey)",
+                              lineHeight: 1.75,
+                            }}
+                          >
+                            <span
+                              style={{
+                                color: "var(--accent-ink)",
+                                flexShrink: 0,
+                                marginTop: "3px",
+                              }}
+                            >
+                              —
+                            </span>
 
-      <div>
-        <h4
-          style={{
-            fontFamily: "var(--font-inter)",
-            fontSize: "0.75rem",
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--accent)",
-            marginBottom: "12px",
-          }}
-        >
-          Media & Communications
-        </h4>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-        <ul
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          {exp.mediaBullets?.map((bullet, i) => (
-            <li
-              key={i}
-              style={{
-                display: "flex",
-                gap: "12px",
-                fontFamily: "var(--font-inter)",
-                fontSize: "0.85rem",
-                color: "var(--warm-grey)",
-                lineHeight: 1.75,
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--accent)",
-                  flexShrink: 0,
-                  marginTop: "3px",
-                }}
-              >
-                —
-              </span>
+                    <div>
+                      <h4
+                        style={{
+                          fontFamily: "var(--font-inter)",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                          color: "var(--accent-ink)",
+                          marginBottom: "12px",
+                        }}
+                      >
+                        Media & Communications
+                      </h4>
 
-              {bullet}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  ) : (
-    <ul
-      style={{
-        paddingBottom: "18px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-      }}
-    >
-      {exp.bullets?.map((bullet, i) => (
-        <li
-          key={i}
-          style={{
-            display: "flex",
-            gap: "12px",
-            fontFamily: "var(--font-inter)",
-            fontSize: "0.85rem",
-            color: "var(--warm-grey)",
-            lineHeight: 1.75,
-          }}
-        >
-          <span
-            style={{
-              color: "var(--accent)",
-              flexShrink: 0,
-              marginTop: "3px",
-            }}
-          >
-            —
-          </span>
+                      <ul
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        {exp.mediaBullets?.map((bullet, i) => (
+                          <li
+                            key={i}
+                            style={{
+                              display: "flex",
+                              gap: "12px",
+                              fontFamily: "var(--font-inter)",
+                              fontSize: "0.85rem",
+                              color: "var(--warm-grey)",
+                              lineHeight: 1.75,
+                            }}
+                          >
+                            <span
+                              style={{
+                                color: "var(--accent-ink)",
+                                flexShrink: 0,
+                                marginTop: "3px",
+                              }}
+                            >
+                              —
+                            </span>
 
-          {bullet}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <ul
+                    style={{
+                      paddingBottom: "18px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    {exp.bullets?.map((bullet, i) => (
+                      <li
+                        key={i}
+                        style={{
+                          display: "flex",
+                          gap: "12px",
+                          fontFamily: "var(--font-inter)",
+                          fontSize: "0.85rem",
+                          color: "var(--warm-grey)",
+                          lineHeight: 1.75,
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "var(--accent-ink)",
+                            flexShrink: 0,
+                            marginTop: "3px",
+                          }}
+                        >
+                          —
+                        </span>
+
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           );
         })}

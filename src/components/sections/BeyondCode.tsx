@@ -15,9 +15,9 @@ export default function BeyondCode() {
     >
       <div
         style={{
-          maxWidth: "1400px",
+          maxWidth: "min(100%, max(87.5rem, 97vw))",
           margin: "0 auto",
-          padding: "0 24px",
+          paddingInline: "var(--gutter)",
           marginBottom: "48px",
         }}
       >
@@ -65,7 +65,6 @@ export default function BeyondCode() {
           />
         ))}
       </div>
-
     </section>
   );
 }

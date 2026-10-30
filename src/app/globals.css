@@ -1,11 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --cream: #F5F0E8;
-  --charcoal: #1C1C1A;
-  --warm-grey: #6B6560;
-  --accent: #C4714A;
-  --white: #FFFFFF;
+  --cream: #f5f0e8;
+  --charcoal: #1c1c1a;
+  --warm-grey: #6b6560;
+  --accent: #c4714a;
+  /*
+    --accent on --cream is 3.18:1, under the 4.5:1 WCAG AA needs for
+    text at these sizes. This shade is 5.1:1 on cream and is what every
+    label, heading and bullet marker on a cream background uses.
+    --accent itself is kept for dark backgrounds (4.7:1 on --charcoal)
+    and for decoration, where contrast rules do not apply.
+  */
+  --accent-ink: #a14d28;
+  --white: #ffffff;
+
+  /*
+    The navbar is fixed 16px from the top, so it owns the first
+    16px + --nav-h of every screen. Anything that lays itself out against
+    the top of the viewport reads --nav-safe instead of guessing: the hero
+    used to guess, and "Lagos, Nigeria" ended up behind the navbar on short
+    screens and clipped off the top entirely at 320x568.
+  */
+  --nav-h: 52px;
+  --nav-safe: calc(16px + var(--nav-h) + 16px);
+
+  /*
+    One page gutter, fluid, instead of px-8 / md:px-16 / lg:px-24 stepping
+    at three breakpoints. 96px at 1440, where the design was drawn.
+  */
+  --gutter: clamp(1.5rem, 6.67vw, 12rem);
+
+  /*
+    The Projects rail, sized so that on a full-width 1920 screen exactly
+    five cards sit in view — Framez in the middle with two either side —
+    and the outer two show about 60px each, which is the cue that the rail
+    scrolls. It held that shape at 1440 but capped out too early above it,
+    so a wide screen showed almost seven cards and a lot of nothing.
+
+    Both card shapes share --card-h. A phone screenshot is portrait and a
+    browser screenshot is landscape, so they cannot share an aspect ratio,
+    but they can share a BOX: its background is the same cream as the
+    section, so the letterboxing around the wider image is invisible, and
+    the cards grow and shrink as one row instead of two different heights.
+  */
+  --card-h: clamp(180px, 17.4vw, 355px);
+  --card-w: clamp(200px, 19.6vw, 400px);
+  --card-w-mobile: clamp(90px, 8.8vw, 180px);
+  --card-gap: 20px;
+}
+
+/*
+  Every section's side padding. It replaces px-6 / md:px-16 / lg:px-24,
+  which stepped 24 -> 64 -> 96 at two breakpoints and then never moved
+  again, so a 2560px monitor got the same 96px gutter as a 1024px laptop.
+*/
+[data-gutter] {
+  padding-inline: var(--gutter);
+}
+
+/*
+  The hero's editorial rail was xl:flex, so it vanished below 1280px — on a
+  1152px laptop there is room for it, and it carries three of the page's
+  claims. It appears as soon as the portrait and the copy leave room for it.
+*/
+.hero-rail {
+  display: none;
+}
+
+@media (min-width: 1152px) {
+  .hero-rail {
+    display: flex;
+  }
 }
 
 html {
@@ -24,6 +90,56 @@ body {
   color: var(--white);
 }
 
+/*
+  A project card's Live Site / GitHub / View Details actions live in an
+  overlay that only appears on :hover. A touch screen never fires hover, so
+  on a phone or tablet those actions could not be reached at all. This row
+  carries the same three actions and appears only where hover is unavailable;
+  the overlay is suppressed there for the same reason.
+*/
+.card-touch-actions {
+  display: none;
+}
+
+@media (hover: none) {
+  .project-overlay {
+    display: none !important;
+  }
+
+  .card-touch-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 20px 4px;
+  }
+
+  .card-touch-actions a,
+  .card-touch-actions button {
+    /* 44px tall so it clears the WCAG 2.5.8 target minimum with room. */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 16px;
+    border: 1px solid rgba(107, 101, 96, 0.3);
+    background: transparent;
+    color: var(--charcoal);
+    font-family: var(--font-inter);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .card-touch-actions a:first-child {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+    color: var(--cream);
+  }
+}
+
 .beyond-rail {
   display: flex;
 }
@@ -34,10 +150,10 @@ body {
 }
 
 .beyond-subtitle {
-    opacity: 0;
-    transform: translateY(12px);
-    transition: all 0.35s ease;
-  }
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.35s ease;
+}
 
 .beyond-rail:hover .beyond-panel {
   flex: 1;
@@ -67,14 +183,152 @@ body {
   }
 
   .beyond-panel {
-  min-height: 250px !important;
-  clip-path: none !important;
-  margin-left: 0 !important;
-}
+    min-height: 250px !important;
+    clip-path: none !important;
+    margin-left: 0 !important;
+  }
 
   .beyond-subtitle {
     opacity: 0;
     transform: translateY(12px);
     transition: all 0.35s ease;
   }
+}
+/*
+  The .beyond-panel rule in the max-width:768px block above already squares
+  the panels off with !important. The panel component used to decide that in
+  JavaScript from window.innerWidth during render, which disagreed with the
+  server and threw a hydration error on every page load; it now emits the
+  shape as custom properties and lets that rule win.
+*/
+
+/*
+  prefers-reduced-motion. Named in AGENTS.md and DESIGN_SYSTEM.md and not
+  implemented anywhere: the page ran a 12s looping watermark drift, an 8s
+  pulsing glow, an infinite marquee, GSAP entrances and Framer Motion
+  reveals regardless of the setting. For people who ask for less motion
+  that is not decoration, it is a symptom trigger.
+
+  Transitions are reduced rather than removed, so state changes — the
+  centred card coming forward, a panel expanding — remain legible instead
+  of snapping. Anything that loops forever is stopped outright.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.08s !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  /*
+    The marquee is a continuous transform, not a transition, so it needs
+    stopping by name; it stays readable, it just stops moving.
+  */
+  .marquee-track,
+  .marquee-left,
+  .marquee-right {
+    animation: none !important;
+  }
+
+  /* Hover zooms and lifts are scale changes nobody asked for. */
+  .beyond-image,
+  .beyond-panel:hover .beyond-image {
+    transform: none !important;
+  }
+}
+
+/* rail geometry above */
+
+/*
+  The project dialog. Two panes from 1024px up: the screenshot holds still
+  on the left while the writing scrolls on the right, so the picture is
+  never lost halfway down a long read. Below that it stacks, media first,
+  and the whole panel scrolls as one.
+*/
+.project-dialog-grid {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: inherit;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.project-dialog-media {
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+  background: rgba(28, 28, 26, 0.05);
+}
+
+.project-dialog-copy {
+  padding: 28px clamp(20px, 3vw, 40px) 40px;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .project-dialog-grid {
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .project-dialog-media {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .project-dialog-copy {
+    overflow-y: auto;
+    padding: 56px clamp(28px, 2.6vw, 48px) 48px;
+  }
+}
+
+/* Tailwind's preflight removes list markers; the dialog's lists want them. */
+.dialog-list {
+  list-style: disc outside;
+}
+
+.dialog-list li::marker {
+  color: var(--accent-ink);
+}
+
+/*
+  The rail's single caption. Spans the page, centred, with a reserved
+  height so swapping a one-line description for a two-line one does not
+  shift the section underneath it.
+*/
+.rail-caption {
+  text-align: center;
+  padding-inline: var(--gutter);
+  margin-top: 28px;
+  min-height: 92px;
+}
+
+.rail-caption h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-inter);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.rail-caption p {
+  margin: 0 auto;
+  max-width: 46ch;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--warm-grey);
+}
+
+.rail-caption .card-touch-actions {
+  margin-top: 14px;
 }

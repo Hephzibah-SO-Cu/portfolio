@@ -7,56 +7,72 @@ import { Project } from "@/lib/data/projects";
 interface ProjectCardProps {
   project: Project;
   onDetails: (project: Project) => void;
+  /** True while this card is the one nearest the middle of the rail. */
+  isCentered?: boolean;
 }
 
+/*
+  A card is an image and nothing else.
+
+  The title and description used to sit under each card. That forced every
+  card to reserve height for text it was not showing, left a band of dead
+  space down the whole section, and — because Framez's card is the narrow
+  one — pushed its caption off to one side trying to be wider than its
+  own container. The caption now lives once, outside the rail, and simply
+  changes as a different project reaches the middle. See Projects.tsx.
+
+  What remains here:
+
+  - The media container is the only element that moves. It is the card on
+    the shelf, and it is what scales up when it reaches the middle and
+    shrinks back behind when it does not. On a real shelf it would come
+    forward on the z axis; we only have x and y, so it grows instead.
+
+*/
 export default function ProjectCard({
   project,
   onDetails,
+  isCentered = false,
 }: ProjectCardProps) {
   const isMobile = project.displayType === "mobile";
 
   const [hovered, setHovered] = useState(false);
+
+  const actionStyle = {
+    padding: "10px 16px",
+    fontSize: "0.7rem",
+    letterSpacing: "0.08em",
+    textTransform: "uppercase" as const,
+    fontWeight: 600,
+    fontFamily: "var(--font-inter)",
+    textDecoration: "none",
+  };
 
   return (
     <article
       style={{
         position: "relative",
         cursor: "pointer",
-
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingBottom: "20px",
-        transition:
-          "transform 0.35s ease, box-shadow 0.35s ease",
-
-        transform:
-          hovered
-            ? project.id === "framez"
-              ? "scale(1.07)"
-              : "scale(1.03)"
-            : project.id === "framez"
-              ? "scale(1.05)"
-              : "scale(1)",
-
-        boxShadow:
-          hovered
-            ? "0 30px 80px rgba(0,0,0,0.22)"
-            : project.id === "framez"
-              ? "0 24px 60px rgba(0,0,0,0.15)"
-              : "0 10px 30px rgba(0,0,0,0.08)",
-
-        zIndex: hovered ? 20 : 1,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* IMAGE AREA */}
+      {/* MEDIA — the only part that moves */}
       <div
         style={{
           position: "relative",
           width: "100%",
-          aspectRatio: isMobile ? "4 / 5" : "4 / 3",
+          /*
+            One height for every card, phone or browser. The wider browser
+            screenshots sit centred inside it with cream above and below —
+            invisible, because that is the section's own colour — and the
+            phone fills it. Without this the mobile card was half as tall
+            again as its neighbours and the rail lurched as it scrolled.
+          */
+          height: "var(--card-h)",
           overflow: "hidden",
           background: "var(--cream)",
 
@@ -64,36 +80,46 @@ export default function ProjectCard({
           justifyContent: "center",
           alignItems: "center",
 
-          transition: "all 0.35s ease",
+          transition:
+            "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, opacity 0.45s ease",
+
+          transform: isCentered
+            ? hovered
+              ? "scale(1.04)"
+              : "scale(1)"
+            : "scale(0.86)",
+
+          opacity: isCentered ? 1 : 0.72,
+
+          boxShadow: isCentered
+            ? "0 24px 60px rgba(0,0,0,0.20)"
+            : "0 6px 18px rgba(0,0,0,0.07)",
+
+          zIndex: isCentered ? 20 : 1,
         }}
       >
         {isMobile ? (
           <div
             style={{
               position: "relative",
-              width: "190px",
-              height: "390px",
+              /* fills the shared box height; width follows the phone's ratio */
+              height: "calc(var(--card-h) - 16px)",
+              aspectRatio: "124 / 254",
 
-              borderRadius: "32px",
+              borderRadius: "20px",
               overflow: "hidden",
 
               background: "var(--cream)",
-
               boxShadow: "0 24px 60px rgba(0,0,0,0.15)",
-
-              border: "4px solid #E9F0EA",
+              border: "3px solid #E9F0EA",
             }}
           >
             <Image
               src={project.thumbnail}
               alt={project.title}
               fill
-              sizes="190px"
-              style={{
-                objectFit: "cover",
-                transition: "transform 0.45s ease",
-                transform: hovered ? "scale(1.08)" : "scale(1)",
-              }}
+              sizes="124px"
+              style={{ objectFit: "cover" }}
             />
           </div>
         ) : (
@@ -101,25 +127,24 @@ export default function ProjectCard({
             src={project.thumbnail}
             alt={project.title}
             fill
-            sizes="(max-width:768px) 100vw, 40vw"
-            style={{
-              objectFit: "cover",
-              transition: "transform 0.45s ease",
-              transform: hovered ? "scale(1.08)" : "scale(1)",
-            }}
+            sizes="(max-width:768px) 76vw, 21vw"
+            /* contain, so the whole page shows — navbar included */
+            style={{ objectFit: "contain" }}
           />
         )}
 
-        {/* HOVER OVERLAY */}
+        {/* HOVER OVERLAY — the centred card only, where hover exists */}
         <div
+          className="project-overlay"
           style={{
             position: "absolute",
             inset: 0,
 
             background:
-              "linear-gradient(to top, rgba(28,28,26,0.72), rgba(28,28,26,0.35))",
+              "linear-gradient(to top, rgba(28,28,26,0.78), rgba(28,28,26,0.45))",
 
-            opacity: hovered ? 1 : 0,
+            opacity: hovered && isCentered ? 1 : 0,
+            pointerEvents: hovered && isCentered ? "auto" : "none",
             transition: "opacity 0.3s ease",
 
             display: "flex",
@@ -128,17 +153,13 @@ export default function ProjectCard({
             alignItems: "center",
 
             textAlign: "center",
-
-            padding: "32px",
+            padding: "20px",
           }}
-          className="project-overlay"
-
         >
-
           <div
             style={{
               display: "flex",
-              gap: "12px",
+              gap: "10px",
               flexWrap: "wrap",
               justifyContent: "center",
             }}
@@ -150,15 +171,9 @@ export default function ProjectCard({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 style={{
-                  padding: "12px 18px",
+                  ...actionStyle,
                   background: "#FFFFFF",
                   color: "#1C1C1A",
-                  textDecoration: "none",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  fontFamily: "var(--font-inter)",
                 }}
               >
                 Live Site
@@ -172,16 +187,10 @@ export default function ProjectCard({
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 style={{
-                  padding: "12px 18px",
+                  ...actionStyle,
                   background: "transparent",
                   border: "1px solid rgba(255,255,255,0.35)",
                   color: "#FFFFFF",
-                  textDecoration: "none",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  fontFamily: "var(--font-inter)",
                 }}
               >
                 GitHub
@@ -189,63 +198,23 @@ export default function ProjectCard({
             )}
 
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 onDetails(project);
               }}
               style={{
-                padding: "12px 18px",
+                ...actionStyle,
                 border: "1px solid rgba(255,255,255,0.35)",
                 background: "transparent",
                 color: "#FFFFFF",
-                fontSize: "0.75rem",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
                 cursor: "pointer",
-                fontWeight: 600,
-                fontFamily: "var(--font-inter)",
               }}
             >
               View Details
             </button>
           </div>
         </div>
-      </div>
-
-      {/* TITLE BELOW IMAGE */}
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: "24px",
-        }}
-      >
-        <h3
-          style={{
-            margin: 0,
-            marginBottom: "8px",
-
-            fontFamily: "var(--font-inter)",
-            fontSize: "0.8rem",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-
-            color: "var(--charcoal)",
-          }}
-        >
-          {project.title}
-        </h3>
-
-        <p
-          style={{
-            margin: 20,
-            fontFamily: "var(--font-inter)",
-            color: "var(--warm-grey)",
-            fontSize: "0.9rem",
-            lineHeight: 1.6,
-          }}
-        >
-          {project.tagline}
-        </p>
       </div>
     </article>
   );
