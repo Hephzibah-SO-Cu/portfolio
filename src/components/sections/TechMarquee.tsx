@@ -73,7 +73,7 @@ export default function TechMarquee() {
     <section
       style={{
         backgroundColor: "var(--cream)",
-        paddingBottom: "60px",
+        paddingBottom: "var(--section-y)",
       }}
     >
       <style>{`

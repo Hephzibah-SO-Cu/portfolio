@@ -317,7 +317,6 @@ export const projects: Project[] = [
 
     screenshots: ["/projects/hng-connect.png"],
 
-
     tags: [
       "Next.js",
       "TypeScript",

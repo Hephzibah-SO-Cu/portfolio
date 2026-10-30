@@ -5,6 +5,28 @@ import { projects, Project } from "@/lib/data/projects";
 import ProjectCard from "@/components/ui/ProjectCard";
 import ProjectModal from "@/components/ui/ProjectModal";
 
+/* The one arrow mark the rail uses, mirrored rather than drawn twice. */
+function Chevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{
+        transform: direction === "left" ? "rotate(180deg)" : undefined,
+      }}
+    >
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
 export default function Projects() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
@@ -161,11 +183,46 @@ export default function Projects() {
     };
   }, [measure]);
 
+  /*
+    Arrow keys while the pointer is simply OVER the rail, not only while it
+    has focus. A reader with a mouse has no reason to have clicked the rail
+    first, and the keys are the fastest way through seven projects.
+
+    Guarded so it never steals a key from a form field or from the open
+    case-study dialog, which has arrows of its own.
+  */
+  const hoveringRef = useRef(false);
+
+  const enter = useCallback(() => {
+    hoveringRef.current = true;
+  }, []);
+
+  const leave = useCallback(() => {
+    hoveringRef.current = false;
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!hoveringRef.current || activeProject) return;
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+
+      const tag = (document.activeElement?.tagName ?? "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+      event.preventDefault();
+      scrollToIndex(centeredIndex + (event.key === "ArrowRight" ? 1 : -1));
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeProject, centeredIndex, scrollToIndex]);
+
   return (
     <>
       <section
         id="projects"
-        className="relative py-14 md:py-16"
+        className="relative"
+        data-section=""
         style={{
           background: "var(--cream)",
           overflow: "hidden",
@@ -177,7 +234,7 @@ export default function Projects() {
             maxWidth: "min(100%, max(87.5rem, 97vw))",
             margin: "0 auto",
             paddingInline: "var(--gutter)",
-            marginBottom: "36px",
+            marginBottom: "24px",
             textAlign: "center",
           }}
         >
@@ -218,63 +275,104 @@ export default function Projects() {
 
         {/* Gallery Rail */}
         {/*
-          The rail is a scrollable region, and once the cards became images
-          with no links inside them there was nothing in it to focus — so a
-          keyboard user could not move it at all. It takes focus itself and
-          answers the arrow keys, which is also just a faster way to page
-          through the work with a mouse plugged in.
-        */}
-        <div
-          ref={railRef}
-          data-rail=""
-          role="region"
-          aria-label="Selected work, use the left and right arrow keys"
-          tabIndex={0}
-          onKeyDown={(event) => {
-            if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+          Three ways through the rail, because a swipe only exists on two of
+          the three devices this is read on:
 
-            event.preventDefault();
-            scrollToIndex(
-              centeredIndex + (event.key === "ArrowRight" ? 1 : -1),
-            );
-          }}
-          style={{
-            display: "flex",
-            gap: "var(--card-gap)",
-            overflowX: "auto",
-            overflowY: "hidden",
-            /*
+          - the buttons, which are the only affordance an external mouse
+            can see at all — its wheel scrolls the page straight past the
+            work, and hijacking the wheel would fight the reader on the way
+            down;
+          - a click on any card that is not already in the middle, which
+            brings it there instead of opening it;
+          - the arrow keys, whenever the pointer is over the rail or the
+            rail has focus.
+
+          The rail also takes focus itself: once the cards became images
+          with no links inside them, there was nothing in the scroll region
+          to focus, so a keyboard user could not move it at all.
+        */}
+        <div className="rail-shell" onMouseEnter={enter} onMouseLeave={leave}>
+          <button
+            type="button"
+            className="rail-arrow"
+            data-dir="prev"
+            aria-label="Previous project"
+            disabled={centeredIndex === 0}
+            onClick={() => scrollToIndex(centeredIndex - 1)}
+          >
+            <Chevron direction="left" />
+          </button>
+
+          <button
+            type="button"
+            className="rail-arrow"
+            data-dir="next"
+            aria-label="Next project"
+            disabled={centeredIndex === orderedProjects.length - 1}
+            onClick={() => scrollToIndex(centeredIndex + 1)}
+          >
+            <Chevron direction="right" />
+          </button>
+
+          <div
+            ref={railRef}
+            data-rail=""
+            role="region"
+            aria-label="Selected work, use the left and right arrow keys"
+            tabIndex={0}
+            onKeyDown={(event) => {
+              if (event.key !== "ArrowRight" && event.key !== "ArrowLeft")
+                return;
+
+              event.preventDefault();
+              scrollToIndex(
+                centeredIndex + (event.key === "ArrowRight" ? 1 : -1),
+              );
+            }}
+            style={{
+              display: "flex",
+              gap: "var(--card-gap)",
+              overflowX: "auto",
+              overflowY: "hidden",
+              /*
               The side padding is what lets the FIRST and LAST cards reach
               the middle of the rail. Without it they can never be centred,
               so they could never come forward. It is half the widest a card
               gets, and has to move whenever the card width does.
             */
-            paddingBlock: "28px",
-            paddingInline: "max(var(--gutter), calc(50% - var(--card-w) / 2))",
-            scrollSnapType: "x mandatory",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-        >
-          {orderedProjects.map((project, i) => (
-            <div
-              key={project.id}
-              style={{
-                flex: "0 0 auto",
-                width:
-                  project.displayType === "mobile"
-                    ? "min(34vw, var(--card-w-mobile))"
-                    : "min(76vw, var(--card-w))",
-                scrollSnapAlign: "center",
-              }}
-            >
-              <ProjectCard
-                project={project}
-                onDetails={setActiveProject}
-                isCentered={i === centeredIndex}
-              />
-            </div>
-          ))}
+              paddingBlock: "20px",
+              paddingInline:
+                "max(var(--gutter), calc(50% - var(--card-w) / 2))",
+              scrollSnapType: "x mandatory",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {orderedProjects.map((project, i) => (
+              <div
+                key={project.id}
+                style={{
+                  flex: "0 0 auto",
+                  width:
+                    project.displayType === "mobile"
+                      ? "min(34vw, var(--card-w-mobile))"
+                      : "min(76vw, var(--card-w))",
+                  scrollSnapAlign: "center",
+                }}
+              >
+                <ProjectCard
+                  project={project}
+                  onDetails={setActiveProject}
+                  isCentered={i === centeredIndex}
+                  onSelect={() =>
+                    i === centeredIndex
+                      ? setActiveProject(project)
+                      : scrollToIndex(i)
+                  }
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/*

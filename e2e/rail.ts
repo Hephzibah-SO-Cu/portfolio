@@ -20,6 +20,38 @@ export function railCaption(page: Page) {
   return page.locator("[data-rail-caption]");
 }
 
+/**
+ * Wait until the rail has stopped moving itself.
+ *
+ * It centres on Framez once on mount and AGAIN once the card images have
+ * loaded, because the cards report stale widths until then. Anything that
+ * moves the rail in between gets yanked straight back — which is a race a
+ * reader can lose too, but only for the first second of the page.
+ */
+export async function settleRail(page: Page) {
+  const rail = page.locator("#projects [data-rail]");
+  await rail.scrollIntoViewIfNeeded();
+
+  await expect(railCaption(page).locator("h3")).not.toBeEmpty();
+
+  await expect
+    .poll(
+      async () => {
+        const read = () =>
+          page.evaluate(
+            () => document.querySelector("#projects [data-rail]")!.scrollLeft,
+          );
+
+        const first = await read();
+        await page.waitForTimeout(250);
+
+        return (await read()) === first;
+      },
+      { timeout: 10_000, intervals: [250, 500, 750] },
+    )
+    .toBe(true);
+}
+
 export async function centreCard(page: Page, title: string) {
   const rail = page.locator("#projects [data-rail]");
   await rail.scrollIntoViewIfNeeded();

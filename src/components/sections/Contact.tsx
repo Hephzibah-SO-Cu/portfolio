@@ -54,9 +54,17 @@ export default function Contact() {
     <section
       id="contact"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="relative py-24 md:py-36 pb-32 md:pb-40"
+      className="relative"
       data-gutter=""
-      style={{ backgroundColor: "var(--charcoal)" }}
+      style={{
+        backgroundColor: "var(--charcoal)",
+        /*
+          The last section on the page, so it carries extra below it — but
+          in multiples of the shared rhythm, not numbers of its own.
+        */
+        paddingTop: "calc(var(--section-y) * 1.8)",
+        paddingBottom: "calc(var(--section-y) * 2.4)",
+      }}
     >
       {/* Section label */}{" "}
       <div className="flex items-center gap-4 mb-16">

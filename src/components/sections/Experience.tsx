@@ -146,7 +146,8 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="relative py-16 md:py-20"
+      className="relative"
+      data-section=""
       data-gutter=""
       style={{ backgroundColor: "var(--cream)" }}
     >

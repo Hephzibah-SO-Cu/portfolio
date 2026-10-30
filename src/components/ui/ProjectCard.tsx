@@ -9,6 +9,11 @@ interface ProjectCardProps {
   onDetails: (project: Project) => void;
   /** True while this card is the one nearest the middle of the rail. */
   isCentered?: boolean;
+  /**
+   * A click anywhere on the card. The rail decides what that means: bring
+   * this card to the middle, or — if it is already there — open it.
+   */
+  onSelect?: () => void;
 }
 
 /*
@@ -33,6 +38,7 @@ export default function ProjectCard({
   project,
   onDetails,
   isCentered = false,
+  onSelect,
 }: ProjectCardProps) {
   const isMobile = project.displayType === "mobile";
 
@@ -59,6 +65,7 @@ export default function ProjectCard({
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onSelect}
     >
       {/* MEDIA — the only part that moves */}
       <div

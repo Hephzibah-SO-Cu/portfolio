@@ -7,9 +7,9 @@ export default function BeyondCode() {
   return (
     <section
       id="beyond-code"
+      data-section=""
       style={{
         background: "#141414",
-        padding: "5rem 0",
         overflow: "hidden",
       }}
     >

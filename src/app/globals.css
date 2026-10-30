@@ -32,11 +32,28 @@
   --gutter: clamp(1.5rem, 6.67vw, 12rem);
 
   /*
-    The Projects rail, sized so that on a full-width 1920 screen exactly
-    five cards sit in view — Framez in the middle with two either side —
-    and the outer two show about 60px each, which is the cue that the rail
-    scrolls. It held that shape at 1440 but capped out too early above it,
-    so a wide screen showed almost seven cards and a lot of nothing.
+    One vertical rhythm for the whole page. Each section had been given its
+    padding by hand — 48/48, 0/60, 64/64, 80/80, 80/80, 144/160 — so the
+    gap between any two sections depended on which two they happened to be,
+    and the gap above Selected Work was half the gap below it.
+  */
+  --section-y: clamp(3rem, 4.4vw, 5rem);
+
+  /*
+    The Projects rail. The shape to hit is Framez in the middle, one whole
+    card either side of it, and a slice of the next one out showing as the
+    cue that the rail scrolls.
+
+    These numbers are measured, not guessed: they are the rail at 200%
+    browser zoom — the size it should have been all along — doubled. A card
+    is 400x360 with Framez at 180, and 400:360 is the same ratio as the
+    200:180 that reads correctly at that zoom.
+
+    The vw terms were the real fault. They reached their maximum around
+    2040px, so every ordinary laptop was served the middle of the clamp —
+    249px, under two thirds of the intended size. They now top out just
+    past 1270px, which is where these screens actually sit in CSS pixels
+    once the display's own scaling is accounted for.
 
     Both card shapes share --card-h. A phone screenshot is portrait and a
     browser screenshot is landscape, so they cannot share an aspect ratio,
@@ -44,9 +61,9 @@
     section, so the letterboxing around the wider image is invisible, and
     the cards grow and shrink as one row instead of two different heights.
   */
-  --card-h: clamp(180px, 17.4vw, 355px);
-  --card-w: clamp(200px, 19.6vw, 400px);
-  --card-w-mobile: clamp(90px, 8.8vw, 180px);
+  --card-h: clamp(180px, 28.3vw, 360px);
+  --card-w: clamp(200px, 31.5vw, 400px);
+  --card-w-mobile: clamp(90px, 14.2vw, 180px);
   --card-gap: 20px;
 }
 
@@ -57,6 +74,15 @@
 */
 [data-gutter] {
   padding-inline: var(--gutter);
+}
+
+/*
+  Every section's vertical padding, so the page has one rhythm instead of
+  six. Contact ends the page and still carries more below it, but it asks
+  for that in multiples of the same token rather than a separate number.
+*/
+[data-section] {
+  padding-block: var(--section-y);
 }
 
 /*
@@ -104,6 +130,10 @@ body {
 @media (hover: none) {
   .project-overlay {
     display: none !important;
+  }
+
+  .rail-caption {
+    min-height: 140px;
   }
 
   .card-touch-actions {
@@ -307,8 +337,70 @@ body {
 .rail-caption {
   text-align: center;
   padding-inline: var(--gutter);
-  margin-top: 28px;
-  min-height: 92px;
+  margin-top: 20px;
+  /*
+    Enough for a title and a two-line description, so swapping a short
+    tagline for a long one does not shift the page. Where the cards have
+    no hover overlay to open a project from, the caption also carries the
+    buttons, and reserves their height too — see the (hover: none) block.
+  */
+  min-height: 72px;
+}
+
+/*
+  The rail moves by swipe on a touchscreen and by two fingers on a
+  trackpad, but an external mouse has no horizontal gesture at all — its
+  wheel scrolls the page straight past the work. Rather than hijack the
+  wheel, which would fight the reader on the way down the page, the rail
+  offers three plain ways through it: these two buttons, a click on any
+  card that is not already in the middle, and the arrow keys whenever the
+  pointer is over the rail or the rail has focus.
+*/
+.rail-shell {
+  position: relative;
+}
+
+.rail-arrow {
+  position: absolute;
+  top: calc(50% - 22px);
+  z-index: 30;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--charcoal);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(28, 28, 26, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.rail-arrow:hover {
+  background: #ffffff;
+  transform: scale(1.06);
+}
+
+.rail-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+
+.rail-arrow[data-dir="prev"] {
+  left: clamp(8px, 2vw, 28px);
+}
+
+.rail-arrow[data-dir="next"] {
+  right: clamp(8px, 2vw, 28px);
 }
 
 .rail-caption h3 {

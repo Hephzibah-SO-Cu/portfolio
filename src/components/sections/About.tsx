@@ -11,7 +11,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef as React.RefObject<HTMLElement>}
-      className="py-12 md:py-12"
+      data-section=""
       data-gutter=""
       style={{ backgroundColor: "var(--cream)" }}
     >
