@@ -77,7 +77,6 @@ export default function Contact() {
         >
           Contact{" "}
         </span>
-        ```
         <div
           className="h-px w-12"
           style={{
@@ -88,22 +87,36 @@ export default function Contact() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-6xl">
         {/* Left */}
         <div>
+          {/*
+            This used to read "Let's build something meaningful", with a
+            paragraph under it that also said "building something
+            meaningful" — the same phrase twice in one eyeline, and neither
+            of them a fact. The one line a reader actually needs from this
+            page is what work I am looking for, so that is the headline now,
+            and the paragraph says who I want to do it with.
+          */}
           <h2
             className="font-bold leading-tight mb-6"
             style={{
               fontFamily: "var(--font-playfair)",
               color: "var(--cream)",
-              fontSize: "clamp(2rem, 4vw, 3.5rem)",
+              /*
+                Smaller than the headline it replaced, and with no forced
+                break. "Let's build / something meaningful" was four short
+                words that fitted two lines at 3.5rem; this is a sentence,
+                and at that size it ran to four lines and swallowed the
+                section. It wraps where the column ends instead.
+              */
+              fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
             }}
           >
-            Let&apos;s build
-            <br />
+            Open to frontend,{" "}
             <span
               style={{
                 color: "rgba(245, 240, 232, 0.4)",
               }}
             >
-              something meaningful.
+              full-stack and product engineering work.
             </span>
           </h2>
 
@@ -113,12 +126,14 @@ export default function Contact() {
               fontSize: "0.95rem",
               color: "rgba(245, 240, 232, 0.55)",
               lineHeight: 1.8,
-              maxWidth: "420px",
+              maxWidth: "460px",
             }}
           >
-            Open to frontend, full-stack and product engineering opportunities.
-            If you&apos;re building something meaningful and need someone who
-            cares about both the code and the craft, let&apos;s talk.
+            I work thoroughly and take attention to detail seriously. I enjoy
+            working with people who know where they want to go, remain open to
+            new ideas and are willing to think differently. People whose
+            imagination can go far, but who also care about execution and doing
+            things well.
           </p>
         </div>
 

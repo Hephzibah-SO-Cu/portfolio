@@ -133,24 +133,22 @@ export default function About() {
               and beautiful interfaces. It sits at the intersection of logic and
               creativity, where imagination becomes something people can see,
               use and benefit from.
-              <br />
-              However, code is just one of the languages I speak.
             </p>
 
-            <p>
-              Outside software, I spend time working with photography, media
-              production and live technical operations. Whether I am behind a
-              camera, managing a stream or designing a user interface, I am
-              usually trying to do the same thing: tell stories, solve problems
-              and create experiences that connect with people.
-            </p>
-
-            <p>
-              I work thoroughly and take attention to detail seriously. I enjoy
-              working with people who know where they want to go, remain open to
-              new ideas and are willing to think differently. People whose
-              imagination can go far, but who also care about execution and
-              doing things well.
+            {/*
+              The section's last line, and deliberately a line rather than a
+              paragraph: it is a question the page answers later. Beyond Code
+              is the other language. Darker and larger than the body around
+              it so it reads as a close and not as a stray sentence.
+            */}
+            <p
+              style={{
+                color: "var(--charcoal)",
+                fontSize: "1.125rem",
+                lineHeight: 1.6,
+              }}
+            >
+              But code is just one of the languages I speak.
             </p>
           </motion.div>
         </div>

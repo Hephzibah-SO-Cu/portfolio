@@ -34,16 +34,41 @@ export default function BeyondCode() {
           Beyond Code
         </p>
 
+        {/*
+          The headline used to read "The things I do when I'm not building
+          software", which is a caption for the section rather than an
+          argument for it — and the eyebrow directly above already says as
+          much. What earns these panels a place on an engineer's portfolio
+          is that they are the same work in different tools, so that is what
+          the headline says now, with the setup below it.
+        */}
         <h2
           style={{
             fontFamily: "var(--font-playfair)",
             fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
             color: "#F5F1EB",
             marginBottom: "18px",
+            maxWidth: "30ch",
           }}
         >
-          The things I do when I&apos;m not building software.
+          Tell stories, solve problems, create experiences that connect with
+          people.
         </h2>
+
+        <p
+          style={{
+            fontFamily: "var(--font-inter)",
+            fontSize: "0.95rem",
+            lineHeight: 1.8,
+            color: "rgba(245, 241, 235, 0.62)",
+            maxWidth: "58ch",
+          }}
+        >
+          Outside software, I spend time working with photography, media
+          production and live technical operations. Whether I&apos;m behind a
+          camera, managing a stream or designing a user interface, I&apos;m
+          usually trying to do the same thing.
+        </p>
       </div>
 
       <div
