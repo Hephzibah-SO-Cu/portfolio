@@ -7,31 +7,31 @@ export interface BeyondCodeItem {
 export const beyondCodeItems: BeyondCodeItem[] = [
   {
     title: "MEDIA",
-    image: "/beyond/Media.jpg",
+    image: "/beyond/media.webp",
     subtitle: ["Photography", "Videography", "Livestream Production"],
   },
 
   {
     title: "VOICE",
-    image: "/beyond/Voice.jpg",
+    image: "/beyond/voice.webp",
     subtitle: ["Hosting", "Script Writing", "Voice Work"],
   },
 
   {
     title: "AFTER HOURS",
-    image: "/beyond/After Hours.jpg",
+    image: "/beyond/after-hours.webp",
     subtitle: ["Graphic Design", "Fitness", "Music"],
   },
 
   {
     title: "TINKERING",
-    image: "/beyond/Consulting.jpg",
+    image: "/beyond/consulting.webp",
     subtitle: ["Consulting", "Troubleshooting", "Recommendations"],
   },
 
   {
     title: "PLAY",
-    image: "/beyond/Play.jpg",
+    image: "/beyond/play.webp",
     subtitle: ["Gaming", "Recreation", "Exploration"],
   },
 ];

@@ -44,7 +44,16 @@ async function revealEverything(page: import("@playwright/test").Page) {
   await page.waitForTimeout(1500);
 }
 
+/*
+  Both of these are slow on purpose and need the room: an axe sweep of a whole
+  page takes tens of seconds on its own, and the modal test first has to bring
+  a card to the middle of the rail, which polls until the rail stops moving
+  itself. Run three workers deep on a loaded machine and the 30s default is
+  reached before anything has gone wrong — a timeout that reads, in the
+  summary, exactly like an accessibility violation.
+*/
 test("the page has no accessibility violations", async ({ page }) => {
+  test.slow();
   await page.goto("/", { waitUntil: "networkidle" });
 
   await revealEverything(page);
@@ -58,6 +67,7 @@ test("the page has no accessibility violations", async ({ page }) => {
 test("the case study modal has no accessibility violations", async ({
   page,
 }, info) => {
+  test.slow();
   await page.goto("/", { waitUntil: "networkidle" });
 
   const card = await centreCard(page, "Zowasel Marketplace");

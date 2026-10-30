@@ -49,9 +49,12 @@ function MarqueeRow({
         {doubled.map((logo, index) => (
           <div key={`${logo}-${index}`} className="marquee-logo">
             <Image
-              src={`/marquee/${logo}.${
-                logo === "javascript" || logo === "supabase" ? "jpg" : "png"
-              }`}
+              /*
+                One extension for every logo. This used to carry a list of
+                which two files happened to be jpg, which meant adding a
+                logo in any other format silently 404'd.
+              */
+              src={`/marquee/${logo}.webp`}
               alt={logo}
               width={120}
               height={60}

@@ -55,7 +55,7 @@ export default function About() {
         >
           <div className="lg:sticky lg:top-32 max-w-sm mx-auto">
             <Image
-              src="/about/busayo.jpg"
+              src="/about/busayo.webp"
               alt="Busayo"
               width={900}
               height={1200}

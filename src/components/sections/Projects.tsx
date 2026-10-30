@@ -90,14 +90,35 @@ export default function Projects() {
     setCenteredIndex(nearest);
   }, []);
 
+  /*
+    Where the rail is HEADING, as opposed to where it currently is.
+
+    centeredIndex follows the scroll POSITION, and the scroll is smooth, so
+    it does not change until the movement has finished. Two quick taps of
+    Next therefore both read the same index and both ask for the same card,
+    and the second tap does nothing at all.
+
+    Stepping goes through here instead. It is state rather than a ref, and
+    it is set with a functional updater, so a second tap composes onto the
+    first one's result even inside the same React batch — which is exactly
+    the case a ref could not fix and the compiler would not allow anyway.
+  */
+  const [target, setTarget] = useState<number | null>(null);
+
+  /*
+    The rail has arrived, so there is no longer a destination. Adjusted
+    during render rather than in an effect, which is the pattern React asks
+    for and which ESLint enforces here.
+  */
+  if (target !== null && target === centeredIndex) setTarget(null);
+
   const scrollToIndex = useCallback((index: number) => {
     const rail = railRef.current;
 
     if (!rail) return;
 
-    const card = rail.children[
-      Math.max(0, Math.min(index, rail.children.length - 1))
-    ] as HTMLElement | undefined;
+    const clamped = Math.max(0, Math.min(index, rail.children.length - 1));
+    const card = rail.children[clamped] as HTMLElement | undefined;
 
     if (!card) return;
 
@@ -106,6 +127,17 @@ export default function Projects() {
       behavior: "smooth",
     });
   }, []);
+
+  const step = useCallback(
+    (delta: number) => {
+      setTarget((pending) => (pending ?? centeredIndex) + delta);
+    },
+    [centeredIndex],
+  );
+
+  useEffect(() => {
+    if (target !== null) scrollToIndex(target);
+  }, [target, scrollToIndex]);
 
   // Open with Framez centred, then let scrolling take over.
   useEffect(() => {
@@ -173,12 +205,20 @@ export default function Projects() {
       });
     };
 
+    const release = () => {
+      setTarget(null);
+    };
+
     rail.addEventListener("scroll", onScroll, { passive: true });
+    rail.addEventListener("wheel", release, { passive: true });
+    rail.addEventListener("pointerdown", release, { passive: true });
     window.addEventListener("resize", measure);
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
       rail.removeEventListener("scroll", onScroll);
+      rail.removeEventListener("wheel", release);
+      rail.removeEventListener("pointerdown", release);
       window.removeEventListener("resize", measure);
     };
   }, [measure]);
@@ -210,12 +250,12 @@ export default function Projects() {
       if (tag === "input" || tag === "textarea" || tag === "select") return;
 
       event.preventDefault();
-      scrollToIndex(centeredIndex + (event.key === "ArrowRight" ? 1 : -1));
+      step(event.key === "ArrowRight" ? 1 : -1);
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeProject, centeredIndex, scrollToIndex]);
+  }, [activeProject, step]);
 
   return (
     <>
@@ -298,7 +338,7 @@ export default function Projects() {
             data-dir="prev"
             aria-label="Previous project"
             disabled={centeredIndex === 0}
-            onClick={() => scrollToIndex(centeredIndex - 1)}
+            onClick={() => step(-1)}
           >
             <Chevron direction="left" />
           </button>
@@ -309,7 +349,7 @@ export default function Projects() {
             data-dir="next"
             aria-label="Next project"
             disabled={centeredIndex === orderedProjects.length - 1}
-            onClick={() => scrollToIndex(centeredIndex + 1)}
+            onClick={() => step(1)}
           >
             <Chevron direction="right" />
           </button>

@@ -7,7 +7,7 @@ Dates are WAT (UTC+1). Busayo's screen is **1270 x 593 CSS pixels** — a 1920
 monitor at Windows 150% scaling — and that is the width everything here is
 checked at, not 1920.
 
-Last updated: 30 October 2026.
+Last updated: 30 October 2026 (evening).
 
 ---
 
@@ -156,6 +156,7 @@ Things that are broken, not opinions about them.
    colour. One line.
 3. The stray gold and brown in the Hero (finding 11) — decide whether they are
    palette or accident, then either name them as tokens or remove them.
+4. ~~Every raster image to WebP.~~ **Done 30 Oct.** 6.48 MB to 1.13 MB.
 
 ### Phase 2 — the token layer
 
@@ -204,6 +205,9 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-30 | **Every raster is WebP, and nothing picks its own format any more.** 42 PNG/JPEG files, 6.48 MB, became 1.13 MB — 82.6% smaller, `public/` 8.6 MB to 3.3 MB. Each file was encoded twice, lossless and quality 82, and the smaller of the two kept, which is why the flat marquee logos are lossless and the photographs are not; a file was only replaced if the WebP actually came out smaller. The five `beyond/` images were renamed to kebab-case on the way through, because `/beyond/After Hours.jpg` was shipping a space in a URL. `TechMarquee` carried `logo === "javascript" \|\| logo === "supabase" ? "jpg" : "png"` — a hard-coded list of which two logos happened to be JPEG, so a logo added in any other format silently 404'd. One extension now. A new check, `e2e/images.mjs`, walks the whole page and opens a case study, then fails on any image request over 400 or any `<img>` that decoded to nothing. | Busayo, 30 Oct: "all the big sized images on this portfolio site, convert them to webp… i dont want my site to be loading things slow". The check exists because a wrong `src` in `next/image` is silent: the box keeps its space and renders nothing, so a page that has lost half its pictures still looks structurally fine in a screenshot taken from the top. |
+| 2026-10-30 | **Stepping through the rail queues.** The Next and Previous buttons and the arrow keys used to read `centeredIndex`, which follows the scroll POSITION — and the scroll is smooth, so two quick taps both read the same index, both asked for the same card, and the second tap did nothing. There is now a `target` state set with a functional updater, so a second tap composes onto the first one's result even inside the same React batch. It is cleared when the rail arrives (adjusted during render, not in an effect) and when the reader takes over the scrolling by wheel or pointer. A ref was tried first and rejected by the React Compiler's immutability rule — correctly, since a ref could not have composed within a batch either. | Found by `e2e/rail-mouse.spec.ts`, which clicks Previous four times in a row. It read as a flaky test and was a real defect: anyone tapping the arrows at speed got fewer cards than taps. |
+| 2026-10-30 | **The suite's timeout is 60s, not the 30s default**, with `test.slow()` on the two axe sweeps. Two failures chased in this session were both timeouts, not regressions: tests that take 7-10s alone reach 30s three workers deep on a loaded machine, and a timeout reads in the summary exactly like a real failure. | Every spec here waits on a page that is genuinely animating — the rail re-centres itself once its images load, and a card has to be polled to the middle before it can be acted on. |
 | 2026-10-30 | **The case study dialog scrolls.** `.project-dialog` becomes a flex column and `.project-dialog-grid` a `flex: 1 1 auto; min-height: 0` child. The first attempt — changing `grid-template-rows: none` to `minmax(0, 1fr)` — was correct about the row and **did not fix it**, which is recorded here because it is the interesting half: the grid carried `height: 100%` against a parent that had only a `max-height`, and a max-height does not make a height definite, so the grid resolved to `auto`, its row to max-content, and the dialog clipped 271px of itself with `overflow: hidden`. A definite height on the parent is what makes the copy column's own `overflow-y: auto` engage. The copy column is now `tabIndex={0}` with `role="region"`, because making a pane scrollable makes it a scrollable region and axe caught it immediately — the same violation the Selected Work rail had after its cards became images. | Busayo, 30 Oct: "either the new modal you did isnt working or it's just shit… i cant even scroll down to see the other details". He was right, and it was worse than a WWAD nitpick: the live-site link and the repo link — the most valuable action on a portfolio — were unreachable on his own screen. It was invisible at 900px tall, which is why it shipped. |
 | 2026-10-30 | **Findings get written down, in this repo.** A chat window compacts; this does not. Modelled on the marketplace plan because that pattern has already survived a month of compactions. | Busayo, 30 Oct: "i hope the details of these findings that you're making are being recorded". They were not. |
 | 2026-10-30 | **Delivery stops being time-boxed.** | Busayo, 30 Oct: "5pm has passed but i'm not making delivery time based anymore for now, i just want us to do very good/proper work". |

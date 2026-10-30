@@ -26,7 +26,7 @@ export default function Hero() {
       {/* Background texture */}
       <div className="absolute inset-0 pointer-events-none">
         <Image
-          src="/hero/hero-bg.png"
+          src="/hero/hero-bg.webp"
           alt=""
           fill
           priority
@@ -290,7 +290,7 @@ export default function Hero() {
         }}
       >
         <Image
-          src="/hero/hero-cutout.png"
+          src="/hero/hero-cutout.webp"
           alt="Busayo"
           width={650}
           height={650}

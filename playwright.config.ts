@@ -15,6 +15,16 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
 
+  /*
+    60s, not the 30s default. Every spec here waits on a page that is really
+    animating — the rail re-centres itself once its images load, and a card
+    has to be polled to the middle before it can be acted on. Alone each test
+    takes 7-10s; three workers deep on a loaded machine they reach 30s without
+    anything having gone wrong, and a timeout reads in the summary exactly
+    like a real failure. The axe sweeps ask for more again, with test.slow().
+  */
+  timeout: 60_000,
+
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3111",
     trace: "on-first-retry",

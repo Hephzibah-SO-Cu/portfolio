@@ -208,17 +208,17 @@ export const projects: Project[] = [
       "Search & Discovery",
     ],
 
-    thumbnail: "/projects/framez.png",
+    thumbnail: "/projects/framez.webp",
 
     displayType: "mobile",
 
     screenshots: [
-      "/projects/framez.png",
-      "/projects/framez-home-2.png",
-      "/projects/framez-home-3.png",
-      "/projects/framez-explore.png",
-      "/projects/framez-profile.png",
-      "/projects/framez-activity.png",
+      "/projects/framez.webp",
+      "/projects/framez-home-2.webp",
+      "/projects/framez-home-3.webp",
+      "/projects/framez-explore.webp",
+      "/projects/framez-profile.webp",
+      "/projects/framez-activity.webp",
     ],
 
     githubUrl: "https://github.com/Hephzibah-SO-Cu/HNG13/tree/main/Framez",
@@ -262,11 +262,11 @@ export const projects: Project[] = [
       "NGO Digital Presence",
     ],
 
-    thumbnail: "/projects/chedcom.png",
+    thumbnail: "/projects/chedcom.webp",
 
     displayType: "browser",
 
-    screenshots: ["/projects/chedcom.png"],
+    screenshots: ["/projects/chedcom.webp"],
 
     githubUrl: "https://github.com/Hephzibah-SO-Cu/CHEDCOM",
 
@@ -311,11 +311,11 @@ export const projects: Project[] = [
       "Production Bug Fixes",
     ],
 
-    thumbnail: "/projects/hng-connect.png",
+    thumbnail: "/projects/hng-connect.webp",
 
     displayType: "browser",
 
-    screenshots: ["/projects/hng-connect.png"],
+    screenshots: ["/projects/hng-connect.webp"],
 
     tags: [
       "Next.js",
@@ -367,11 +367,11 @@ export const projects: Project[] = [
       "Responsive Design",
     ],
 
-    thumbnail: "/projects/audiophile.png",
+    thumbnail: "/projects/audiophile.webp",
 
     displayType: "browser",
 
-    screenshots: ["/projects/audiophile.png"],
+    screenshots: ["/projects/audiophile.webp"],
 
     liveUrl: "https://hng-13-stage-3a-audiophile.vercel.app",
 
@@ -411,11 +411,11 @@ export const projects: Project[] = [
       "Multi-Role Dashboards",
     ],
 
-    thumbnail: "/projects/dlms.png",
+    thumbnail: "/projects/dlms.webp",
 
     displayType: "browser",
 
-    screenshots: ["/projects/dlms.png"],
+    screenshots: ["/projects/dlms.webp"],
 
     liveUrl: "https://dlms-cu.vercel.app",
 
