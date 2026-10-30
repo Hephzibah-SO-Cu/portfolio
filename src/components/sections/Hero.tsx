@@ -390,12 +390,19 @@ export default function Hero() {
         </p>
       </div>
 
-      {/* Cream fade */}
+      {/*
+        The fade out of the hero, and it has to land on exactly the colour of
+        the section below it. It used to end on #E7DDD1 while About began on
+        #F5F0E8 — a 23-point step in a single row of pixels, measured at the
+        page edge, which read as a seam rather than a fade. It now ends on
+        --cream itself, so there is nothing to line up by hand again if the
+        cream ever changes.
+      */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[40vh] z-20 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top, #E7DDD1 0%, rgba(231,221,209,.95) 18%, rgba(231,221,209,.60) 45%, rgba(231,221,209,.18) 72%, transparent 100%)",
+            "linear-gradient(to top, var(--cream) 0%, rgba(245,240,232,.95) 18%, rgba(245,240,232,.60) 45%, rgba(245,240,232,.18) 72%, transparent 100%)",
         }}
       />
     </section>
