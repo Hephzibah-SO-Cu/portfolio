@@ -263,6 +263,7 @@ export default function Projects() {
       <section
         id="projects"
         className="relative"
+        data-tone="light"
         data-section=""
         style={{
           background: "var(--cream)",

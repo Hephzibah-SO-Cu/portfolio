@@ -74,6 +74,7 @@ function MarqueeRow({
 export default function TechMarquee() {
   return (
     <section
+      data-tone="light"
       style={{
         backgroundColor: "var(--cream)",
         paddingBottom: "var(--section-y)",

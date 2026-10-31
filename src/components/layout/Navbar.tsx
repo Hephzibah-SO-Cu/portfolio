@@ -37,6 +37,99 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /*
+    WHICH SURFACE IS UNDER THE BAR.
+
+    The pill was white translucency with a white rim and a white inset
+    highlight — a glass built for a dark backdrop — carrying dark grey text
+    built for a light one. It passed nowhere: measured against the real
+    composited pixel it ran from 3.36:1 at best down to 1.42:1 over the
+    hero, against the 4.5:1 that 12px text needs.
+
+    So the bar now asks what it is sitting on. Each surface declares a
+    data-tone; the bar takes the LAST one in document order whose box
+    overlaps its own 52px band, because later in the document means painted
+    on top — which is how the hero's cream fade overrides the hero.
+
+    Reading geometry rather than keeping a list of section ids here means a
+    section added later is not silently wrong.
+  */
+  const [tone, setTone] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+
+      const nav = navRef.current;
+
+      if (!nav) return;
+
+      const band = nav.getBoundingClientRect();
+
+      let found: "light" | "dark" | null = null;
+
+      document.querySelectorAll("[data-tone]").forEach((el) => {
+        const r = el.getBoundingClientRect();
+
+        if (r.bottom < band.top || r.top > band.bottom) return;
+
+        found = el.getAttribute("data-tone") === "dark" ? "dark" : "light";
+      });
+
+      if (found) setTone(found);
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(measure);
+    };
+
+    measure();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  /*
+    The two treatments. The variants differ in ink and in which way the rim
+    catches the light; the pill is opaque enough in both that the composite
+    is decided by the bar and not by whatever happens to be scrolling under
+    it — which is the only way a bar over arbitrary content can promise a
+    contrast ratio at all.
+  */
+  const skin =
+    tone === "dark"
+      ? {
+          background: `rgb(var(--charcoal-rgb) / ${scrolled ? 0.82 : 0.72})`,
+          border: "1px solid rgb(var(--white-rgb) / 0.14)",
+          shadow:
+            "0 8px 32px rgb(var(--black-rgb) / 0.30), inset 0 1px rgb(var(--white-rgb) / 0.10)",
+          ink: "rgb(var(--cream-rgb) / 0.78)",
+          inkStrong: "var(--cream)",
+        }
+      : {
+          /*
+            Nearly opaque, because at 0.86 the pill composited to
+            rgb(211,206,198) over the content scrolling beneath it rather
+            than to cream, and --warm-grey on that is 3.67:1. A bar over
+            arbitrary content can only promise a ratio if the bar, and not
+            the content, decides the colour underneath the text.
+          */
+          background: `rgb(var(--cream-rgb) / ${scrolled ? 0.97 : 0.94})`,
+          border: "1px solid rgb(var(--charcoal-rgb) / 0.10)",
+          shadow: "0 8px 32px rgb(var(--black-rgb) / 0.10)",
+          ink: "rgb(var(--charcoal-rgb) / 0.7)",
+          inkStrong: "var(--charcoal)",
+        };
+
   return (
     <>
       <nav
@@ -50,14 +143,11 @@ export default function Navbar() {
           maxWidth: "950px",
           height: "52px",
           borderRadius: "9999px",
-          background: scrolled
-            ? "rgb(var(--white-rgb) / 0.10)"
-            : "rgb(var(--white-rgb) / 0.06)",
+          background: skin.background,
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          border: "1px solid rgb(var(--white-rgb) / 0.18)",
-          boxShadow:
-            "0 8px 32px rgb(var(--black-rgb) / 0.20), inset 0 1px rgb(var(--white-rgb) / 0.15)",
+          border: skin.border,
+          boxShadow: skin.shadow,
           zIndex: 50,
           display: "flex",
           alignItems: "center",
@@ -75,7 +165,7 @@ export default function Navbar() {
             fontFamily: "var(--font-playfair)",
             fontSize: "var(--t-logo)",
             fontWeight: 700,
-            color: "var(--charcoal)",
+            color: skin.inkStrong,
             textDecoration: "none",
             letterSpacing: "var(--track-display)",
             flexShrink: 0,
@@ -102,16 +192,14 @@ export default function Navbar() {
                 fontWeight: 500,
                 letterSpacing: "var(--track-label)",
                 textTransform: "uppercase",
-                color: "var(--warm-grey)",
+                color: skin.ink,
                 textDecoration: "none",
                 transition: "color 0.2s ease",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--charcoal)")
+                (e.currentTarget.style.color = skin.inkStrong)
               }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--warm-grey)")
-              }
+              onMouseLeave={(e) => (e.currentTarget.style.color = skin.ink)}
             >
               {link.label}
             </a>
@@ -127,17 +215,13 @@ export default function Navbar() {
             rel="noopener noreferrer"
             aria-label="GitHub"
             style={{
-              color: "var(--warm-grey)",
+              color: skin.ink,
               transition: "color 0.2s ease",
               display: "flex",
               alignItems: "center",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--charcoal)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--warm-grey)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.color = skin.inkStrong)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = skin.ink)}
           >
             <svg
               width="18"
@@ -157,17 +241,13 @@ export default function Navbar() {
             rel="noopener noreferrer"
             aria-label="LinkedIn"
             style={{
-              color: "var(--warm-grey)",
+              color: skin.ink,
               transition: "color 0.2s ease",
               display: "flex",
               alignItems: "center",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--charcoal)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--warm-grey)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.color = skin.inkStrong)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = skin.ink)}
           >
             <svg
               width="18"
@@ -190,7 +270,7 @@ export default function Navbar() {
               border: "none",
               cursor: "pointer",
               padding: "4px",
-              color: "var(--charcoal)",
+              color: skin.inkStrong,
               flexDirection: "column",
               gap: "5px",
             }}
@@ -200,7 +280,7 @@ export default function Navbar() {
                 display: "block",
                 width: "20px",
                 height: "1.5px",
-                backgroundColor: "var(--charcoal)",
+                backgroundColor: skin.inkStrong,
                 transition: "transform 0.3s ease, opacity 0.3s ease",
                 transform: menuOpen
                   ? "translateY(6.5px) rotate(45deg)"
@@ -212,7 +292,7 @@ export default function Navbar() {
                 display: "block",
                 width: "20px",
                 height: "1.5px",
-                backgroundColor: "var(--charcoal)",
+                backgroundColor: skin.inkStrong,
                 transition: "opacity 0.3s ease",
                 opacity: menuOpen ? 0 : 1,
               }}
@@ -222,7 +302,7 @@ export default function Navbar() {
                 display: "block",
                 width: "20px",
                 height: "1.5px",
-                backgroundColor: "var(--charcoal)",
+                backgroundColor: skin.inkStrong,
                 transition: "transform 0.3s ease, opacity 0.3s ease",
                 transform: menuOpen
                   ? "translateY(-6.5px) rotate(-45deg)"
@@ -266,6 +346,11 @@ export default function Navbar() {
               fontWeight: 500,
               letterSpacing: "var(--track-label)",
               textTransform: "uppercase",
+              /*
+                The panel is its own cream surface, not the pill, so it does
+                not follow the bar's tone: on a dark section that would put
+                cream text on a cream panel.
+              */
               color: "var(--warm-grey)",
               textDecoration: "none",
               padding: "14px 28px",

@@ -11,6 +11,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef as React.RefObject<HTMLElement>}
+      data-tone="light"
       data-section=""
       data-gutter=""
       style={{ backgroundColor: "var(--cream)" }}

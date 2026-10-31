@@ -7,6 +7,7 @@ export default function BeyondCode() {
   return (
     <section
       id="beyond-code"
+      data-tone="dark"
       data-section=""
       style={{
         background: "var(--charcoal-deep)",

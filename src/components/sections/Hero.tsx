@@ -21,6 +21,7 @@ export default function Hero() {
   return (
     <section
       id="home"
+      data-tone="dark"
       className="relative min-h-svh overflow-hidden"
       style={{ backgroundColor: "var(--charcoal)" }}
     >
@@ -396,6 +397,13 @@ export default function Hero() {
         cream ever changes.
       */}
       <div
+        /*
+          The hero is dark at the top and cream at the bottom, so one tone
+          cannot describe it. This fade declares its own, and because the
+          navbar takes the LAST declared tone its band overlaps, scrolling
+          through the hero hands over to light exactly where the cream does.
+        */
+        data-tone="light"
         className="absolute bottom-0 left-0 right-0 h-[40vh] z-20 pointer-events-none"
         style={{
           background:

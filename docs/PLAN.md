@@ -7,7 +7,7 @@ Dates are WAT (UTC+1). Busayo's screen is **1270 x 593 CSS pixels** — a 1920
 monitor at Windows 150% scaling — and that is the width everything here is
 checked at, not 1920.
 
-Last updated: 31 October 2026. Phases 1 and 2 complete; Phase 3 (the navbar) next.
+Last updated: 31 October 2026. Phases 1, 2 and 3 complete; Phase 4 (what the page says) next.
 
 ---
 
@@ -56,7 +56,7 @@ Ranked by severity. Status is kept current.
 | # | Finding | Evidence | Status |
 |---|---|---|---|
 | 1 | **The case study dialog clipped its own content unreachably.** On a 593px-tall window the dialog was 557px and its content 828px. The live-site link (y=755) and the "1 of 6" screenshot dots (y=812) were cut off, with no scrollbar; a mouse wheel moved `scrollTop` 0px across ten events. | Measured, and confirmed by Busayo on his own screen (screenshots 103–105, 30 Oct). | **Fixed 30 Oct.** See decisions log. |
-| 2 | **The navbar fails WCAG AA on every section of the site.** Best case 3.36:1 against a 4.5:1 requirement for 12px text; 1.42–1.80:1 over the three dark sections, where it is effectively invisible. | Composited pixels sampled behind the pill at seven scroll positions, contrast computed against the real text colours. Table below. | **Open.** Needs Busayo's call — hands off the navbar stands. |
+| 2 | ~~**The navbar fails WCAG AA on every section of the site.**~~ **Fixed 31 Oct.** Best case 3.36:1 against a 4.5:1 requirement for 12px text; 1.42–1.80:1 over the three dark sections, where it is effectively invisible. | Composited pixels sampled behind the pill at seven scroll positions. Links were 1.42–3.36:1; they are now 5.86–9.53:1. | **Fixed 31 Oct.** |
 | 3 | **Nobody's name is legible on the first screen.** `BUSAYO` renders at 203px **at opacity 0.04**. The tab title carries the full name; the nav says "HO."; the headline says "Software Engineer". | Computed styles read from the live page. | **Open.** |
 | 4 | **Nothing unfurls when the link is shared.** `metadata` has `title` and `description` only — no `openGraph`, no image. On LinkedIn or WhatsApp it is a bare blue link. | `src/app/layout.tsx`. | **Open.** |
 | 5 | **Six of seven projects carry no number.** Only Framez has one ("Built in 72 Hours"). The rest are categories: Current Work, Shipped, Ongoing Work, Team Collaboration, Premium Ecommerce, Final Year Project. Zowasel Marketplace is the largest thing here and its label is "Current Work". | `src/lib/data/projects.ts`, `exhibitLabel`. | **Open.** |
@@ -231,7 +231,7 @@ screenshot of every section at 1270 — the two should be hard to tell apart.
 
 ---
 
-### Phase 3 — the navbar
+### Phase 3 — the navbar  ✅ complete
 
 **Unblocked 30 Oct** (Busayo: "yes we're touching the navbar but not the
 height please"). The height stays 52px and `--nav-h` / `--nav-safe` do not
@@ -316,6 +316,8 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-31 | **Phase 3 is complete: the navbar reads the surface under it.** Each surface declares a `data-tone`, and the bar takes the last one in document order whose box overlaps its own 52px band — last meaning painted on top, which is how the hero's cream fade overrides the hero it sits inside. Two treatments, differing in ink and in which way the rim catches the light. Measured over all seven surfaces at 1270 and at 360: links **5.86–9.53:1**, logo **14.2–15.1:1**, against the 4.5:1 that 12px text needs. Before: **1.42–3.36:1, failing on every surface of the site.** Height untouched at 52px, as Busayo required. | The pill was white translucency with a white rim and a white inset highlight — a glass built for a dark backdrop — carrying dark grey text built for a light one, so it passed nowhere. The fix that mattered was not picking better colours but making the **pill** decide the colour under the text: at 0.86 it still composited to rgb(211,206,198) over whatever was scrolling beneath, and only a bar that wins against its own backdrop can promise a ratio at all. Reading geometry rather than keeping a list of section ids inside the navbar means a section added later is not silently wrong. |
+| 2026-10-31 | **`e2e/navbar-contrast.mjs` screenshots the bar and reads its pixels.** It samples a band across the upper quarter of the pill — inside the rim, above the glyphs — and composites each ink's alpha over that before comparing. | axe cannot check this and never could: it reads declared colours, and what a reader sees here is a composited pixel that exists nowhere in the stylesheet. Two sampling mistakes were made and corrected while writing it, and both flattered the result — sampling at mid-height caught the link glyphs and reported the pill several shades too dark, and reading only the first three numbers out of an `rgba()` treated a translucent ink as solid and reported 15:1 where the truth is 5.9:1. That second one is the same class of error that let the old bar pass every check it had. |
 | 2026-10-31 | **Phase 2 is complete: the token layer exists and is enforced.** 21 font sizes became 9, 13 letter-spacings became 3, 72 colour literals became 6 channel tokens, and `Button` went from one importer to every call to action on the site. Three tests in `e2e/tokens.spec.ts` keep it: two read what the browser computed, one reads the source. | The visual output is nearly identical, which was the point — it collapses near-misses onto their nearest real value rather than redesigning. The three deliberate changes are recorded in their own rows. |
 | 2026-10-31 | **`Button` gains a `tone` and a `hero` size, and is adopted.** The component knew charcoal-on-cream and nothing else, so every call to action on a dark surface had to invent itself — which is exactly how the hero's two buttons came to wear two different arrow glyphs, an `↗` on View Work (which conventionally means the link leaves the site; it does not) and a `→` on Get In Touch. The glyph now lives inside the component and cannot be chosen per call site. `size="hero"` carries the fluid padding the hero needs to hold its proportion on a 2560 monitor, which was the real reason it had opted out. | Finding 7, closed by construction rather than by agreeing to be careful. Nav links, contact rows, rail arrows, the dialog's close and prev/next, and the Experience disclosure are deliberately **not** Buttons: none of them is a call to action, and forcing one component into two roles is what caused the problem in the first place. |
 | 2026-10-31 | **"View Details" now means one thing.** The project cards' control opens a full dialog and is called **Case study**; the Experience row's control expands that row in place and is called **Details**, with the chevron that already said so. The Experience one is the one that changed, since its chevron carries the meaning. | Finding 6. One label meant two different things depending which half of the page you were on. The fix is naming, not a shared component — they genuinely do different things. |

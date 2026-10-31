@@ -55,6 +55,7 @@ export default function Contact() {
       id="contact"
       ref={sectionRef as React.RefObject<HTMLElement>}
       className="relative"
+      data-tone="dark"
       data-gutter=""
       style={{
         backgroundColor: "var(--charcoal)",
