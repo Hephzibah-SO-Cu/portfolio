@@ -114,7 +114,21 @@ export default function Hero() {
             }}
             className="h-px"
             style={{
-              backgroundColor: "#C7A06A",
+              /*
+                --accent, not the #C7A06A gold that used to be here, in all
+                three places it appeared: this rule, the GET IN TOUCH border
+                and that button's hover fill. None of the three is text, so
+                the bar is 3:1 and --accent clears it at 5.10 on near-black.
+
+                The gold could never have been the site's accent: it scores
+                2.14:1 on cream, under even the non-text bar, so it was only
+                ever usable on the hero and nowhere else. --accent already
+                works on both surfaces and already has a cream-safe sibling
+                in --accent-ink. Two colours were doing one job — the full
+                stop after "Engineer" was terracotta while the button border
+                200px away was gold.
+              */
+              backgroundColor: "var(--accent)",
               marginTop: "1rem",
               /* was a flat 160px, which is a third of a phone screen */
               marginBottom: "clamp(2rem, 9vh, 9rem)",
@@ -206,12 +220,12 @@ export default function Hero() {
               href="#contact"
               whileHover={{
                 y: -2,
-                backgroundColor: "rgba(199,160,106,.08)",
+                backgroundColor: "rgba(196,113,74,.08)",
               }}
               whileTap={{ scale: 0.98 }}
               className="group uppercase tracking-[0.2em] border flex items-center transition-all duration-300"
               style={{
-                borderColor: "#C7A06A",
+                borderColor: "var(--accent)",
                 color: "#F5F0E8",
                 textDecoration: "none",
                 fontSize: "clamp(0.7rem, 0.84vw, 1rem)",

@@ -7,7 +7,7 @@ Dates are WAT (UTC+1). Busayo's screen is **1270 x 593 CSS pixels** — a 1920
 monitor at Windows 150% scaling — and that is the width everything here is
 checked at, not 1920.
 
-Last updated: 30 October 2026 (evening).
+Last updated: 31 October 2026. Phase 1 complete; Phase 2 next.
 
 ---
 
@@ -161,20 +161,22 @@ look — the square corners, the cream palette and the editorial type stay.
 
 ---
 
-### Phase 1 — things that are broken (all but one done)
+### Phase 1 — things that are broken  ✅ complete
 
 1. ~~The dialog clipping its own content unreachably (finding 1).~~ **Done 30 Oct.**
 2. ~~The hero gradient ending on a colour the page does not use (finding 8).~~ **Done 30 Oct.**
 3. ~~Every raster to WebP.~~ **Done 30 Oct**, 6.48 MB to 1.13 MB.
 4. ~~The rail dropping rapid taps.~~ **Done 30 Oct.**
-5. The two stray colours (finding 11). `#6B5D4F` becomes `--warm-grey`: a
+5. ~~The two stray colours (finding 11).~~ **Done 31 Oct — Phase 1 is
+   closed.** `#6B5D4F` became `--warm-grey`: a
    near-miss at distance 18.8, and 5.60:1 to 5.06:1 on cream, both passing AA.
    `#C7A06A` **awaits Busayo** — a genuinely different colour, 56.9 from
    `--accent`, used for the LAGOS hairline, the GET IN TOUCH border and that
    button's 8% hover fill, and *more* legible on the dark hero than `--accent`
    is (7.60:1 against 5.10:1), which is probably why it survived. Either name
-   it `--accent-gold` and restrict it to dark surfaces, or fold it into
-   `--accent` and have one accent on the site.
+   `#C7A06A` was folded into `--accent` rather than kept: it scores 2.14:1
+   on cream, under even the 3:1 non-text bar, so it could never have been
+   the site's accent. See the decisions log.
 
 **Verified by:** the suite, `e2e/images.mjs`, and a pixel sample across each seam.
 
@@ -314,6 +316,7 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-31 | **One accent. The gold is gone.** `#C7A06A` is replaced by `--accent` in all three places it appeared — the hairline under LAGOS, NIGERIA, the GET IN TOUCH border, and that button's 8% hover fill, which becomes `rgba(196,113,74,.08)`. Phase 1 is closed. | Busayo delegated the call: "if the gold doesn't flow with the cream, replace it with something that does". It does not, and the number says so plainly — **2.14:1 on cream, under even the 3:1 non-text bar**, so it could never appear on a cream surface and was always going to be a hero-only exception needing its own rule. `--accent` works on both surfaces (3.19 on cream, 5.10 on near-black) and already has a cream-safe text sibling in `--accent-ink` at 5.13. The earlier argument for keeping the gold — 7.60:1 on near-black against `--accent`'s 5.10 — turned out not to apply to anything: all three uses are a rule, a border and a fill, none of them text, so the bar is 3:1 and both clear it. Two colours were doing one job in a single eyeful: the full stop after "Engineer" was terracotta while the button border 200px away was gold. |
 | 2026-10-30 | **The navbar may be changed, but not its height.** Busayo: "yes we're touching the navbar but not the height please". 52px stands, and so do `--nav-h` and `--nav-safe`, so nothing that lays itself out against the top of the viewport has to be re-checked. This lifts the hands-off rule for colour and contents only. | The height is load-bearing in a way the colours are not: the hero reads `--nav-safe` to keep "Lagos, Nigeria" clear of the pill, and that was a real bug once already. |
 | 2026-10-30 | **`#6B5D4F` becomes `--warm-grey`; `#C7A06A` is left for Busayo.** The brown sat 18.8 from `--warm-grey` — a drift, not a decision — and the swap moves "Scroll To Explore" from 5.60:1 to 5.06:1 on cream, both over AA. The gold is 56.9 from `--accent`, which is a different colour rather than a near-miss, and it is the border of GET IN TOUCH, the hairline under LAGOS, NIGERIA, and that button's 8% hover fill. | Busayo, 30 Oct, said the gold was ChatGPT's invention and never the palette. Both things are true at once: it was never chosen, and it is the most visible accent in the hero. A 2x crop shows the full stop after "Engineer" in `--accent` terracotta beside a gold button border 200px away — two colours doing one job. It is also *more* legible on near-black than `--accent` (7.60:1 against 5.10:1), so replacing it is a trade and not a cleanup. |
 | 2026-10-30 | **Nothing is pushed until all six phases are done.** | Busayo: "i want us to push when we've actually gone". The earlier recommendation to deploy first and keep improving is withdrawn. |
