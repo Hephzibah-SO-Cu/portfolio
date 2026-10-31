@@ -66,7 +66,7 @@ export default function BeyondCodePanel({
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.2))",
+            "linear-gradient(to top, rgb(var(--black-rgb) / 0.82), rgb(var(--black-rgb) / 0.2))",
         }}
       />
 
@@ -88,7 +88,7 @@ export default function BeyondCodePanel({
           style={{
             fontFamily: "var(--font-inter)",
             fontSize: "var(--t-body)",
-            letterSpacing: "0.25em",
+            letterSpacing: "var(--track-label)",
             fontWeight: 600,
             marginBottom: "20px",
           }}

@@ -43,7 +43,7 @@ export default function Button({
     gap: "8px",
     fontFamily: "var(--font-inter)",
     fontWeight: 500,
-    letterSpacing: "0.12em",
+    letterSpacing: "var(--track-label)",
     textTransform: "uppercase",
     textDecoration: "none",
     border: "1px solid var(--charcoal)",

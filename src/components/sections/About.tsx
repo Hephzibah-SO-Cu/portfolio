@@ -24,7 +24,7 @@ export default function About() {
         className="flex items-center gap-4 mb-16"
       >
         <span
-          className="text-xs tracking-[0.25em] uppercase"
+          className="text-xs tracking-[var(--track-label)] uppercase"
           style={{
             color: "var(--accent-ink)",
             fontFamily: "var(--font-inter)",
@@ -87,7 +87,7 @@ export default function About() {
               fontFamily: "var(--font-inter)",
               color: "var(--charcoal)",
               fontSize: "var(--t-h2)",
-              letterSpacing: "-0.04em",
+              letterSpacing: "var(--track-display)",
             }}
           >
             Creative by instinct.

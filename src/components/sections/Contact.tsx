@@ -69,7 +69,7 @@ export default function Contact() {
       {/* Section label */}{" "}
       <div className="flex items-center gap-4 mb-16">
         <span
-          className="text-xs tracking-[0.25em] uppercase"
+          className="text-xs tracking-[var(--track-label)] uppercase"
           style={{
             color: "var(--accent)",
             fontFamily: "var(--font-inter)",
@@ -113,7 +113,7 @@ export default function Contact() {
             Open to frontend,{" "}
             <span
               style={{
-                color: "rgba(245, 240, 232, 0.4)",
+                color: "rgb(var(--cream-rgb) / 0.4)",
               }}
             >
               full-stack and product engineering work.
@@ -124,7 +124,7 @@ export default function Contact() {
             style={{
               fontFamily: "var(--font-inter)",
               fontSize: "var(--t-small)",
-              color: "rgba(245, 240, 232, 0.55)",
+              color: "rgb(var(--cream-rgb) / 0.55)",
               lineHeight: 1.8,
               maxWidth: "460px",
             }}
@@ -170,7 +170,7 @@ export default function Contact() {
             hover:pl-2
           "
               style={{
-                borderBottom: "1px solid rgba(245, 240, 232, 0.08)",
+                borderBottom: "1px solid rgb(var(--cream-rgb) / 0.08)",
                 textDecoration: "none",
               }}
             >
@@ -178,7 +178,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "var(--font-inter)",
                   fontSize: "var(--t-label)",
-                  letterSpacing: "0.2em",
+                  letterSpacing: "var(--track-label)",
                   textTransform: "uppercase",
                   color: "var(--accent)",
                   width: "80px",
@@ -199,7 +199,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "var(--font-inter)",
                   fontSize: "var(--t-caption)",
-                  color: "rgba(245, 240, 232, 0.7)",
+                  color: "rgb(var(--cream-rgb) / 0.7)",
                   /*
                 A flex item's min-width defaults to auto, so this span could
                 not shrink below the min-content width of the longest value
@@ -223,7 +223,7 @@ export default function Contact() {
               group-hover:translate-x-1
             "
                 style={{
-                  color: "rgba(245, 240, 232, 0.25)",
+                  color: "rgb(var(--cream-rgb) / 0.25)",
                 }}
               >
                 →

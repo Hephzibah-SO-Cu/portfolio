@@ -9,7 +9,7 @@ export default function BeyondCode() {
       id="beyond-code"
       data-section=""
       style={{
-        background: "#141414",
+        background: "var(--charcoal-deep)",
         overflow: "hidden",
       }}
     >
@@ -25,9 +25,9 @@ export default function BeyondCode() {
           style={{
             fontFamily: "var(--font-inter)",
             fontSize: "var(--t-label)",
-            letterSpacing: "0.18em",
+            letterSpacing: "var(--track-label)",
             textTransform: "uppercase",
-            color: "#B88A6A",
+            color: "var(--accent)",
             marginBottom: "16px",
           }}
         >
@@ -46,7 +46,7 @@ export default function BeyondCode() {
           style={{
             fontFamily: "var(--font-playfair)",
             fontSize: "var(--t-h2)",
-            color: "#F5F1EB",
+            color: "var(--cream)",
             marginBottom: "18px",
             maxWidth: "30ch",
           }}
@@ -60,7 +60,7 @@ export default function BeyondCode() {
             fontFamily: "var(--font-inter)",
             fontSize: "var(--t-small)",
             lineHeight: 1.8,
-            color: "rgba(245, 241, 235, 0.62)",
+            color: "rgb(var(--cream-rgb) / 0.62)",
             maxWidth: "58ch",
           }}
         >

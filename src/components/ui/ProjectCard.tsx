@@ -47,7 +47,7 @@ export default function ProjectCard({
   const actionStyle = {
     padding: "10px 16px",
     fontSize: "var(--t-label)",
-    letterSpacing: "0.08em",
+    letterSpacing: "var(--track-label)",
     textTransform: "uppercase" as const,
     fontWeight: 600,
     fontFamily: "var(--font-inter)",
@@ -99,8 +99,8 @@ export default function ProjectCard({
           opacity: isCentered ? 1 : 0.72,
 
           boxShadow: isCentered
-            ? "0 24px 60px rgba(0,0,0,0.20)"
-            : "0 6px 18px rgba(0,0,0,0.07)",
+            ? "0 24px 60px rgb(var(--black-rgb) / 0.20)"
+            : "0 6px 18px rgb(var(--black-rgb) / 0.07)",
 
           zIndex: isCentered ? 20 : 1,
         }}
@@ -117,8 +117,8 @@ export default function ProjectCard({
               overflow: "hidden",
 
               background: "var(--cream)",
-              boxShadow: "0 24px 60px rgba(0,0,0,0.15)",
-              border: "3px solid #E9F0EA",
+              boxShadow: "0 24px 60px rgb(var(--black-rgb) / 0.15)",
+              border: "3px solid var(--cream)",
             }}
           >
             <Image
@@ -148,7 +148,7 @@ export default function ProjectCard({
             inset: 0,
 
             background:
-              "linear-gradient(to top, rgba(28,28,26,0.78), rgba(28,28,26,0.45))",
+              "linear-gradient(to top, rgb(var(--charcoal-rgb) / 0.78), rgb(var(--charcoal-rgb) / 0.45))",
 
             opacity: hovered && isCentered ? 1 : 0,
             pointerEvents: hovered && isCentered ? "auto" : "none",
@@ -179,8 +179,8 @@ export default function ProjectCard({
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   ...actionStyle,
-                  background: "#FFFFFF",
-                  color: "#1C1C1A",
+                  background: "var(--white)",
+                  color: "var(--charcoal)",
                 }}
               >
                 Live Site
@@ -196,8 +196,8 @@ export default function ProjectCard({
                 style={{
                   ...actionStyle,
                   background: "transparent",
-                  border: "1px solid rgba(255,255,255,0.35)",
-                  color: "#FFFFFF",
+                  border: "1px solid rgb(var(--white-rgb) / 0.35)",
+                  color: "var(--white)",
                 }}
               >
                 GitHub
@@ -212,9 +212,9 @@ export default function ProjectCard({
               }}
               style={{
                 ...actionStyle,
-                border: "1px solid rgba(255,255,255,0.35)",
+                border: "1px solid rgb(var(--white-rgb) / 0.35)",
                 background: "transparent",
-                color: "#FFFFFF",
+                color: "var(--white)",
                 cursor: "pointer",
               }}
             >

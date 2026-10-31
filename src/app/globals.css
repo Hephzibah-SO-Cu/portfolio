@@ -16,6 +16,37 @@
   --white: #ffffff;
 
   /*
+    THE PALETTE, as channels.
+
+    Every tint of a base colour used to be written out in full: --cream
+    appeared as #F5F0E8 five times and as rgba(245,240,232, …) at eleven
+    different opacities, two of which differed only by a space. Changing
+    the cream meant finding seventeen spellings of it.
+
+    The channel is the single definition; the solid tokens below are built
+    from it, and so is every tint, as rgb(var(--cream-rgb) / 0.55).
+
+    Opacity is deliberately NOT snapped to a ladder. A base colour is a
+    brand decision and belongs in one place; how strongly a particular
+    hairline or scrim is drawn is a local one, and forcing those onto steps
+    would mean dozens of small visual changes to no end.
+  */
+  --cream-rgb: 245 240 232;
+  --charcoal-rgb: 28 28 26;
+  --grey-rgb: 107 101 96;
+  --accent-rgb: 196 113 74;
+  --white-rgb: 255 255 255;
+  --black-rgb: 0 0 0;
+
+  /*
+    Beyond Code's background. Eight points off --charcoal, which is too
+    close to read as a choice and too far to be the same colour — finding 9
+    in docs/PLAN.md, deferred to Phase 5. Named here so that when it is
+    decided there is one place to decide it.
+  */
+  --charcoal-deep: #141414;
+
+  /*
     The navbar is fixed 16px from the top, so it owns the first
     16px + --nav-h of every screen. Anything that lays itself out against
     the top of the viewport reads --nav-safe instead of guessing: the hero
@@ -97,6 +128,21 @@
   --t-small: 0.95rem;
   --t-caption: 0.85rem;
   --t-label: clamp(0.75rem, 0.84vw, 1rem);
+
+  /*
+    TRACKING.
+
+    Thirteen distinct letter-spacings for 30 uses, and the positive ones —
+    0.04 through 0.35em — were all doing the same job: an uppercase label.
+    The spread was drift, not intent.
+
+    Three now. Negative for display type, where tight counters read as
+    deliberate; one value for every uppercase label; and body text, which
+    sets none at all and is listed here only so the set is written down.
+  */
+  --track-display: -0.04em;
+  --track-label: 0.18em;
+  --track-body: 0;
 }
 
 /*
@@ -183,13 +229,13 @@ body {
     display: inline-flex;
     align-items: center;
     padding: 0 16px;
-    border: 1px solid rgba(107, 101, 96, 0.3);
+    border: 1px solid rgb(var(--grey-rgb) / 0.3);
     background: transparent;
     color: var(--charcoal);
     font-family: var(--font-inter);
     font-size: var(--t-label);
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--track-label);
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
@@ -333,7 +379,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 240px;
-  background: rgba(28, 28, 26, 0.05);
+  background: rgb(var(--charcoal-rgb) / 0.05);
 }
 
 .project-dialog-copy {
@@ -423,9 +469,9 @@ body {
   place-items: center;
 
   color: var(--charcoal);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(28, 28, 26, 0.12);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  background: rgb(var(--white-rgb) / 0.92);
+  border: 1px solid rgb(var(--charcoal-rgb) / 0.12);
+  box-shadow: 0 6px 20px rgb(var(--black-rgb) / 0.12);
 
   cursor: pointer;
   transition:
@@ -435,7 +481,7 @@ body {
 }
 
 .rail-arrow:hover {
-  background: #ffffff;
+  background: var(--white);
   transform: scale(1.06);
 }
 
@@ -457,7 +503,7 @@ body {
   margin: 0 0 10px;
   font-family: var(--font-inter);
   font-size: var(--t-caption);
-  letter-spacing: 0.18em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--charcoal);
 }

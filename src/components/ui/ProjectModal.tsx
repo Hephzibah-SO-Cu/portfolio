@@ -15,7 +15,7 @@ const LABEL: React.CSSProperties = {
   margin: "0 0 14px",
   fontFamily: "var(--font-inter)",
   fontSize: "var(--t-label)",
-  letterSpacing: "0.18em",
+  letterSpacing: "var(--track-label)",
   textTransform: "uppercase",
   color: "var(--accent-ink)",
 };
@@ -30,7 +30,7 @@ const BODY: React.CSSProperties = {
 
 const SECTION: React.CSSProperties = {
   paddingBlock: "28px",
-  borderTop: "1px solid rgba(107,101,96,0.14)",
+  borderTop: "1px solid rgb(var(--grey-rgb) / 0.14)",
 };
 
 /*
@@ -154,8 +154,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         width: "44px",
         height: "44px",
         borderRadius: "999px",
-        border: "1px solid rgba(107,101,96,0.2)",
-        background: "rgba(245,240,232,0.92)",
+        border: "1px solid rgb(var(--grey-rgb) / 0.2)",
+        background: "rgb(var(--cream-rgb) / 0.92)",
         backdropFilter: "blur(8px)",
         color: "var(--charcoal)",
         fontSize: "var(--t-body)",
@@ -182,7 +182,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(28,28,26,0.8)",
+          background: "rgb(var(--charcoal-rgb) / 0.8)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
           zIndex: 100,
@@ -221,7 +221,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             display: "flex",
             flexDirection: "column",
             outline: "none",
-            boxShadow: "0 40px 120px rgba(0,0,0,0.45)",
+            boxShadow: "0 40px 120px rgb(var(--black-rgb) / 0.45)",
           }}
         >
           <button
@@ -235,8 +235,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               width: "44px",
               height: "44px",
               borderRadius: "999px",
-              border: "1px solid rgba(107,101,96,0.18)",
-              background: "rgba(245,240,232,0.94)",
+              border: "1px solid rgb(var(--grey-rgb) / 0.18)",
+              background: "rgb(var(--cream-rgb) / 0.94)",
               backdropFilter: "blur(10px)",
               color: "var(--charcoal)",
               fontSize: "var(--t-small)",
@@ -258,7 +258,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: "rgba(28,28,26,0.05)",
+                  background: "rgb(var(--charcoal-rgb) / 0.05)",
                 }}
               >
                 {isMobile ? (
@@ -268,8 +268,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       aspectRatio: "9 / 19.5",
                       borderRadius: "26px",
                       overflow: "hidden",
-                      background: "#FFFFFF",
-                      boxShadow: "0 24px 60px rgba(0,0,0,0.18)",
+                      background: "var(--white)",
+                      boxShadow: "0 24px 60px rgb(var(--black-rgb) / 0.18)",
                       position: "relative",
                       margin: "20px",
                     }}
@@ -363,7 +363,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                           background:
                             index === activeIndex
                               ? "var(--charcoal)"
-                              : "rgba(107,101,96,0.4)",
+                              : "rgb(var(--grey-rgb) / 0.4)",
                         }}
                       />
                     </button>
@@ -430,9 +430,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     key={tag}
                     style={{
                       padding: "5px 10px",
-                      border: "1px solid rgba(107,101,96,0.2)",
+                      border: "1px solid rgb(var(--grey-rgb) / 0.2)",
                       fontSize: "var(--t-label)",
-                      letterSpacing: "0.04em",
+                      letterSpacing: "var(--track-label)",
                       color: "var(--warm-grey)",
                     }}
                   >
@@ -524,8 +524,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                             width: "118px",
                             borderRadius: "16px",
                             overflow: "hidden",
-                            background: "#FFFFFF",
-                            boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
+                            background: "var(--white)",
+                            boxShadow:
+                              "0 12px 30px rgb(var(--black-rgb) / 0.12)",
                           }}
                         >
                           <div

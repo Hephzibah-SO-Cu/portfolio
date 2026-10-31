@@ -162,7 +162,7 @@ export default function TechMarquee() {
             style={{
               fontFamily: "var(--font-inter)",
               fontSize: "var(--t-label)",
-              letterSpacing: "0.25em",
+              letterSpacing: "var(--track-label)",
               textTransform: "uppercase",
               color: "var(--accent-ink)",
             }}
@@ -174,7 +174,7 @@ export default function TechMarquee() {
             style={{
               flex: 1,
               height: "1px",
-              backgroundColor: "rgba(107,101,96,.12)",
+              backgroundColor: "rgb(var(--grey-rgb) / 0.12)",
             }}
           />
         </div>

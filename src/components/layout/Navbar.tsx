@@ -51,13 +51,13 @@ export default function Navbar() {
           height: "52px",
           borderRadius: "9999px",
           background: scrolled
-            ? "rgba(255,255,255,.10)"
-            : "rgba(255,255,255,.06)",
+            ? "rgb(var(--white-rgb) / 0.10)"
+            : "rgb(var(--white-rgb) / 0.06)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          border: "1px solid rgba(255, 255, 255, 0.18)",
+          border: "1px solid rgb(var(--white-rgb) / 0.18)",
           boxShadow:
-            "0 8px 32px rgba(0,0,0,.20), inset 0 1px rgba(255,255,255,.15)",
+            "0 8px 32px rgb(var(--black-rgb) / 0.20), inset 0 1px rgb(var(--white-rgb) / 0.15)",
           zIndex: 50,
           display: "flex",
           alignItems: "center",
@@ -77,7 +77,7 @@ export default function Navbar() {
             fontWeight: 700,
             color: "var(--charcoal)",
             textDecoration: "none",
-            letterSpacing: "-0.02em",
+            letterSpacing: "var(--track-display)",
             flexShrink: 0,
           }}
         >
@@ -100,7 +100,7 @@ export default function Navbar() {
                 fontFamily: "var(--font-inter)",
                 fontSize: "var(--t-label)",
                 fontWeight: 500,
-                letterSpacing: "0.12em",
+                letterSpacing: "var(--track-label)",
                 textTransform: "uppercase",
                 color: "var(--warm-grey)",
                 textDecoration: "none",
@@ -241,12 +241,12 @@ export default function Navbar() {
           top: menuOpen ? "88px" : "72px",
           left: "24px",
           right: "24px",
-          background: "rgba(245, 240, 232, 0.92)",
+          background: "rgb(var(--cream-rgb) / 0.92)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.45)",
+          border: "1px solid rgb(var(--white-rgb) / 0.45)",
           borderRadius: "24px",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.10)",
+          boxShadow: "0 8px 32px rgb(var(--black-rgb) / 0.10)",
           zIndex: 49,
           overflow: "hidden",
           maxHeight: menuOpen ? "200px" : "0px",
@@ -264,7 +264,7 @@ export default function Navbar() {
               fontFamily: "var(--font-inter)",
               fontSize: "var(--t-label)",
               fontWeight: 500,
-              letterSpacing: "0.12em",
+              letterSpacing: "var(--track-label)",
               textTransform: "uppercase",
               color: "var(--warm-grey)",
               textDecoration: "none",
@@ -274,7 +274,8 @@ export default function Navbar() {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = "var(--charcoal)";
-              e.currentTarget.style.background = "rgba(28, 28, 26, 0.04)";
+              e.currentTarget.style.background =
+                "rgb(var(--charcoal-rgb) / 0.04)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = "var(--warm-grey)";

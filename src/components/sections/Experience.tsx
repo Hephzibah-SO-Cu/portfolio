@@ -154,7 +154,7 @@ export default function Experience() {
       {/* Section label */}
       <div className="flex items-center gap-4 mb-10">
         <span
-          className="text-xs tracking-[0.25em] uppercase"
+          className="text-xs tracking-[var(--track-label)] uppercase"
           style={{
             color: "var(--accent-ink)",
             fontFamily: "var(--font-inter)",
@@ -181,7 +181,7 @@ export default function Experience() {
                 style={{
                   background: "none",
                   border: "none",
-                  borderTop: "1px solid rgba(107, 101, 96, 0.12)",
+                  borderTop: "1px solid rgb(var(--grey-rgb) / 0.12)",
                   cursor: "pointer",
                   padding: "18px 0",
                   display: "grid",
@@ -200,7 +200,7 @@ export default function Experience() {
                       style={{
                         fontFamily: "var(--font-inter)",
                         fontSize: "var(--t-label)",
-                        letterSpacing: "0.15em",
+                        letterSpacing: "var(--track-label)",
                         textTransform: "uppercase",
                         color: "var(--accent-ink)",
                       }}
@@ -211,15 +211,15 @@ export default function Experience() {
                       style={{
                         fontFamily: "var(--font-inter)",
                         fontSize: "var(--t-label)",
-                        letterSpacing: "0.1em",
+                        letterSpacing: "var(--track-label)",
                         textTransform: "uppercase",
                         /*
-                          Was rgba(107,101,96,0.5), which blends to 2.05:1 on
+                          Was rgb(var(--grey-rgb) / 0.5), which blends to 2.05:1 on
                           cream — half what AA asks for at this size. The
                           solid warm grey is 5.05:1 and looks the same shape.
                         */
                         color: "var(--warm-grey)",
-                        border: "1px solid rgba(107, 101, 96, 0.35)",
+                        border: "1px solid rgb(var(--grey-rgb) / 0.35)",
                         padding: "2px 8px",
                         borderRadius: "2px",
                       }}
@@ -233,7 +233,7 @@ export default function Experience() {
                     style={{
                       fontFamily: "var(--font-inter)",
                       fontWeight: 700,
-                      letterSpacing: "-0.02em",
+                      letterSpacing: "var(--track-display)",
                       fontSize: "var(--t-body)",
                       color: "var(--charcoal)",
                       lineHeight: 1.3,
@@ -260,7 +260,7 @@ export default function Experience() {
                   style={{
                     fontFamily: "var(--font-inter)",
                     fontSize: "var(--t-label)",
-                    letterSpacing: "0.12em",
+                    letterSpacing: "var(--track-label)",
                     textTransform: "uppercase",
                     color: "var(--warm-grey)",
                     display: "flex",
@@ -305,7 +305,7 @@ export default function Experience() {
                           fontFamily: "var(--font-inter)",
                           fontSize: "var(--t-label)",
                           fontWeight: 700,
-                          letterSpacing: "0.12em",
+                          letterSpacing: "var(--track-label)",
                           textTransform: "uppercase",
                           color: "var(--accent-ink)",
                           marginBottom: "12px",
@@ -355,7 +355,7 @@ export default function Experience() {
                           fontFamily: "var(--font-inter)",
                           fontSize: "var(--t-label)",
                           fontWeight: 700,
-                          letterSpacing: "0.12em",
+                          letterSpacing: "var(--track-label)",
                           textTransform: "uppercase",
                           color: "var(--accent-ink)",
                           marginBottom: "12px",
@@ -441,7 +441,7 @@ export default function Experience() {
         })}
 
         {/* Bottom border */}
-        <div style={{ borderTop: "1px solid rgba(107, 101, 96, 0.12)" }} />
+        <div style={{ borderTop: "1px solid rgb(var(--grey-rgb) / 0.12)" }} />
       </div>
     </section>
   );

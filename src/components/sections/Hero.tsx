@@ -41,7 +41,7 @@ export default function Hero() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.45) 100%)",
+            "radial-gradient(circle at center, transparent 40%, rgb(var(--black-rgb) / 0.45) 100%)",
         }}
       />
 
@@ -64,8 +64,8 @@ export default function Hero() {
             fontFamily: "var(--font-playfair)",
             fontSize: "var(--t-display)",
             opacity: 0.04,
-            color: "#fff",
-            letterSpacing: "-0.06em",
+            color: "var(--white)",
+            letterSpacing: "var(--track-display)",
             lineHeight: 1,
           }}
         >
@@ -95,9 +95,9 @@ export default function Hero() {
               duration: 0.8,
               delay: 0.1,
             }}
-            className="uppercase tracking-[0.35em]"
+            className="uppercase tracking-[var(--track-label)]"
             style={{
-              color: "#F5F0E8",
+              color: "var(--cream)",
               fontSize: "var(--t-label)",
               marginBottom: "1.25rem",
             }}
@@ -145,7 +145,7 @@ export default function Hero() {
             }}
             style={{
               fontFamily: "var(--font-playfair)",
-              color: "#F5F0E8",
+              color: "var(--cream)",
               fontSize: "var(--t-hero)",
               lineHeight: 0.95,
             }}
@@ -163,7 +163,7 @@ export default function Hero() {
             }}
             className="leading-relaxed"
             style={{
-              color: "#E7E0D8",
+              color: "rgb(var(--cream-rgb) / 0.94)",
               marginTop: "1rem",
               fontSize: "var(--t-lead)",
               maxWidth: "clamp(16rem, 31vw, 38rem)",
@@ -189,10 +189,10 @@ export default function Hero() {
               href="#projects"
               whileHover={{
                 y: -2,
-                boxShadow: "0 10px 25px rgba(0,0,0,.18)",
+                boxShadow: "0 10px 25px rgb(var(--black-rgb) / 0.18)",
               }}
               whileTap={{ scale: 0.98 }}
-              className="group uppercase tracking-[0.2em] flex items-center transition-all duration-300"
+              className="group uppercase tracking-[var(--track-label)] flex items-center transition-all duration-300"
               style={{
                 background: "var(--cream)",
                 color: "var(--charcoal)",
@@ -220,13 +220,13 @@ export default function Hero() {
               href="#contact"
               whileHover={{
                 y: -2,
-                backgroundColor: "rgba(196,113,74,.08)",
+                backgroundColor: "rgb(var(--accent-rgb) / 0.08)",
               }}
               whileTap={{ scale: 0.98 }}
-              className="group uppercase tracking-[0.2em] border flex items-center transition-all duration-300"
+              className="group uppercase tracking-[var(--track-label)] border flex items-center transition-all duration-300"
               style={{
                 borderColor: "var(--accent)",
-                color: "#F5F0E8",
+                color: "var(--cream)",
                 textDecoration: "none",
                 fontSize: "var(--t-label)",
                 padding:
@@ -262,7 +262,7 @@ export default function Hero() {
           height: "clamp(18rem, 35vw, 44rem)",
           borderRadius: "9999px",
           background:
-            "radial-gradient(circle, rgba(196,113,74,.18), transparent 70%)",
+            "radial-gradient(circle, rgb(var(--accent-rgb) / 0.18), transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -351,9 +351,9 @@ export default function Hero() {
         ].map((item) => (
           <div key={item.title}>
             <h3
-              className="tracking-[0.18em]"
+              className="tracking-[var(--track-label)]"
               style={{
-                color: "#F5F0E8",
+                color: "var(--cream)",
                 fontSize: "var(--t-label)",
                 marginBottom: "0.75rem",
               }}
@@ -363,7 +363,7 @@ export default function Hero() {
 
             <p
               style={{
-                color: "#D6CFC7",
+                color: "rgb(var(--cream-rgb) / 0.86)",
                 fontFamily: "var(--font-playfair)",
                 fontStyle: "italic",
                 fontSize: "var(--t-small)",
@@ -394,7 +394,7 @@ export default function Hero() {
           }}
         />
         <p
-          className="uppercase tracking-[0.35em]"
+          className="uppercase tracking-[var(--track-label)]"
           style={{
             color: "var(--warm-grey)",
             fontSize: "var(--t-label)",
@@ -407,7 +407,7 @@ export default function Hero() {
       {/*
         The fade out of the hero, and it has to land on exactly the colour of
         the section below it. It used to end on #E7DDD1 while About began on
-        #F5F0E8 — a 23-point step in a single row of pixels, measured at the
+        var(--cream) — a 23-point step in a single row of pixels, measured at the
         page edge, which read as a seam rather than a fade. It now ends on
         --cream itself, so there is nothing to line up by hand again if the
         cream ever changes.
@@ -416,7 +416,7 @@ export default function Hero() {
         className="absolute bottom-0 left-0 right-0 h-[40vh] z-20 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top, var(--cream) 0%, rgba(245,240,232,.95) 18%, rgba(245,240,232,.60) 45%, rgba(245,240,232,.18) 72%, transparent 100%)",
+            "linear-gradient(to top, var(--cream) 0%, rgb(var(--cream-rgb) / 0.95) 18%, rgb(var(--cream-rgb) / 0.60) 45%, rgb(var(--cream-rgb) / 0.18) 72%, transparent 100%)",
         }}
       />
     </section>

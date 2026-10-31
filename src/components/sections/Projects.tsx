@@ -288,7 +288,7 @@ export default function Projects() {
               style={{
                 fontFamily: "var(--font-inter)",
                 fontSize: "var(--t-label)",
-                letterSpacing: "0.18em",
+                letterSpacing: "var(--track-label)",
                 textTransform: "uppercase",
                 color: "var(--accent-ink)",
                 marginBottom: "16px",

@@ -124,3 +124,60 @@ test("the scale stays small", async ({ page }) => {
   */
   expect(distinct, "distinct rendered font sizes").toBeLessThanOrEqual(9);
 });
+
+/*
+  The palette, guarded at the source rather than in the browser.
+
+  A rendered colour cannot tell you where it came from: #F5F0E8 and
+  var(--cream) composite to exactly the same pixel, and a stray tan reads as
+  a perfectly ordinary colour. So this one reads the files. Every base colour
+  is defined once in globals.css as a channel, and nothing else may write a
+  colour literal — before this, --cream appeared as #F5F0E8 five times and as
+  rgba(245,240,232, …) at eleven different opacities, two of which differed
+  only by a space.
+*/
+test("no colour literal is written outside the palette definition", async () => {
+  const { readdir, readFile } = await import("node:fs/promises");
+  const { join } = await import("node:path");
+
+  const walk = async (dir: string): Promise<string[]> => {
+    const entries = await readdir(dir, { withFileTypes: true });
+
+    return (
+      await Promise.all(
+        entries.map((e) => {
+          const p = join(dir, e.name);
+
+          if (e.isDirectory()) return walk(p);
+
+          return e.name.endsWith(".tsx") ? [p] : [];
+        }),
+      )
+    ).flat();
+  };
+
+  const files = await walk(join(process.cwd(), "src"));
+  const offenders: string[] = [];
+
+  for (const file of files) {
+    const source = await readFile(file, "utf8");
+
+    // Comments explain what a colour USED to be; they are not styling.
+    const code = source
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+
+    const found = code.match(/#[0-9A-Fa-f]{3,8}\b|rgba\([^)]*\)/g);
+
+    if (found) {
+      offenders.push(
+        `${file.split("src")[1]}: ${[...new Set(found)].join(", ")}`,
+      );
+    }
+  }
+
+  expect(
+    offenders.join("\n"),
+    "colour literals outside src/app/globals.css",
+  ).toBe("");
+});
