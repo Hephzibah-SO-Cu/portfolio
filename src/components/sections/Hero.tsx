@@ -375,14 +375,14 @@ export default function Hero() {
           className="w-px"
           style={{
             height: "clamp(4rem, 14vh, 11rem)",
-            backgroundColor: "#6B5D4F",
+            backgroundColor: "var(--warm-grey)",
             opacity: 0.7,
           }}
         />
         <p
           className="uppercase tracking-[0.35em]"
           style={{
-            color: "#6B5D4F",
+            color: "var(--warm-grey)",
             fontSize: "clamp(0.7rem, 0.84vw, 1rem)",
           }}
         >

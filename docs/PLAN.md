@@ -140,64 +140,173 @@ an inline style object each time.
 
 ## Plan of action
 
-Five phases, in dependency order. Each ends with the suite green and a commit.
-Nothing is pushed until Busayo says so.
+Six phases in dependency order. Nothing is pushed until the whole thing is
+done — Busayo, 30 Oct: "i want us to push when we've actually gone". Each
+phase ends with the suite green, the page rendered and looked at, and a
+commit.
 
-### Phase 0 — the record (done)
+### How Apple's three principles map onto the phases
 
-This document. Everything above was only ever in a chat window that compacts.
+The WWAD study is not a separate workstream; it is what the phases are *for*.
+Each principle lands somewhere specific, and nowhere does it mean copying the
+look — the square corners, the cream palette and the editorial type stay.
 
-### Phase 1 — bugs a visitor hits
+| Apple principle | Where it lands here |
+| --- | --- |
+| One primary action, one secondary, always the same two shapes | **Phase 2.4** — adopting the `Button` component makes the shape unforgeable, and retires the `↗`/`→` split and the two meanings of "View Details" |
+| The name is the headline | **Phase 4.3** — the name legible on the first screen, where today it is 203px at 4% opacity |
+| Every claim carries its number | **Phase 4.2** — six of seven project labels are categories, not evidence |
+| A closed set of values, emitted only through components | **Phase 2** in full, and the test in 2.5 that keeps the set closed |
+| Nothing on the page needs explaining | **Phase 1** (things that were simply broken) and **Phase 3** (a navbar you cannot read is a navigation you cannot use) |
 
-Things that are broken, not opinions about them.
+---
 
-1. ~~The dialog clipping its own content (finding 1).~~ **Done 30 Oct.**
-2. The hero-to-About seam (finding 8) — the gradient terminus is the wrong
-   colour. One line.
-3. The stray gold and brown in the Hero (finding 11) — decide whether they are
-   palette or accident, then either name them as tokens or remove them.
-4. ~~Every raster image to WebP.~~ **Done 30 Oct.** 6.48 MB to 1.13 MB.
+### Phase 1 — things that are broken (all but one done)
+
+1. ~~The dialog clipping its own content unreachably (finding 1).~~ **Done 30 Oct.**
+2. ~~The hero gradient ending on a colour the page does not use (finding 8).~~ **Done 30 Oct.**
+3. ~~Every raster to WebP.~~ **Done 30 Oct**, 6.48 MB to 1.13 MB.
+4. ~~The rail dropping rapid taps.~~ **Done 30 Oct.**
+5. The two stray colours (finding 11). `#6B5D4F` becomes `--warm-grey`: a
+   near-miss at distance 18.8, and 5.60:1 to 5.06:1 on cream, both passing AA.
+   `#C7A06A` **awaits Busayo** — a genuinely different colour, 56.9 from
+   `--accent`, used for the LAGOS hairline, the GET IN TOUCH border and that
+   button's 8% hover fill, and *more* legible on the dark hero than `--accent`
+   is (7.60:1 against 5.10:1), which is probably why it survived. Either name
+   it `--accent-gold` and restrict it to dark surfaces, or fold it into
+   `--accent` and have one accent on the site.
+
+**Verified by:** the suite, `e2e/images.mjs`, and a pixel sample across each seam.
+
+---
 
 ### Phase 2 — the token layer
 
-The system has to exist before anything can be made consistent *to* it, and
-every later phase spends it.
+This comes before everything else because every later phase spends it. The
+visual output should be *nearly identical* when it is finished; that is the
+point. It collapses near-misses onto their nearest real value — it is not a
+redesign.
 
-1. **Close the type scale** — 21 sizes to 7 named tokens, absorbing the
-   near-misses. Visual output should be near-identical; that is the point.
-2. **Three letter-spacings**, each tied to a role: label, body, display.
-3. **Every colour through a token**, opacity steps included, so "cream at 55%"
-   is one name and not seven spellings.
-4. **Adopt the Button that already exists** — 1 of 9 files to 9 of 9. This also
-   closes findings 6 and 7 for free: one primary shape, one arrow glyph, because
-   the glyph lives inside the component instead of at each call site.
-5. **A test that keeps it true** — read every computed font-size, letter-spacing
-   and colour on the page and assert the set is a subset of the tokens, naming
-   the offending selector on failure. The marketplace lesson: the guarantee is a
-   test, not a constant.
+**2.1 Close the type scale — 21 sizes to 7.** Define `--t-display`,
+`--t-hero`, `--t-h2`, `--t-lead`, `--t-body`, `--t-small` and `--t-label` in
+`globals.css`, then replace in this order so each step can be looked at on its
+own:
+
+- the four section-heading clamps that land within 0.25rem of each other —
+  `clamp(1.5rem, 2.5vw, 3rem)`, `clamp(1.5rem, 5vw, 2.5rem)`,
+  `clamp(1.6rem, 2.4vw, 2.5rem)`, `clamp(1.5rem, 2.6vw, 2.25rem)` — with `--t-h2`;
+- `0.6 / 0.65 / 0.7 / 0.75rem` with `--t-label`. Dropping `0.6rem` is a bonus:
+  at 9.6px it was borderline unreadable anyway;
+- `0.85 / 0.875 / 0.9 / 0.95rem` with `--t-small`;
+- `1rem` with `--t-body`, `1.125rem` with `--t-lead`.
+
+**2.2 Three letter-spacings, each tied to a role.** `0.18em` for an eyebrow
+label, `0` for body, `-0.04em` for display. Eleven exist today, with
+`0.08 / 0.1 / 0.12 / 0.15 / 0.2 / 0.25em` all doing "uppercase label".
+
+**2.3 Every colour through a token, opacity steps included.** `#F5F0E8` is
+`--cream` written out four times; `rgba(245,240,232, …)` is cream again at
+seven opacities and `rgba(28,28,26, …)` is charcoal at five. Naming the steps
+(`--cream-70`, `--ink-12`) makes "cream at 55%" one word, and removes the pair
+that differ only by a space — which grep cannot currently pair.
+
+**2.4 Adopt the `Button` that already exists.** `src/components/ui/Button.tsx`
+exports `variant: "filled" | "outline"`, `size: "sm" | "md"` and `showArrow`,
+and exactly one of the nine files that render buttons imports it. Bringing the
+other eight across is what makes the primary/secondary shape unforgeable, and
+it closes findings 6 and 7 as a side effect: the arrow glyph stops being a
+per-call-site choice, and "View Details" can only mean one thing once it is
+one component.
+
+**2.5 A test that keeps the set closed.** `e2e/tokens.spec.ts` walks every
+element on the page, reads computed `font-size`, `letter-spacing` and `color`,
+and asserts each is in the token set, naming the offending selector on
+failure. Without it the ladder drifts back within a month. The marketplace
+lesson applied: the guarantee is a test, not a constant.
+
+**Verified by:** the new token test, the full suite, and a before/after
+screenshot of every section at 1270 — the two should be hard to tell apart.
+
+---
 
 ### Phase 3 — the navbar
 
-Blocked on Busayo's decision, because "you were not meant to shrink the navbar"
-stands until he lifts it. The work itself: the pill and its contents read which
-section is under them and switch between a light and a dark treatment, with a
-contrast test over all seven sections so it cannot regress.
+**Unblocked 30 Oct** (Busayo: "yes we're touching the navbar but not the
+height please"). The height stays 52px and `--nav-h` / `--nav-safe` do not
+move, so nothing that lays itself out against the top of the viewport has to
+be re-checked.
 
-### Phase 4 — what the page says
+The problem is structural, not a tuning job: the pill is white translucency
+with a white rim and a white inset highlight — built for a dark backdrop —
+carrying dark grey text built for a light one. It passes nowhere.
 
-1. `openGraph` and a share image (finding 4) — highest payoff per line on the
-   whole list, for a site whose job is being sent to people.
-2. Numbers on the project labels (finding 5), starting with Zowasel Marketplace.
-3. The name legible on the first screen (finding 3).
-4. The hero callouts: decision, not leftover (finding 12).
-5. "Scroll To Explore" becomes a cue (finding 13).
+1. The navbar observes which section is beneath it, via an
+   `IntersectionObserver` reading a `data-tone="light" | "dark"` attribute the
+   sections declare — so the tone is a property of the section rather than a
+   list of ids kept inside the navbar, which would go stale the first time a
+   section is added.
+2. Two treatments. On a light backdrop: dark text as today, a cream-tinted
+   pill, and a dark hairline rim instead of a white one. On a dark backdrop:
+   cream text and icons, a dark-tinted pill, and the white rim it was designed
+   for.
+3. Both cross the AA line for 12px text with margin, rather than landing on it.
+4. The change rides the existing `0.4s ease` and is suppressed under
+   `prefers-reduced-motion` like everything else.
+
+**Verified by:** a new `e2e/navbar-contrast.spec.ts` that samples the
+composited pixel behind the pill at every section and fails under 4.5:1. The
+existing axe run cannot do this — it cannot compute contrast through a
+translucent layer over an image, which is exactly why this shipped unnoticed.
+
+---
+
+### Phase 4 — what the page actually says
+
+1. **`openGraph` and a share image.** Today the metadata is a title and
+   `description: "Frontend & Product Engineer"`, so the link unfurls as a bare
+   blue link. Highest payoff per line on the whole list for a site whose job
+   is being sent to people, and it must be live **before the URL goes to a
+   single person** — a first impression is not re-rollable. Needs `openGraph`
+   and `twitter` blocks plus a 1200x630 image; `opengraph-image.tsx` can
+   generate it from the hero so it never goes stale.
+2. **A number on every project label.** Six of seven are categories: Current
+   Work, Shipped, Ongoing Work, Team Collaboration, Premium Ecommerce, Final
+   Year Project. Only Framez carries evidence ("Built in 72 Hours") — which is
+   why Framez currently reads as more impressive than the marketplace. Zowasel
+   Marketplace is the largest thing here and needs a figure Busayo will stand
+   behind. The numbers come from him; none are invented.
+3. **The name legible on the first screen.** `BUSAYO` is 203px at opacity
+   0.04, and the tab title is the only other place the full name appears. The
+   watermark stays — the fix is that it stops being the only one.
+4. **The hero callouts become a decision** (finding 12), now that Beyond Code
+   makes the same argument deliberately.
+5. **"Scroll To Explore" becomes a cue** rather than an instruction (finding 13).
+
+**Verified by:** the deployed URL through a card validator, plus the content tests.
+
+---
 
 ### Phase 5 — the page's tonal rhythm
 
-Findings 9 and 10 — the two near-identical darks, and the four consecutive
-creams. Design decisions, so they wait for Busayo.
+Design calls, so they wait for Busayo.
+
+1. Beyond Code `#141414` and Contact `#1C1C1A` are 8 points apart — too close
+   to read as a choice, too far to be one block (finding 9).
+2. About, the marquee, Selected Work and Experience are ~2,700px of identical
+   `#F5F0E8` (finding 10). Apple alternates two near-whites constantly for
+   exactly this reason.
+3. Finding 14, something a stranger can verify — **only if real**. Invented
+   testimonials are already a problem to clean up on the Zowasel website, and
+   the same mistake here would be worse.
 
 ---
+
+### Phase 6 — ship
+
+1. Push to `master`, which deploys to Vercel.
+2. Confirm the live build matches local at 1270x593, and on a real phone.
+3. Re-run `e2e/links.mjs` against the deployed URL rather than localhost.
+4. Only then does the link go to anybody.
 
 ## Decisions log
 
@@ -205,6 +314,9 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-30 | **The navbar may be changed, but not its height.** Busayo: "yes we're touching the navbar but not the height please". 52px stands, and so do `--nav-h` and `--nav-safe`, so nothing that lays itself out against the top of the viewport has to be re-checked. This lifts the hands-off rule for colour and contents only. | The height is load-bearing in a way the colours are not: the hero reads `--nav-safe` to keep "Lagos, Nigeria" clear of the pill, and that was a real bug once already. |
+| 2026-10-30 | **`#6B5D4F` becomes `--warm-grey`; `#C7A06A` is left for Busayo.** The brown sat 18.8 from `--warm-grey` — a drift, not a decision — and the swap moves "Scroll To Explore" from 5.60:1 to 5.06:1 on cream, both over AA. The gold is 56.9 from `--accent`, which is a different colour rather than a near-miss, and it is the border of GET IN TOUCH, the hairline under LAGOS, NIGERIA, and that button's 8% hover fill. | Busayo, 30 Oct, said the gold was ChatGPT's invention and never the palette. Both things are true at once: it was never chosen, and it is the most visible accent in the hero. A 2x crop shows the full stop after "Engineer" in `--accent` terracotta beside a gold button border 200px away — two colours doing one job. It is also *more* legible on near-black than `--accent` (7.60:1 against 5.10:1), so replacing it is a trade and not a cleanup. |
+| 2026-10-30 | **Nothing is pushed until all six phases are done.** | Busayo: "i want us to push when we've actually gone". The earlier recommendation to deploy first and keep improving is withdrawn. |
 | 2026-10-30 | **Every raster is WebP, and nothing picks its own format any more.** 42 PNG/JPEG files, 6.48 MB, became 1.13 MB — 82.6% smaller, `public/` 8.6 MB to 3.3 MB. Each file was encoded twice, lossless and quality 82, and the smaller of the two kept, which is why the flat marquee logos are lossless and the photographs are not; a file was only replaced if the WebP actually came out smaller. The five `beyond/` images were renamed to kebab-case on the way through, because `/beyond/After Hours.jpg` was shipping a space in a URL. `TechMarquee` carried `logo === "javascript" \|\| logo === "supabase" ? "jpg" : "png"` — a hard-coded list of which two logos happened to be JPEG, so a logo added in any other format silently 404'd. One extension now. A new check, `e2e/images.mjs`, walks the whole page and opens a case study, then fails on any image request over 400 or any `<img>` that decoded to nothing. | Busayo, 30 Oct: "all the big sized images on this portfolio site, convert them to webp… i dont want my site to be loading things slow". The check exists because a wrong `src` in `next/image` is silent: the box keeps its space and renders nothing, so a page that has lost half its pictures still looks structurally fine in a screenshot taken from the top. |
 | 2026-10-30 | **Stepping through the rail queues.** The Next and Previous buttons and the arrow keys used to read `centeredIndex`, which follows the scroll POSITION — and the scroll is smooth, so two quick taps both read the same index, both asked for the same card, and the second tap did nothing. There is now a `target` state set with a functional updater, so a second tap composes onto the first one's result even inside the same React batch. It is cleared when the rail arrives (adjusted during render, not in an effect) and when the reader takes over the scrolling by wheel or pointer. A ref was tried first and rejected by the React Compiler's immutability rule — correctly, since a ref could not have composed within a batch either. | Found by `e2e/rail-mouse.spec.ts`, which clicks Previous four times in a row. It read as a flaky test and was a real defect: anyone tapping the arrows at speed got fewer cards than taps. |
 | 2026-10-30 | **The suite's timeout is 60s, not the 30s default**, with `test.slow()` on the two axe sweeps. Two failures chased in this session were both timeouts, not regressions: tests that take 7-10s alone reach 30s three workers deep on a loaded machine, and a timeout reads in the summary exactly like a real failure. | Every spec here waits on a page that is genuinely animating — the rail re-centres itself once its images load, and a card has to be polled to the middle before it can be acted on. |
