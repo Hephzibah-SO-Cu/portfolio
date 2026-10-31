@@ -7,7 +7,7 @@ Dates are WAT (UTC+1). Busayo's screen is **1270 x 593 CSS pixels** — a 1920
 monitor at Windows 150% scaling — and that is the width everything here is
 checked at, not 1920.
 
-Last updated: 31 October 2026. Phases 1-3 complete, Phase 4 all but the project numbers; Phase 5 (tonal rhythm) next, and it needs Busayo.
+Last updated: 31 October 2026. Phases 1-5 done except the project-label numbers (parked) and finding 14 (needs real material). Phase 6 is ship, and Busayo has not released the push.
 
 ---
 
@@ -63,8 +63,8 @@ Ranked by severity. Status is kept current.
 | 6 | ~~**"View Details" means two different things.**~~ **Fixed 31 Oct.** In Experience it expands the row in place (`↓`, toggling to "Hide Details"); in Selected Work it opens a dialog. Same words, same weight, different outcome. | `Experience.tsx:274`, `Projects.tsx`. | **Open.** |
 | 7 | ~~**Two arrow glyphs on two adjacent buttons.**~~ **Fixed 31 Oct** with Button. `View Work ↗` and `Get In Touch →`. `↗` conventionally means "leaves the site"; neither does. | Hero. | **Open.** |
 | 8 | ~~**A hard seam between the hero and About.**~~ **Fixed 30 Oct.** The hero gradient ends on `#E7DDD1`; the section beneath is `#F5F0E8`. Sampled down the page edge: `y=20 rgb(227,217,205)` then `y=40 rgb(245,240,232)` — a 23-point step in one row. | Pixel sample. | **Open.** |
-| 9 | **Beyond Code and Contact are two different darks 8 points apart** (`#141414` and `#1C1C1A`) — too close to read as a choice, too far to be one block. | Section backgrounds. | **Open.** |
-| 10 | **Four consecutive cream sections**, ~2,700px of identical `#F5F0E8` (About, marquee, Selected Work, Experience), so the middle of the page has no sense of progress. | Measured section heights. | **Open.** |
+| 9 | ~~**Beyond Code and Contact are two different darks 8 points apart**~~ **Fixed 31 Oct.** (`#141414` and `#1C1C1A`) — too close to read as a choice, too far to be one block. | Section backgrounds. | **Open.** |
+| 10 | ~~**Four consecutive cream sections**~~ **Fixed 31 Oct.**, ~2,700px of identical `#F5F0E8` (About, marquee, Selected Work, Experience), so the middle of the page has no sense of progress. | Measured section heights. | **Open.** |
 | 11 | ~~**Colours outside the token set are live in the Hero**~~ **Fixed 30–31 Oct.**: `#C7A06A` (a gold, in two places) and `#6B5D4F`. Busayo, 30 Oct: the gold was ChatGPT's invention and was never the palette. | `Hero.tsx:117, 214, 378, 385`. | **Open.** |
 | 12 | **The hero's three callouts argue with the line above them.** Subtitle says "Building web, mobile and full-stack products"; the callouts are Visual Storytelling / Live Production / Systems Thinking, two of which are not software. May be deliberate now that Beyond Code makes the same argument — worth being a decision rather than a leftover. | Hero. | **Open, Busayo's call.** |
 | 13 | ~~**"Scroll To Explore"**~~ **Fixed 31 Oct.** is an instruction where a cue would do. Apple shows a sliver of the next section instead. | Hero. | **Open, low.** |
@@ -288,7 +288,7 @@ translucent layer over an image, which is exactly why this shipped unnoticed.
 
 ---
 
-### Phase 5 — the page's tonal rhythm
+### Phase 5 — the page's tonal rhythm  ◑ done but finding 14
 
 Design calls, so they wait for Busayo.
 
@@ -316,6 +316,9 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-31 | **One dark, and a second cream.** Beyond Code's `#141414` joins Contact on `--charcoal`, and `--charcoal-deep` is deleted rather than kept as a token nothing uses — the two were 8 points apart, too close to read as a choice and too far to be the same colour, and the page now ends as one continuous dark act instead of showing a faint line that looked like a mistake. For the middle of the page, `--cream-deep: #ece8e0` is nine points below `--cream`, and the four cream sections alternate: About cream, the tech marquee deep, Selected Work cream, Experience deep. | Findings 9 and 10, and Busayo delegated both ("proceed with phase 5"). 2,700px of one unbroken surface gave a reader no sense of having moved through the middle of the page; alternating two near-identical warm whites is the oldest trick there is and Apple runs it on every page. Deliberately small: far enough apart to register as a change of room, close enough that neither reads as a different design. **About had to stay `--cream`** — the hero's gradient terminates on it, and tinting About would have put back the seam closed on 30 Oct. The navbar was re-measured over both new surfaces and still passes everywhere, 5.90–9.52:1 on the links. |
+| 2026-10-31 | **Finding 14 stays open, deliberately.** Nothing on the page can be verified by a stranger — no reference, no named colleague, no quote. | It cannot be closed by writing something. It needs real material from Busayo, and inventing it is precisely the problem already waiting to be cleaned up on the Zowasel website. |
+| 2026-10-31 | **The suite timeout is 90s, raised twice.** 30s, then 60s, now 90s. | These specs wait on a page that is genuinely animating, and alone each takes 7–17s depending on what else the machine is doing; three workers deep they have cleared both earlier limits with nothing wrong. Written into the config as "raised twice rather than pretending the tests are quicker than they are". If it creeps again the root is the fixed `waitForTimeout` sleeps in the rail helpers, not the number. A separate 11-minute run reported 56 passed with a11y named; re-run clean it was 57 passed in 1.6m, and the a11y spec passes 6/6 on its own — the machine was loaded, not the page broken. |
 | 2026-10-31 | **The link unfurls.** `openGraph` and `twitter` metadata, a 1200x630 card at `public/og.jpg`, and `metadataBase` taken from Vercel's own environment rather than typed in, so it is right on the production domain and on every preview without a constant to keep in step — `NEXT_PUBLIC_SITE_URL` overrides both if a custom domain is added. The card is a **screenshot of the hero**, rendered by `e2e/og.mjs` at 2x with the navbar and the dev indicator hidden, because a drawn card is a second copy of the design that starts going stale the moment the hero changes; this one cannot disagree with the site because it is the site. `e2e/share.spec.ts` checks the tags **and fetches the image**, since a meta pointing at a file that is not there unfurls exactly like no meta at all and nothing in a build complains. | Finding 4. The whole of this page's metadata was a title and the words "Frontend & Product Engineer", so the link came out of LinkedIn, WhatsApp or Slack as a bare blue line of text. For a site whose job is being sent to people, the unfurl is the first impression and there is no second one. |
 | 2026-10-31 | **The name is on the first screen.** The hero's byline reads "Oluwabusayo Sina-Olulana · Lagos, Nigeria" where it read only the location. | Finding 3. The only places the name appeared were the browser tab and the BUSAYO watermark, which renders at 203px and **opacity 0.04**. Someone landing cold could read "Software Engineer" and still not know whose portfolio they were on. The watermark stays — it just stops being the only answer. |
 | 2026-10-31 | **"Scroll To Explore" is gone; the rule stays.** | Finding 13. It was an instruction where a cue will do, and the hero already cues it twice — by fading into the cream of the section beneath, and by leaving a rule pointing down into it. The words told a reader something the page was already showing them. |

@@ -150,7 +150,7 @@ export default function Experience() {
       data-tone="light"
       data-section=""
       data-gutter=""
-      style={{ backgroundColor: "var(--cream)" }}
+      style={{ backgroundColor: "var(--cream-deep)" }}
     >
       {/* Section label */}
       <div className="flex items-center gap-4 mb-10">

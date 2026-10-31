@@ -10,7 +10,7 @@ export default function BeyondCode() {
       data-tone="dark"
       data-section=""
       style={{
-        background: "var(--charcoal-deep)",
+        background: "var(--charcoal)",
         overflow: "hidden",
       }}
     >

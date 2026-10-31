@@ -16,6 +16,19 @@
   --white: #ffffff;
 
   /*
+    A second surface, nine points below --cream.
+
+    About, the tech marquee, Selected Work and Experience were ~2,700px of
+    one unbroken #F5F0E8 — long enough that the middle of the page gave a
+    reader no sense of having moved through it. Alternating two near-identical
+    warm whites is the oldest trick there is and Apple runs it on every page.
+
+    Deliberately small: far enough apart to register as a change of room,
+    close enough that neither reads as a different design.
+  */
+  --cream-deep: #ece8e0;
+
+  /*
     THE PALETTE, as channels.
 
     Every tint of a base colour used to be written out in full: --cream
@@ -37,14 +50,6 @@
   --accent-rgb: 196 113 74;
   --white-rgb: 255 255 255;
   --black-rgb: 0 0 0;
-
-  /*
-    Beyond Code's background. Eight points off --charcoal, which is too
-    close to read as a choice and too far to be the same colour — finding 9
-    in docs/PLAN.md, deferred to Phase 5. Named here so that when it is
-    decided there is one place to decide it.
-  */
-  --charcoal-deep: #141414;
 
   /*
     The navbar is fixed 16px from the top, so it owns the first

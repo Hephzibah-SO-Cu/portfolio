@@ -23,7 +23,7 @@ export default defineConfig({
     anything having gone wrong, and a timeout reads in the summary exactly
     like a real failure. The axe sweeps ask for more again, with test.slow().
   */
-  timeout: 60_000,
+  timeout: 90_000,
 
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3111",

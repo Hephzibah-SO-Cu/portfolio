@@ -76,7 +76,7 @@ export default function TechMarquee() {
     <section
       data-tone="light"
       style={{
-        backgroundColor: "var(--cream)",
+        backgroundColor: "var(--cream-deep)",
         paddingBottom: "var(--section-y)",
       }}
     >
