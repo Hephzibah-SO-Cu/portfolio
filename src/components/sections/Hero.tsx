@@ -104,7 +104,23 @@ export default function Hero() {
               marginBottom: "1.25rem",
             }}
           >
-            Lagos, Nigeria
+            {/*
+              The name, before anything else on the page.
+
+              It was nowhere legible on the first screen: the only place it
+              appeared was the BUSAYO watermark, which renders at 203px and
+              opacity 0.04, and the browser tab. Someone landing here cold
+              could read "Software Engineer" and still not know whose
+              portfolio they were on.
+            */}
+            Oluwabusayo Sina-Olulana{" "}
+            <span
+              style={{ color: "rgb(var(--cream-rgb) / 0.55)" }}
+              /* non-breaking, so the middot cannot be left stranded at the
+                 end of a line when this wraps on a phone */
+            >
+              ·&nbsp;Lagos, Nigeria
+            </span>
           </motion.p>
 
           <motion.div
@@ -377,15 +393,13 @@ export default function Hero() {
             opacity: 0.7,
           }}
         />
-        <p
-          className="uppercase tracking-[var(--track-label)]"
-          style={{
-            color: "var(--warm-grey)",
-            fontSize: "var(--t-label)",
-          }}
-        >
-          Scroll To Explore
-        </p>
+        {/*
+          No label. This read "Scroll To Explore", which is an instruction
+          where a cue will do — and the hero already cues it twice over, by
+          fading to the cream of the section beneath and by leaving this
+          rule pointing down into it. The words were telling a reader
+          something the page was already showing them.
+        */}
       </div>
 
       {/*

@@ -167,7 +167,12 @@ test("no colour literal is written outside the palette definition", async () => 
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/\/\/[^\n]*/g, "");
 
-    const found = code.match(/#[0-9A-Fa-f]{3,8}\b|rgba\([^)]*\)/g);
+    /*
+      The lookbehind stops an HTML entity being read as a colour. `&#183;`,
+      the middot in the hero's byline, is three valid hex digits behind a
+      hash, and the first run of this test failed on exactly that.
+    */
+    const found = code.match(/(?<![&\w])#[0-9A-Fa-f]{3,8}\b|rgba\([^)]*\)/g);
 
     if (found) {
       offenders.push(
