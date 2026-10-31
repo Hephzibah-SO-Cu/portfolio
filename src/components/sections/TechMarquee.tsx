@@ -161,7 +161,7 @@ export default function TechMarquee() {
           <span
             style={{
               fontFamily: "var(--font-inter)",
-              fontSize: "0.65rem",
+              fontSize: "var(--t-label)",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
               color: "var(--accent-ink)",

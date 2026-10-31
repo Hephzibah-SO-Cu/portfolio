@@ -73,7 +73,7 @@ export default function Navbar() {
           href="#home"
           style={{
             fontFamily: "var(--font-playfair)",
-            fontSize: "1.25rem",
+            fontSize: "var(--t-logo)",
             fontWeight: 700,
             color: "var(--charcoal)",
             textDecoration: "none",
@@ -98,7 +98,7 @@ export default function Navbar() {
               href={link.href}
               style={{
                 fontFamily: "var(--font-inter)",
-                fontSize: "0.75rem",
+                fontSize: "var(--t-label)",
                 fontWeight: 500,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
@@ -262,7 +262,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
             style={{
               fontFamily: "var(--font-inter)",
-              fontSize: "0.75rem",
+              fontSize: "var(--t-label)",
               fontWeight: 500,
               letterSpacing: "0.12em",
               textTransform: "uppercase",

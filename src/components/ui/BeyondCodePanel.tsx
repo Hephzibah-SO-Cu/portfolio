@@ -87,7 +87,7 @@ export default function BeyondCodePanel({
         <h3
           style={{
             fontFamily: "var(--font-inter)",
-            fontSize: "1rem",
+            fontSize: "var(--t-body)",
             letterSpacing: "0.25em",
             fontWeight: 600,
             marginBottom: "20px",
@@ -103,7 +103,7 @@ export default function BeyondCodePanel({
               style={{
                 marginBottom: "8px",
                 fontFamily: "var(--font-inter)",
-                fontSize: "0.95rem",
+                fontSize: "var(--t-small)",
               }}
             >
               {line}

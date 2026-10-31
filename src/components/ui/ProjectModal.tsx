@@ -14,7 +14,7 @@ interface ProjectModalProps {
 const LABEL: React.CSSProperties = {
   margin: "0 0 14px",
   fontFamily: "var(--font-inter)",
-  fontSize: "0.7rem",
+  fontSize: "var(--t-label)",
   letterSpacing: "0.18em",
   textTransform: "uppercase",
   color: "var(--accent-ink)",
@@ -23,7 +23,7 @@ const LABEL: React.CSSProperties = {
 const BODY: React.CSSProperties = {
   margin: 0,
   color: "var(--warm-grey)",
-  fontSize: "0.95rem",
+  fontSize: "var(--t-small)",
   lineHeight: 1.85,
   maxWidth: "66ch",
 };
@@ -158,7 +158,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         background: "rgba(245,240,232,0.92)",
         backdropFilter: "blur(8px)",
         color: "var(--charcoal)",
-        fontSize: "1rem",
+        fontSize: "var(--t-body)",
         lineHeight: 1,
         cursor: "pointer",
         display: "flex",
@@ -239,7 +239,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               background: "rgba(245,240,232,0.94)",
               backdropFilter: "blur(10px)",
               color: "var(--charcoal)",
-              fontSize: "0.95rem",
+              fontSize: "var(--t-small)",
               cursor: "pointer",
             }}
           >
@@ -402,7 +402,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 style={{
                   margin: "0 0 12px",
                   fontFamily: "var(--font-playfair)",
-                  fontSize: "clamp(1.6rem, 2.4vw, 2.5rem)",
+                  fontSize: "var(--t-h2)",
                   lineHeight: 1.1,
                   color: "var(--charcoal)",
                 }}
@@ -413,7 +413,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <p
                 style={{
                   ...BODY,
-                  fontSize: "1rem",
+                  fontSize: "var(--t-body)",
                   color: "var(--charcoal)",
                   marginBottom: "18px",
                 }}
@@ -431,7 +431,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     style={{
                       padding: "5px 10px",
                       border: "1px solid rgba(107,101,96,0.2)",
-                      fontSize: "0.7rem",
+                      fontSize: "var(--t-label)",
                       letterSpacing: "0.04em",
                       color: "var(--warm-grey)",
                     }}

@@ -199,7 +199,7 @@ export default function Experience() {
                     <span
                       style={{
                         fontFamily: "var(--font-inter)",
-                        fontSize: "0.65rem",
+                        fontSize: "var(--t-label)",
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
                         color: "var(--accent-ink)",
@@ -210,7 +210,7 @@ export default function Experience() {
                     <span
                       style={{
                         fontFamily: "var(--font-inter)",
-                        fontSize: "0.6rem",
+                        fontSize: "var(--t-label)",
                         letterSpacing: "0.1em",
                         textTransform: "uppercase",
                         /*
@@ -234,7 +234,7 @@ export default function Experience() {
                       fontFamily: "var(--font-inter)",
                       fontWeight: 700,
                       letterSpacing: "-0.02em",
-                      fontSize: "1.05rem",
+                      fontSize: "var(--t-body)",
                       color: "var(--charcoal)",
                       lineHeight: 1.3,
                       marginBottom: "4px",
@@ -247,7 +247,7 @@ export default function Experience() {
                   <p
                     style={{
                       fontFamily: "var(--font-inter)",
-                      fontSize: "0.8rem",
+                      fontSize: "var(--t-caption)",
                       color: "var(--warm-grey)",
                     }}
                   >
@@ -259,7 +259,7 @@ export default function Experience() {
                 <span
                   style={{
                     fontFamily: "var(--font-inter)",
-                    fontSize: "0.6rem",
+                    fontSize: "var(--t-label)",
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     color: "var(--warm-grey)",
@@ -277,7 +277,7 @@ export default function Experience() {
                       display: "inline-block",
                       transition: "transform 0.3s ease",
                       transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                      fontSize: "0.7rem",
+                      fontSize: "var(--t-label)",
                     }}
                   >
                     ↓
@@ -303,7 +303,7 @@ export default function Experience() {
                       <h4
                         style={{
                           fontFamily: "var(--font-inter)",
-                          fontSize: "0.75rem",
+                          fontSize: "var(--t-label)",
                           fontWeight: 700,
                           letterSpacing: "0.12em",
                           textTransform: "uppercase",
@@ -328,7 +328,7 @@ export default function Experience() {
                               display: "flex",
                               gap: "12px",
                               fontFamily: "var(--font-inter)",
-                              fontSize: "0.85rem",
+                              fontSize: "var(--t-caption)",
                               color: "var(--warm-grey)",
                               lineHeight: 1.75,
                             }}
@@ -353,7 +353,7 @@ export default function Experience() {
                       <h4
                         style={{
                           fontFamily: "var(--font-inter)",
-                          fontSize: "0.75rem",
+                          fontSize: "var(--t-label)",
                           fontWeight: 700,
                           letterSpacing: "0.12em",
                           textTransform: "uppercase",
@@ -378,7 +378,7 @@ export default function Experience() {
                               display: "flex",
                               gap: "12px",
                               fontFamily: "var(--font-inter)",
-                              fontSize: "0.85rem",
+                              fontSize: "var(--t-caption)",
                               color: "var(--warm-grey)",
                               lineHeight: 1.75,
                             }}
@@ -415,7 +415,7 @@ export default function Experience() {
                           display: "flex",
                           gap: "12px",
                           fontFamily: "var(--font-inter)",
-                          fontSize: "0.85rem",
+                          fontSize: "var(--t-caption)",
                           color: "var(--warm-grey)",
                           lineHeight: 1.75,
                         }}

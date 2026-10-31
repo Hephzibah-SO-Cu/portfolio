@@ -29,11 +29,11 @@ export default function Button({
   const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
     sm: {
       padding: "10px 20px",
-      fontSize: "0.7rem",
+      fontSize: "var(--t-label)",
     },
     md: {
       padding: "14px 28px",
-      fontSize: "0.75rem",
+      fontSize: "var(--t-label)",
     },
   };
 

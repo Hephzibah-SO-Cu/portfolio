@@ -287,7 +287,7 @@ export default function Projects() {
             <p
               style={{
                 fontFamily: "var(--font-inter)",
-                fontSize: "0.75rem",
+                fontSize: "var(--t-label)",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 color: "var(--accent-ink)",
@@ -302,7 +302,7 @@ export default function Projects() {
                 fontFamily: "var(--font-inter)",
                 color: "var(--warm-grey)",
                 lineHeight: 1.8,
-                fontSize: "0.95rem",
+                fontSize: "var(--t-small)",
               }}
             >
               Selected projects across web, mobile, and full-stack development.

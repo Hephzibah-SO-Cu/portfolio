@@ -24,7 +24,7 @@ export default function BeyondCode() {
         <p
           style={{
             fontFamily: "var(--font-inter)",
-            fontSize: "0.75rem",
+            fontSize: "var(--t-label)",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "#B88A6A",
@@ -45,7 +45,7 @@ export default function BeyondCode() {
         <h2
           style={{
             fontFamily: "var(--font-playfair)",
-            fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
+            fontSize: "var(--t-h2)",
             color: "#F5F1EB",
             marginBottom: "18px",
             maxWidth: "30ch",
@@ -58,7 +58,7 @@ export default function BeyondCode() {
         <p
           style={{
             fontFamily: "var(--font-inter)",
-            fontSize: "0.95rem",
+            fontSize: "var(--t-small)",
             lineHeight: 1.8,
             color: "rgba(245, 241, 235, 0.62)",
             maxWidth: "58ch",

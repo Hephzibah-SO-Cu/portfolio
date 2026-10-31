@@ -65,6 +65,38 @@
   --card-w: clamp(200px, 31.5vw, 400px);
   --card-w-mobile: clamp(90px, 14.2vw, 180px);
   --card-gap: 20px;
+
+  /*
+    THE TYPE SCALE.
+
+    Twenty-one distinct font sizes rendered on this page at 1270px, which is
+    what happens when every size is chosen at the call site. Four section
+    headings existed within 0.25rem of each other; 0.6/0.65/0.7/0.75rem were
+    all "an uppercase label"; 0.8/0.85/0.875rem were all "caption".
+
+    These nine replace them, and they are deliberately pitched so that at
+    1270 — the width this site is actually read at — almost every element
+    lands on the pixel it already occupied. Two changes are real and
+    intended: Beyond Code's heading comes down to the same size as every
+    other section heading, and the 9.6px and 10.4px labels come up to 12px,
+    which is where they should always have been.
+
+    --t-display and --t-logo are one-offs, a watermark and a wordmark, so
+    the working scale is the seven between them.
+
+    Fluid where the element is part of a full-viewport composition and has
+    to hold its proportion on a 2560 monitor; fixed where it is body copy,
+    whose measure is capped anyway and which gains nothing from growing.
+  */
+  --t-display: clamp(7rem, 16vw, 28rem);
+  --t-hero: clamp(1.75rem, 3vw, 5rem);
+  --t-h2: clamp(1.5rem, 2.6vw, 2.5rem);
+  --t-lead: clamp(0.95rem, 1.39vw, 1.75rem);
+  --t-logo: 1.25rem;
+  --t-body: 1rem;
+  --t-small: 0.95rem;
+  --t-caption: 0.85rem;
+  --t-label: clamp(0.75rem, 0.84vw, 1rem);
 }
 
 /*
@@ -155,7 +187,7 @@ body {
     background: transparent;
     color: var(--charcoal);
     font-family: var(--font-inter);
-    font-size: 0.7rem;
+    font-size: var(--t-label);
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -424,7 +456,7 @@ body {
 .rail-caption h3 {
   margin: 0 0 10px;
   font-family: var(--font-inter);
-  font-size: 0.8rem;
+  font-size: var(--t-caption);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--charcoal);
@@ -434,7 +466,7 @@ body {
   margin: 0 auto;
   max-width: 46ch;
   font-family: var(--font-inter);
-  font-size: 0.9rem;
+  font-size: var(--t-small);
   line-height: 1.6;
   color: var(--warm-grey);
 }

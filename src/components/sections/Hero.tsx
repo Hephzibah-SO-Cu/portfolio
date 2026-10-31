@@ -62,7 +62,7 @@ export default function Hero() {
           className="select-none"
           style={{
             fontFamily: "var(--font-playfair)",
-            fontSize: "clamp(7rem,16vw,28rem)",
+            fontSize: "var(--t-display)",
             opacity: 0.04,
             color: "#fff",
             letterSpacing: "-0.06em",
@@ -98,7 +98,7 @@ export default function Hero() {
             className="uppercase tracking-[0.35em]"
             style={{
               color: "#F5F0E8",
-              fontSize: "clamp(0.7rem, 0.84vw, 1rem)",
+              fontSize: "var(--t-label)",
               marginBottom: "1.25rem",
             }}
           >
@@ -146,7 +146,7 @@ export default function Hero() {
             style={{
               fontFamily: "var(--font-playfair)",
               color: "#F5F0E8",
-              fontSize: "clamp(1.75rem, 3vw, 5rem)",
+              fontSize: "var(--t-hero)",
               lineHeight: 0.95,
             }}
           >
@@ -165,7 +165,7 @@ export default function Hero() {
             style={{
               color: "#E7E0D8",
               marginTop: "1rem",
-              fontSize: "clamp(0.95rem, 1.39vw, 1.75rem)",
+              fontSize: "var(--t-lead)",
               maxWidth: "clamp(16rem, 31vw, 38rem)",
             }}
           >
@@ -197,7 +197,7 @@ export default function Hero() {
                 background: "var(--cream)",
                 color: "var(--charcoal)",
                 textDecoration: "none",
-                fontSize: "clamp(0.7rem, 0.84vw, 1rem)",
+                fontSize: "var(--t-label)",
                 padding:
                   "clamp(0.85rem, 1.11vw, 1.35rem) clamp(1rem, 2.22vw, 2.75rem)",
                 gap: "clamp(0.6rem, 0.83vw, 1rem)",
@@ -228,7 +228,7 @@ export default function Hero() {
                 borderColor: "var(--accent)",
                 color: "#F5F0E8",
                 textDecoration: "none",
-                fontSize: "clamp(0.7rem, 0.84vw, 1rem)",
+                fontSize: "var(--t-label)",
                 padding:
                   "clamp(0.85rem, 1.11vw, 1.35rem) clamp(1rem, 2.22vw, 2.75rem)",
                 gap: "clamp(0.6rem, 0.83vw, 1rem)",
@@ -354,7 +354,7 @@ export default function Hero() {
               className="tracking-[0.18em]"
               style={{
                 color: "#F5F0E8",
-                fontSize: "clamp(0.75rem, 0.97vw, 1.15rem)",
+                fontSize: "var(--t-label)",
                 marginBottom: "0.75rem",
               }}
             >
@@ -366,7 +366,7 @@ export default function Hero() {
                 color: "#D6CFC7",
                 fontFamily: "var(--font-playfair)",
                 fontStyle: "italic",
-                fontSize: "clamp(0.9rem, 1.11vw, 1.4rem)",
+                fontSize: "var(--t-small)",
                 lineHeight: 1.5,
               }}
             >
@@ -397,7 +397,7 @@ export default function Hero() {
           className="uppercase tracking-[0.35em]"
           style={{
             color: "var(--warm-grey)",
-            fontSize: "clamp(0.7rem, 0.84vw, 1rem)",
+            fontSize: "var(--t-label)",
           }}
         >
           Scroll To Explore

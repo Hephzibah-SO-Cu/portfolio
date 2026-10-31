@@ -107,7 +107,7 @@ export default function Contact() {
                 and at that size it ran to four lines and swallowed the
                 section. It wraps where the column ends instead.
               */
-              fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
+              fontSize: "var(--t-h2)",
             }}
           >
             Open to frontend,{" "}
@@ -123,7 +123,7 @@ export default function Contact() {
           <p
             style={{
               fontFamily: "var(--font-inter)",
-              fontSize: "0.95rem",
+              fontSize: "var(--t-small)",
               color: "rgba(245, 240, 232, 0.55)",
               lineHeight: 1.8,
               maxWidth: "460px",
@@ -177,7 +177,7 @@ export default function Contact() {
               <span
                 style={{
                   fontFamily: "var(--font-inter)",
-                  fontSize: "0.65rem",
+                  fontSize: "var(--t-label)",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
                   color: "var(--accent)",
@@ -198,7 +198,7 @@ export default function Contact() {
             "
                 style={{
                   fontFamily: "var(--font-inter)",
-                  fontSize: "0.875rem",
+                  fontSize: "var(--t-caption)",
                   color: "rgba(245, 240, 232, 0.7)",
                   /*
                 A flex item's min-width defaults to auto, so this span could

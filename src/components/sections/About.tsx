@@ -86,7 +86,7 @@ export default function About() {
             style={{
               fontFamily: "var(--font-inter)",
               color: "var(--charcoal)",
-              fontSize: "clamp(1.5rem, 2.5vw, 3rem)",
+              fontSize: "var(--t-h2)",
               letterSpacing: "-0.04em",
             }}
           >
@@ -113,7 +113,7 @@ export default function About() {
             style={{
               color: "var(--warm-grey)",
               fontFamily: "var(--font-inter)",
-              fontSize: "1rem",
+              fontSize: "var(--t-body)",
               lineHeight: 1.75,
               maxWidth: "750px",
             }}
@@ -144,7 +144,7 @@ export default function About() {
             <p
               style={{
                 color: "var(--charcoal)",
-                fontSize: "1.125rem",
+                fontSize: "var(--t-lead)",
                 lineHeight: 1.6,
               }}
             >

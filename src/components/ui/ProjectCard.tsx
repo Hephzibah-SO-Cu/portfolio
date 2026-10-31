@@ -46,7 +46,7 @@ export default function ProjectCard({
 
   const actionStyle = {
     padding: "10px 16px",
-    fontSize: "0.7rem",
+    fontSize: "var(--t-label)",
     letterSpacing: "0.08em",
     textTransform: "uppercase" as const,
     fontWeight: 600,
