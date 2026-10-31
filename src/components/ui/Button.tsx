@@ -3,11 +3,24 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 
 type ButtonVariant = "filled" | "outline";
-type ButtonSize = "sm" | "md";
+type ButtonSize = "sm" | "md" | "hero";
+
+/**
+ * Which surface the button is sitting on. Not which colour the button is —
+ * the variant decides that. A primary action is the filled one on both
+ * tones, and it is only the ink that swaps.
+ *
+ * This is why the hero's two buttons were hand-rolled for so long: the
+ * component knew charcoal-on-cream and nothing else, so anything on a dark
+ * surface had to invent itself, and the two of them ended up with two
+ * different arrow glyphs.
+ */
+type ButtonTone = "light" | "dark";
 
 interface BaseProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  tone?: ButtonTone;
   showArrow?: boolean;
 }
 
@@ -22,6 +35,7 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 export default function Button({
   variant = "filled",
   size = "md",
+  tone = "light",
   showArrow = false,
   children,
   ...props
@@ -34,6 +48,17 @@ export default function Button({
     md: {
       padding: "14px 28px",
       fontSize: "var(--t-label)",
+    },
+    /*
+      The hero's pair. Fluid, because they belong to a full-viewport
+      composition and have to keep their proportion on a 2560 monitor —
+      which is the reason the hero hand-rolled them rather than using this
+      component, and the reason they ended up with two different arrows.
+    */
+    hero: {
+      padding: "clamp(0.85rem, 1.11vw, 1.35rem) clamp(1rem, 2.22vw, 2.75rem)",
+      fontSize: "var(--t-label)",
+      gap: "clamp(0.6rem, 0.83vw, 1rem)",
     },
   };
 
@@ -53,22 +78,67 @@ export default function Button({
     ...sizeStyles[size],
   };
 
-  const variantStyle: Record<ButtonVariant, React.CSSProperties> = {
-    filled: {
-      backgroundColor: "var(--charcoal)",
-      color: "var(--cream)",
-      borderColor: "var(--charcoal)",
+  const variantStyle: Record<
+    ButtonTone,
+    Record<ButtonVariant, React.CSSProperties>
+  > = {
+    light: {
+      filled: {
+        backgroundColor: "var(--charcoal)",
+        color: "var(--cream)",
+        borderColor: "var(--charcoal)",
+      },
+      outline: {
+        backgroundColor: "transparent",
+        color: "var(--charcoal)",
+        borderColor: "var(--charcoal)",
+      },
     },
-    outline: {
-      backgroundColor: "transparent",
-      color: "var(--charcoal)",
-      borderColor: "var(--charcoal)",
+    dark: {
+      filled: {
+        backgroundColor: "var(--cream)",
+        color: "var(--charcoal)",
+        borderColor: "var(--cream)",
+      },
+      outline: {
+        backgroundColor: "transparent",
+        color: "var(--cream)",
+        borderColor: "var(--accent)",
+      },
     },
   };
 
+  /* What hovering does, per tone, so the handlers below hold no colours. */
+  const hover: Record<ButtonTone, { bg: string; fg: string }> = {
+    light: { bg: "var(--charcoal)", fg: "var(--cream)" },
+    dark: { bg: "rgb(var(--accent-rgb) / 0.12)", fg: "var(--cream)" },
+  };
+
+  const resting = variantStyle[tone][variant];
+
   const combinedStyle: React.CSSProperties = {
     ...baseStyle,
-    ...variantStyle[variant],
+    ...resting,
+  };
+
+  const onEnter = (el: HTMLElement) => {
+    if (variant === "filled") {
+      el.style.opacity = "0.85";
+      return;
+    }
+
+    el.style.backgroundColor = hover[tone].bg;
+    el.style.color = hover[tone].fg;
+  };
+
+  const onLeave = (el: HTMLElement) => {
+    if (variant === "filled") {
+      el.style.opacity = "1";
+      return;
+    }
+
+    el.style.backgroundColor = "transparent";
+    el.style.color = resting.color as string;
   };
 
   const content = (
@@ -101,22 +171,8 @@ export default function Button({
       <a
         href={href}
         style={combinedStyle}
-        onMouseEnter={(e) => {
-          if (variant === "filled") {
-            e.currentTarget.style.opacity = "0.85";
-          } else {
-            e.currentTarget.style.backgroundColor = "var(--charcoal)";
-            e.currentTarget.style.color = "var(--cream)";
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (variant === "filled") {
-            e.currentTarget.style.opacity = "1";
-          } else {
-            e.currentTarget.style.backgroundColor = "transparent";
-            e.currentTarget.style.color = "var(--charcoal)";
-          }
-        }}
+        onMouseEnter={(e) => onEnter(e.currentTarget)}
+        onMouseLeave={(e) => onLeave(e.currentTarget)}
         {...anchorProps}
       >
         {content}
@@ -128,22 +184,8 @@ export default function Button({
   return (
     <button
       style={combinedStyle}
-      onMouseEnter={(e) => {
-        if (variant === "filled") {
-          e.currentTarget.style.opacity = "0.85";
-        } else {
-          e.currentTarget.style.backgroundColor = "var(--charcoal)";
-          e.currentTarget.style.color = "var(--cream)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (variant === "filled") {
-          e.currentTarget.style.opacity = "1";
-        } else {
-          e.currentTarget.style.backgroundColor = "transparent";
-          e.currentTarget.style.color = "var(--charcoal)";
-        }
-      }}
+      onMouseEnter={(e) => onEnter(e.currentTarget)}
+      onMouseLeave={(e) => onLeave(e.currentTarget)}
       {...buttonProps}
     >
       {content}

@@ -255,7 +255,15 @@ export default function Experience() {
                   </p>
                 </div>
 
-                {/* Expand toggle */}
+                {/*
+                  A disclosure, not a call to action: it opens this row in
+                  place and the chevron says so. It read "View Details" —
+                  the same words the project cards used for a control that
+                  opens a full dialog, so one label meant two different
+                  things depending which half of the page you were on.
+                  This one is the one that changed, because the chevron
+                  already tells you what it does.
+                */}
                 <span
                   style={{
                     fontFamily: "var(--font-inter)",
@@ -271,7 +279,7 @@ export default function Experience() {
                     transition: "color 0.2s ease",
                   }}
                 >
-                  {isOpen ? "Hide Details" : "View Details"}
+                  {isOpen ? "Hide" : "Details"}
                   <span
                     style={{
                       display: "inline-block",

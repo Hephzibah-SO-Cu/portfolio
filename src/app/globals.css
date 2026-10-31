@@ -222,29 +222,16 @@ body {
     margin: 0 20px 4px;
   }
 
+  /*
+    These are Buttons now, so everything this block used to redraw by hand —
+    the border, the ink, the type, the uppercase — comes from the component
+    and was removed rather than left here to fight it. What a touchscreen
+    still needs and the component does not provide is the target size: 44px
+    clears the WCAG 2.5.8 minimum with room, where the sm button is 36.
+  */
   .card-touch-actions a,
   .card-touch-actions button {
-    /* 44px tall so it clears the WCAG 2.5.8 target minimum with room. */
     min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    padding: 0 16px;
-    border: 1px solid rgb(var(--grey-rgb) / 0.3);
-    background: transparent;
-    color: var(--charcoal);
-    font-family: var(--font-inter);
-    font-size: var(--t-label);
-    font-weight: 600;
-    letter-spacing: var(--track-label);
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .card-touch-actions a:first-child {
-    background: var(--charcoal);
-    border-color: var(--charcoal);
-    color: var(--cream);
   }
 }
 

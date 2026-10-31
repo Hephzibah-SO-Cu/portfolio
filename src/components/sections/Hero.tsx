@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Button from "@/components/ui/Button";
 
 /*
   Every size here is a function of the viewport, anchored so that a 1440px
@@ -179,67 +180,49 @@ export default function Hero() {
               marginTop: "clamp(1.75rem, 2.8vw, 3.5rem)",
             }}
           >
-            <motion.a
+            {/*
+              Both of these were hand-rolled, which is how they came to wear
+              two different arrow glyphs — View Work an ↗, which conventionally
+              means the link leaves the site, and Get In Touch a →. Neither
+              leaves the site. The glyph now lives inside Button, so it cannot
+              be chosen per call site again, and tone="dark" is what the
+              component was missing that sent them off on their own.
+            */}
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.7,
-              }}
-              href="#projects"
-              whileHover={{
-                y: -2,
-                boxShadow: "0 10px 25px rgb(var(--black-rgb) / 0.18)",
-              }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group uppercase tracking-[var(--track-label)] flex items-center transition-all duration-300"
-              style={{
-                background: "var(--cream)",
-                color: "var(--charcoal)",
-                textDecoration: "none",
-                fontSize: "var(--t-label)",
-                padding:
-                  "clamp(0.85rem, 1.11vw, 1.35rem) clamp(1rem, 2.22vw, 2.75rem)",
-                gap: "clamp(0.6rem, 0.83vw, 1rem)",
-                whiteSpace: "nowrap",
-              }}
             >
-              View Work
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                ↗
-              </span>
-            </motion.a>
+              <Button
+                href="#projects"
+                variant="filled"
+                tone="dark"
+                size="hero"
+                showArrow
+              >
+                View Work
+              </Button>
+            </motion.div>
 
-            <motion.a
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.7,
-              }}
-              href="#contact"
-              whileHover={{
-                y: -2,
-                backgroundColor: "rgb(var(--accent-rgb) / 0.08)",
-              }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group uppercase tracking-[var(--track-label)] border flex items-center transition-all duration-300"
-              style={{
-                borderColor: "var(--accent)",
-                color: "var(--cream)",
-                textDecoration: "none",
-                fontSize: "var(--t-label)",
-                padding:
-                  "clamp(0.85rem, 1.11vw, 1.35rem) clamp(1rem, 2.22vw, 2.75rem)",
-                gap: "clamp(0.6rem, 0.83vw, 1rem)",
-                whiteSpace: "nowrap",
-              }}
             >
-              Get In Touch
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </motion.a>
+              <Button
+                href="#contact"
+                variant="outline"
+                tone="dark"
+                size="hero"
+                showArrow
+              >
+                Get In Touch
+              </Button>
+            </motion.div>
           </div>
         </div>
       </div>

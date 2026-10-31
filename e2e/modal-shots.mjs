@@ -24,7 +24,7 @@ for (const [w, h, touch] of [
   if (touch) await card.locator(".card-touch-actions button").tap();
   else {
     await card.hover();
-    await card.getByRole("button", { name: /view details/i }).click();
+    await card.getByRole("button", { name: /case study/i }).click();
   }
   await p.waitForTimeout(900);
   await p.screenshot({ path: `${OUT}/framez-${w}.png` });

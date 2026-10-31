@@ -58,7 +58,7 @@ for (const { w, h, who, touch } of WIDTHS) {
     .first();
   if (await card.count()) {
     await card.scrollIntoViewIfNeeded();
-    const trigger = card.getByRole("button", { name: /view details/i }).first();
+    const trigger = card.getByRole("button", { name: /case study/i }).first();
     await trigger.click({ force: true }).catch(() => {});
     await page.waitForTimeout(700);
     if (await page.locator("text=A storefront, not a dashboard").count()) {

@@ -56,7 +56,7 @@ test("the case study opens and leads with the decisions, not the features", asyn
   if (test.info().project.name === "desktop") {
     await card.hover();
     await card
-      .getByRole("button", { name: /view details/i })
+      .getByRole("button", { name: /case study/i })
       .first()
       .click();
   } else {

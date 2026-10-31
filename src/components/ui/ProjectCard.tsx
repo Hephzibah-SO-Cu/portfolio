@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Project } from "@/lib/data/projects";
+import Button from "@/components/ui/Button";
 
 interface ProjectCardProps {
   project: Project;
@@ -43,16 +44,6 @@ export default function ProjectCard({
   const isMobile = project.displayType === "mobile";
 
   const [hovered, setHovered] = useState(false);
-
-  const actionStyle = {
-    padding: "10px 16px",
-    fontSize: "var(--t-label)",
-    letterSpacing: "var(--track-label)",
-    textTransform: "uppercase" as const,
-    fontWeight: 600,
-    fontFamily: "var(--font-inter)",
-    textDecoration: "none",
-  };
 
   return (
     <article
@@ -163,6 +154,13 @@ export default function ProjectCard({
             padding: "20px",
           }}
         >
+          {/*
+            Three Buttons on a dark scrim, where there used to be three
+            copies of a style object spelled out by hand. "Case study"
+            rather than "View Details": the Experience list has a row
+            disclosure with that exact label which expands in place, and
+            two controls reading the same words should not do two things.
+          */}
           <div
             style={{
               display: "flex",
@@ -172,54 +170,45 @@ export default function ProjectCard({
             }}
           >
             {project.liveUrl && (
-              <a
+              <Button
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                style={{
-                  ...actionStyle,
-                  background: "var(--white)",
-                  color: "var(--charcoal)",
-                }}
+                variant="filled"
+                tone="dark"
+                size="sm"
               >
                 Live Site
-              </a>
+              </Button>
             )}
 
             {project.githubUrl && (
-              <a
+              <Button
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                style={{
-                  ...actionStyle,
-                  background: "transparent",
-                  border: "1px solid rgb(var(--white-rgb) / 0.35)",
-                  color: "var(--white)",
-                }}
+                variant="outline"
+                tone="dark"
+                size="sm"
               >
                 GitHub
-              </a>
+              </Button>
             )}
 
-            <button
+            <Button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 onDetails(project);
               }}
-              style={{
-                ...actionStyle,
-                border: "1px solid rgb(var(--white-rgb) / 0.35)",
-                background: "transparent",
-                color: "var(--white)",
-                cursor: "pointer",
-              }}
+              variant="outline"
+              tone="dark"
+              size="sm"
             >
-              View Details
-            </button>
+              Case study
+            </Button>
           </div>
         </div>
       </div>

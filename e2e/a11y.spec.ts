@@ -75,7 +75,7 @@ test("the case study modal has no accessibility violations", async ({
   if (info.project.name === "desktop") {
     await card.hover();
     await card
-      .getByRole("button", { name: /view details/i })
+      .getByRole("button", { name: /case study/i })
       .first()
       .click();
   } else {

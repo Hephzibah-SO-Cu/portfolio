@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { centreCard, railCaption } from "./rail";
 
 /**
- * A project card's Live Site / GitHub / View Details actions lived inside an
+ * A project card's Live Site / GitHub / Case study actions lived inside an
  * overlay with `opacity: 0` until `onMouseEnter`. A touch screen never fires
  * hover, so on every phone and tablet those actions were unreachable: the
  * case study could not be opened at all, and the only way to see a live site
@@ -24,7 +24,7 @@ test.describe("a project's actions are reachable without a mouse", () => {
     await centreCard(page, "Zowasel Marketplace");
 
     const details = railCaption(page).locator(".card-touch-actions button", {
-      hasText: /view details/i,
+      hasText: /case study/i,
     });
     await expect(details).toBeVisible();
 

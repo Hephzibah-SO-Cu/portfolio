@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { projects, Project } from "@/lib/data/projects";
 import ProjectCard from "@/components/ui/ProjectCard";
 import ProjectModal from "@/components/ui/ProjectModal";
+import Button from "@/components/ui/Button";
 
 /* The one arrow mark the rail uses, mirrored rather than drawn twice. */
 function Chevron({ direction }: { direction: "left" | "right" }) {
@@ -434,28 +435,37 @@ export default function Projects() {
           {centred && (
             <div className="card-touch-actions">
               {centred.liveUrl && (
-                <a
+                <Button
                   href={centred.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  variant="filled"
+                  size="sm"
                 >
                   Live Site
-                </a>
+                </Button>
               )}
 
               {centred.githubUrl && (
-                <a
+                <Button
                   href={centred.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  variant="outline"
+                  size="sm"
                 >
                   GitHub
-                </a>
+                </Button>
               )}
 
-              <button type="button" onClick={() => setActiveProject(centred)}>
-                View Details
-              </button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveProject(centred)}
+              >
+                Case study
+              </Button>
             </div>
           )}
         </div>

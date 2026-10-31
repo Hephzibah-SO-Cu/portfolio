@@ -7,7 +7,7 @@ Dates are WAT (UTC+1). Busayo's screen is **1270 x 593 CSS pixels** — a 1920
 monitor at Windows 150% scaling — and that is the width everything here is
 checked at, not 1920.
 
-Last updated: 31 October 2026. Phase 1 complete; Phase 2 next.
+Last updated: 31 October 2026. Phases 1 and 2 complete; Phase 3 (the navbar) next.
 
 ---
 
@@ -182,7 +182,7 @@ look — the square corners, the cream palette and the editorial type stay.
 
 ---
 
-### Phase 2 — the token layer
+### Phase 2 — the token layer  ✅ complete
 
 This comes before everything else because every later phase spends it. The
 visual output should be *nearly identical* when it is finished; that is the
@@ -316,6 +316,9 @@ Newest first.
 
 | Date | Decision | Why |
 | --- | --- | --- |
+| 2026-10-31 | **Phase 2 is complete: the token layer exists and is enforced.** 21 font sizes became 9, 13 letter-spacings became 3, 72 colour literals became 6 channel tokens, and `Button` went from one importer to every call to action on the site. Three tests in `e2e/tokens.spec.ts` keep it: two read what the browser computed, one reads the source. | The visual output is nearly identical, which was the point — it collapses near-misses onto their nearest real value rather than redesigning. The three deliberate changes are recorded in their own rows. |
+| 2026-10-31 | **`Button` gains a `tone` and a `hero` size, and is adopted.** The component knew charcoal-on-cream and nothing else, so every call to action on a dark surface had to invent itself — which is exactly how the hero's two buttons came to wear two different arrow glyphs, an `↗` on View Work (which conventionally means the link leaves the site; it does not) and a `→` on Get In Touch. The glyph now lives inside the component and cannot be chosen per call site. `size="hero"` carries the fluid padding the hero needs to hold its proportion on a 2560 monitor, which was the real reason it had opted out. | Finding 7, closed by construction rather than by agreeing to be careful. Nav links, contact rows, rail arrows, the dialog's close and prev/next, and the Experience disclosure are deliberately **not** Buttons: none of them is a call to action, and forcing one component into two roles is what caused the problem in the first place. |
+| 2026-10-31 | **"View Details" now means one thing.** The project cards' control opens a full dialog and is called **Case study**; the Experience row's control expands that row in place and is called **Details**, with the chevron that already said so. The Experience one is the one that changed, since its chevron carries the meaning. | Finding 6. One label meant two different things depending which half of the page you were on. The fix is naming, not a shared component — they genuinely do different things. |
 | 2026-10-31 | **One accent. The gold is gone.** `#C7A06A` is replaced by `--accent` in all three places it appeared — the hairline under LAGOS, NIGERIA, the GET IN TOUCH border, and that button's 8% hover fill, which becomes `rgba(196,113,74,.08)`. Phase 1 is closed. | Busayo delegated the call: "if the gold doesn't flow with the cream, replace it with something that does". It does not, and the number says so plainly — **2.14:1 on cream, under even the 3:1 non-text bar**, so it could never appear on a cream surface and was always going to be a hero-only exception needing its own rule. `--accent` works on both surfaces (3.19 on cream, 5.10 on near-black) and already has a cream-safe text sibling in `--accent-ink` at 5.13. The earlier argument for keeping the gold — 7.60:1 on near-black against `--accent`'s 5.10 — turned out not to apply to anything: all three uses are a rule, a border and a fill, none of them text, so the bar is 3:1 and both clear it. Two colours were doing one job in a single eyeful: the full stop after "Engineer" was terracotta while the button border 200px away was gold. |
 | 2026-10-30 | **The navbar may be changed, but not its height.** Busayo: "yes we're touching the navbar but not the height please". 52px stands, and so do `--nav-h` and `--nav-safe`, so nothing that lays itself out against the top of the viewport has to be re-checked. This lifts the hands-off rule for colour and contents only. | The height is load-bearing in a way the colours are not: the hero reads `--nav-safe` to keep "Lagos, Nigeria" clear of the pill, and that was a real bug once already. |
 | 2026-10-30 | **`#6B5D4F` becomes `--warm-grey`; `#C7A06A` is left for Busayo.** The brown sat 18.8 from `--warm-grey` — a drift, not a decision — and the swap moves "Scroll To Explore" from 5.60:1 to 5.06:1 on cream, both over AA. The gold is 56.9 from `--accent`, which is a different colour rather than a near-miss, and it is the border of GET IN TOUCH, the hairline under LAGOS, NIGERIA, and that button's 8% hover fill. | Busayo, 30 Oct, said the gold was ChatGPT's invention and never the palette. Both things are true at once: it was never chosen, and it is the most visible accent in the hero. A 2x crop shows the full stop after "Engineer" in `--accent` terracotta beside a gold button border 200px away — two colours doing one job. It is also *more* legible on near-black than `--accent` (7.60:1 against 5.10:1), so replacing it is a trade and not a cleanup. |
