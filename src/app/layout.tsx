@@ -1,12 +1,32 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
-const playfair = Playfair_Display({
+/*
+  The display serif.
+
+  Playfair Display was here, and it is a Scotch Roman rather than a Didone —
+  lower contrast, blunter serifs. The reference this site has always been
+  reaching for is a Vogue masthead, which is Didone, so the category was
+  wrong before the font was.
+
+  Bodoni Moda is an actual Didone and carries a real optical-size axis, which
+  is the same move Apple makes with SF Pro Display and SF Pro Text: one
+  family that redraws itself for the size rather than a second family hired
+  to cover the small end. It matters here because the same face has to work
+  at the 203px watermark and at a 15px italic caption — and at the display
+  cut, 15px hairlines fray.
+
+  The variable name stays --font-playfair deliberately. Nineteen call sites
+  read it, and renaming them would make reverting this a diff across the
+  whole site instead of a diff in this file.
+*/
+const playfair = Bodoni_Moda({
   variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
+  style: ["normal", "italic"],
 });
 
 const inter = Inter({

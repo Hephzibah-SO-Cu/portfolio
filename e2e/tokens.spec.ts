@@ -223,12 +223,28 @@ test("only two families and three weights are in use", async ({ page }) => {
     return out;
   });
 
+  /*
+    Read the two families out of the CSS variables rather than naming them
+    here, so that swapping the display serif is a change in layout.tsx and
+    not a change in this test as well. What is asserted is that the page
+    uses those two and nothing else — which is the rule — not which two they
+    happen to be.
+  */
+  const declared = await page.evaluate(() => {
+    /* next/font puts these on <body> as a class, not on :root */
+    const cs = getComputedStyle(document.body);
+    const first = (v: string) =>
+      cs.getPropertyValue(v).split(",")[0].replace(/["']/g, "").trim();
+
+    return [first("--font-playfair"), first("--font-inter")].sort();
+  });
+
   const families = [...new Set(used.map((u) => u.fam))].sort();
 
   expect(
     families,
-    "the display serif and the UI sans, and nothing else",
-  ).toEqual(["Inter", "Playfair Display"]);
+    `only the two declared families: ${declared.join(" and ")}`,
+  ).toEqual(declared);
 
   const weights = [...new Set(used.map((u) => u.weight))].sort();
 
