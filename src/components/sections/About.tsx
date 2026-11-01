@@ -25,8 +25,12 @@ export default function About() {
         className="flex items-center gap-4 mb-16"
       >
         <span
-          className="text-xs tracking-[var(--track-label)] uppercase"
+          className="tracking-[var(--track-label)] uppercase"
           style={{
+            /* the ladder, not Tailwind's text-xs, which only
+               happened to land on the same 12px */
+            fontSize: "var(--t-label)",
+            fontWeight: "var(--weight-label)",
             color: "var(--accent-ink)",
             fontFamily: "var(--font-inter)",
           }}
@@ -83,9 +87,15 @@ export default function About() {
               duration: 0.8,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-bold leading-[1.02] mb-8"
+            className="leading-[1.02] mb-8"
             style={{
-              fontFamily: "var(--font-inter)",
+              /*
+                Playfair, like every other section heading and like the hero.
+                This was the only heading on the site set in the sans, and
+                bold on top of it, so three sections announced themselves
+                three different ways at exactly the same size.
+              */
+              fontFamily: "var(--font-playfair)",
               color: "var(--charcoal)",
               fontSize: "var(--t-h2)",
               letterSpacing: "var(--track-display)",

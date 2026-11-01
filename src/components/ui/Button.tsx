@@ -67,7 +67,7 @@ export default function Button({
     alignItems: "center",
     gap: "8px",
     fontFamily: "var(--font-inter)",
-    fontWeight: 500,
+    fontWeight: "var(--weight-label)",
     letterSpacing: "var(--track-label)",
     textTransform: "uppercase",
     textDecoration: "none",

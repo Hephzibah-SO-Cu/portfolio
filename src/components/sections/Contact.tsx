@@ -70,8 +70,12 @@ export default function Contact() {
       {/* Section label */}{" "}
       <div className="flex items-center gap-4 mb-16">
         <span
-          className="text-xs tracking-[var(--track-label)] uppercase"
+          className="tracking-[var(--track-label)] uppercase"
           style={{
+            /* the ladder, not Tailwind's text-xs, which only
+               happened to land on the same 12px */
+            fontSize: "var(--t-label)",
+            fontWeight: "var(--weight-label)",
             color: "var(--accent)",
             fontFamily: "var(--font-inter)",
           }}
@@ -97,7 +101,8 @@ export default function Contact() {
             and the paragraph says who I want to do it with.
           */}
           <h2
-            className="font-bold leading-tight mb-6"
+            /* regular, like the hero and the other two section headings */
+            className="leading-tight mb-6"
             style={{
               fontFamily: "var(--font-playfair)",
               color: "var(--cream)",
@@ -179,6 +184,7 @@ export default function Contact() {
                 style={{
                   fontFamily: "var(--font-inter)",
                   fontSize: "var(--t-label)",
+                  fontWeight: "var(--weight-label)",
                   letterSpacing: "var(--track-label)",
                   textTransform: "uppercase",
                   color: "var(--accent)",

@@ -15,6 +15,7 @@ const LABEL: React.CSSProperties = {
   margin: "0 0 14px",
   fontFamily: "var(--font-inter)",
   fontSize: "var(--t-label)",
+  fontWeight: "var(--weight-label)",
   letterSpacing: "var(--track-label)",
   textTransform: "uppercase",
   color: "var(--accent-ink)",
@@ -432,6 +433,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       padding: "5px 10px",
                       border: "1px solid rgb(var(--grey-rgb) / 0.2)",
                       fontSize: "var(--t-label)",
+                      fontWeight: "var(--weight-label)",
                       letterSpacing: "var(--track-label)",
                       color: "var(--warm-grey)",
                     }}

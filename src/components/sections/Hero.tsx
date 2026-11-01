@@ -101,6 +101,7 @@ export default function Hero() {
             style={{
               color: "var(--cream)",
               fontSize: "var(--t-label)",
+              fontWeight: "var(--weight-label)",
               marginBottom: "1.25rem",
             }}
           >
@@ -355,6 +356,7 @@ export default function Hero() {
               style={{
                 color: "var(--cream)",
                 fontSize: "var(--t-label)",
+                fontWeight: "var(--weight-label)",
                 marginBottom: "0.75rem",
               }}
             >

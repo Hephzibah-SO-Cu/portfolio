@@ -155,8 +155,12 @@ export default function Experience() {
       {/* Section label */}
       <div className="flex items-center gap-4 mb-10">
         <span
-          className="text-xs tracking-[var(--track-label)] uppercase"
+          className="tracking-[var(--track-label)] uppercase"
           style={{
+            /* the ladder, not Tailwind's text-xs, which only
+               happened to land on the same 12px */
+            fontSize: "var(--t-label)",
+            fontWeight: "var(--weight-label)",
             color: "var(--accent-ink)",
             fontFamily: "var(--font-inter)",
           }}
@@ -201,6 +205,7 @@ export default function Experience() {
                       style={{
                         fontFamily: "var(--font-inter)",
                         fontSize: "var(--t-label)",
+                        fontWeight: "var(--weight-label)",
                         letterSpacing: "var(--track-label)",
                         textTransform: "uppercase",
                         color: "var(--accent-ink)",
@@ -212,6 +217,7 @@ export default function Experience() {
                       style={{
                         fontFamily: "var(--font-inter)",
                         fontSize: "var(--t-label)",
+                        fontWeight: "var(--weight-label)",
                         letterSpacing: "var(--track-label)",
                         textTransform: "uppercase",
                         /*
@@ -233,7 +239,7 @@ export default function Experience() {
                   <h3
                     style={{
                       fontFamily: "var(--font-inter)",
-                      fontWeight: 700,
+                      fontWeight: "var(--weight-strong)",
                       letterSpacing: "var(--track-display)",
                       fontSize: "var(--t-body)",
                       color: "var(--charcoal)",
@@ -269,6 +275,7 @@ export default function Experience() {
                   style={{
                     fontFamily: "var(--font-inter)",
                     fontSize: "var(--t-label)",
+                    fontWeight: "var(--weight-label)",
                     letterSpacing: "var(--track-label)",
                     textTransform: "uppercase",
                     color: "var(--warm-grey)",
@@ -287,6 +294,7 @@ export default function Experience() {
                       transition: "transform 0.3s ease",
                       transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                       fontSize: "var(--t-label)",
+                      fontWeight: "var(--weight-label)",
                     }}
                   >
                     ↓
@@ -313,7 +321,8 @@ export default function Experience() {
                         style={{
                           fontFamily: "var(--font-inter)",
                           fontSize: "var(--t-label)",
-                          fontWeight: 700,
+                          /* an uppercase label, so medium like every other */
+                          fontWeight: "var(--weight-label)",
                           letterSpacing: "var(--track-label)",
                           textTransform: "uppercase",
                           color: "var(--accent-ink)",
@@ -363,7 +372,8 @@ export default function Experience() {
                         style={{
                           fontFamily: "var(--font-inter)",
                           fontSize: "var(--t-label)",
-                          fontWeight: 700,
+                          /* an uppercase label, so medium like every other */
+                          fontWeight: "var(--weight-label)",
                           letterSpacing: "var(--track-label)",
                           textTransform: "uppercase",
                           color: "var(--accent-ink)",

@@ -89,7 +89,7 @@ export default function BeyondCodePanel({
             fontFamily: "var(--font-inter)",
             fontSize: "var(--t-body)",
             letterSpacing: "var(--track-label)",
-            fontWeight: 600,
+            fontWeight: "var(--weight-label)",
             marginBottom: "20px",
           }}
         >

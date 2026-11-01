@@ -164,7 +164,7 @@ export default function Navbar() {
           style={{
             fontFamily: "var(--font-playfair)",
             fontSize: "var(--t-logo)",
-            fontWeight: 700,
+            fontWeight: "var(--weight-strong)",
             color: skin.inkStrong,
             textDecoration: "none",
             letterSpacing: "var(--track-display)",
@@ -189,7 +189,7 @@ export default function Navbar() {
               style={{
                 fontFamily: "var(--font-inter)",
                 fontSize: "var(--t-label)",
-                fontWeight: 500,
+                fontWeight: "var(--weight-label)",
                 letterSpacing: "var(--track-label)",
                 textTransform: "uppercase",
                 color: skin.ink,
@@ -343,7 +343,7 @@ export default function Navbar() {
             style={{
               fontFamily: "var(--font-inter)",
               fontSize: "var(--t-label)",
-              fontWeight: 500,
+              fontWeight: "var(--weight-label)",
               letterSpacing: "var(--track-label)",
               textTransform: "uppercase",
               /*

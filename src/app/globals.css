@@ -148,6 +148,22 @@
   --track-display: -0.04em;
   --track-label: 0.18em;
   --track-body: 0;
+
+  /*
+    WEIGHT, one per role.
+
+    Four were in use — 400, 500, 600 and 700 — and the roles had drifted
+    apart from them: uppercase labels appeared at 400, 500 and 700, and 600
+    existed for exactly one thing, the Beyond Code panel captions.
+
+    Three now. Display and body sit at regular, every label at medium, and
+    bold is reserved for the wordmark and for a job title, which is the one
+    place on the page where a line of sans has to outrank the lines under it
+    without being any larger.
+  */
+  --weight-body: 400;
+  --weight-label: 500;
+  --weight-strong: 700;
 }
 
 /*
@@ -494,7 +510,8 @@ body {
 .rail-caption h3 {
   margin: 0 0 10px;
   font-family: var(--font-inter);
-  font-size: var(--t-caption);
+  font-size: var(--t-label);
+  font-weight: var(--weight-label);
   letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--charcoal);

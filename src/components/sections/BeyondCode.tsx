@@ -26,6 +26,7 @@ export default function BeyondCode() {
           style={{
             fontFamily: "var(--font-inter)",
             fontSize: "var(--t-label)",
+            fontWeight: "var(--weight-label)",
             letterSpacing: "var(--track-label)",
             textTransform: "uppercase",
             color: "var(--accent)",

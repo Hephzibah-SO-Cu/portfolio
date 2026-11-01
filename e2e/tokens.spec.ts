@@ -186,3 +186,104 @@ test("no colour literal is written outside the palette definition", async () => 
     "colour literals outside src/app/globals.css",
   ).toBe("");
 });
+
+/*
+  Family and weight, which the size test could not see.
+
+  Before this, three section headings rendered at exactly the same size in
+  three different treatments — Inter bold, Playfair regular and Playfair
+  bold — and every size assertion passed, because they agreed about the one
+  thing that was already policed. Four weights were in use and uppercase
+  labels appeared at three of them.
+*/
+test("only two families and three weights are in use", async ({ page }) => {
+  test.slow();
+
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  const used = await page.evaluate(() => {
+    const out: { fam: string; weight: string; text: string; size: string }[] =
+      [];
+
+    document.querySelectorAll("main *").forEach((el) => {
+      const text = el.textContent?.trim();
+
+      if (!text || el.children.length) return;
+
+      const cs = getComputedStyle(el);
+
+      out.push({
+        fam: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+        weight: cs.fontWeight,
+        size: cs.fontSize,
+        text: text.slice(0, 40),
+      });
+    });
+
+    return out;
+  });
+
+  const families = [...new Set(used.map((u) => u.fam))].sort();
+
+  expect(
+    families,
+    "the display serif and the UI sans, and nothing else",
+  ).toEqual(["Inter", "Playfair Display"]);
+
+  const weights = [...new Set(used.map((u) => u.weight))].sort();
+
+  expect(
+    weights,
+    "regular for body and display, medium for labels, bold for the wordmark and job titles",
+  ).toEqual(["400", "500", "700"]);
+
+  /*
+    Every uppercase label is medium. They had drifted to 400, 500 and 700,
+    and three of them were reaching 12px through Tailwind's text-xs rather
+    than through the token — which lands on the same pixel and so slipped
+    past the size test entirely.
+  */
+  const labels = used.filter((u) => u.size === "12px");
+
+  const offLadder = labels.filter((u) => u.weight !== "500");
+
+  expect(
+    offLadder.map((u) => `${u.weight}  ${u.text}`).join("\n"),
+    "12px labels that are not medium",
+  ).toBe("");
+});
+
+/*
+  Every section heading is one thing.
+*/
+test("the section headings agree with each other", async ({ page }) => {
+  test.slow();
+
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  const headings = await page.evaluate(() =>
+    [...document.querySelectorAll("main h2")].map((h) => {
+      const cs = getComputedStyle(h);
+      return {
+        text: (h.textContent ?? "").trim().slice(0, 30),
+        fam: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+        weight: cs.fontWeight,
+        size: cs.fontSize,
+      };
+    }),
+  );
+
+  expect(
+    headings.length,
+    "there are section headings to check",
+  ).toBeGreaterThan(1);
+
+  const shapes = [
+    ...new Set(headings.map((h) => `${h.fam} ${h.weight} ${h.size}`)),
+  ];
+
+  expect(
+    shapes.join("\n"),
+    `every h2 should be set the same way; got:\n${headings.map((h) => `${h.fam} ${h.weight} ${h.size}  ${h.text}`).join("\n")}`,
+  ).toHaveLength(shapes[0].length);
+});
