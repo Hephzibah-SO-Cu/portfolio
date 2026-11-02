@@ -301,7 +301,16 @@ export default function Hero() {
             corner instead of sitting on the copy.
           */
           width: "clamp(12rem, min(max(44.45vw, 26vh), 80vh), 76rem)",
-          right: "clamp(-1rem, calc(27.14vw - 6.44rem), 38rem)",
+          /*
+            Shifted 44px further left than the line this used to draw.
+
+            Measured against the editorial rail: the portrait's right edge
+            was OVER it by 9px at 1270 and by 2px at 1366, and had only 39px
+            of clearance at 1920. There was no gap to speak of at the two
+            widths this site is actually read at — the portrait and the
+            callouts were touching.
+          */
+          right: "clamp(-1rem, calc(27.14vw - 3.69rem), 38rem)",
         }}
       >
         <Image

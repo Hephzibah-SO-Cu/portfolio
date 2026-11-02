@@ -104,7 +104,20 @@ export default function Contact() {
             /* regular, like the hero and the other two section headings */
             className="leading-tight mb-6"
             style={{
-              fontFamily: "var(--font-playfair)",
+              /*
+                Inter, with the other two. Busayo moved About and Beyond Code
+                to the sans on 2 Nov; leaving this one in the display serif
+                would have put the page straight back to two treatments for
+                one job, which is what the heading test exists to refuse —
+                and it did refuse it, on the next run.
+
+                What remains of the serif is the hero's headline, the BUSAYO
+                watermark, the hero's italic callouts and the HO. wordmark.
+                That is a rule worth having: the display face is the
+                signature, and everything that is read rather than seen is
+                Inter.
+              */
+              fontFamily: "var(--font-inter)",
               color: "var(--cream)",
               /*
                 Smaller than the headline it replaced, and with no forced

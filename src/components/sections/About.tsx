@@ -95,7 +95,7 @@ export default function About() {
                 bold on top of it, so three sections announced themselves
                 three different ways at exactly the same size.
               */
-              fontFamily: "var(--font-playfair)",
+              fontFamily: "var(--font-inter)",
               color: "var(--charcoal)",
               fontSize: "var(--t-h2)",
               letterSpacing: "var(--track-display)",

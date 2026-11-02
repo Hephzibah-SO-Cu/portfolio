@@ -46,7 +46,7 @@ export default function BeyondCode() {
         */}
         <h2
           style={{
-            fontFamily: "var(--font-playfair)",
+            fontFamily: "var(--font-inter)",
             fontSize: "var(--t-h2)",
             color: "var(--cream)",
             marginBottom: "18px",
