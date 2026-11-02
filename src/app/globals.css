@@ -395,6 +395,15 @@ body {
   min-width: 0;
 }
 
+/*
+  Below 1024 the grid itself scrolls as one column, so there is nothing to
+  pin against and the two parts are simply stacked.
+*/
+.dialog-head,
+.dialog-body {
+  min-width: 0;
+}
+
 @media (min-width: 1024px) {
   .project-dialog-grid {
     /*
@@ -418,9 +427,32 @@ body {
     min-height: 0;
   }
 
+  /*
+    The copy pane is two parts, not one scroll.
+
+    Who the project is, and the links to go and look at it, stay put; only
+    the writing moves. Before this the whole pane scrolled as one, so on a
+    557px window the title left the screen immediately and the links sat at
+    the very bottom of 3,319px of prose — the most valuable thing on the
+    page, placed where it was reached last.
+  */
   .project-dialog-copy {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 56px clamp(28px, 2.6vw, 48px) 0;
+  }
+
+  .dialog-head {
+    flex: 0 0 auto;
+    padding-bottom: 22px;
+  }
+
+  .dialog-body {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
-    padding: 56px clamp(28px, 2.6vw, 48px) 48px;
+    padding-bottom: 40px;
   }
 }
 
@@ -431,6 +463,91 @@ body {
 
 .dialog-list li::marker {
   color: var(--accent-ink);
+}
+
+/*
+  THE RAIL'S CUE.
+
+  Two keycaps where there is a pointer, a swipe where there is not. It
+  replaced a sentence — "Scroll sideways — whichever project reaches the
+  middle comes forward" — which told a reader how the thing worked instead
+  of showing them that it moves. The keys shown are the keys that work.
+*/
+.rail-cue {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.rail-cue-keys {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.rail-cue kbd {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 26px;
+  border: 1px solid rgb(var(--grey-rgb) / 0.28);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: rgb(var(--cream-rgb) / 0.6);
+  color: var(--warm-grey);
+  font-family: var(--font-inter);
+  font-size: var(--t-label);
+  font-weight: var(--weight-label);
+  line-height: 1;
+}
+
+/* the swipe form: a dot travelling the width of a track */
+.rail-cue-swipe {
+  display: none;
+}
+
+.rail-cue-track {
+  display: block;
+  position: relative;
+  width: 74px;
+  height: 26px;
+  border: 1px solid rgb(var(--grey-rgb) / 0.28);
+  border-radius: 999px;
+}
+
+.rail-cue-dot {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: rail-swipe 2.6s ease-in-out infinite;
+}
+
+@keyframes rail-swipe {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  50%,
+  62% {
+    transform: translateX(44px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (hover: none) {
+  .rail-cue-keys {
+    display: none;
+  }
+
+  .rail-cue-swipe {
+    display: inline-flex;
+  }
 }
 
 /*

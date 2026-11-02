@@ -38,10 +38,34 @@ async function revealEverything(page: import("@playwright/test").Page) {
       window.scrollTo(0, y);
       await new Promise((r) => setTimeout(r, 100));
     }
-    window.scrollTo(0, 0);
   });
 
   await page.waitForTimeout(1500);
+
+  /*
+    Deliberately NOT scrolled back to the top.
+
+    It used to be, and that was the bug: a scroll reveal is tied to where
+    the page is, so returning to the top put the last Where I've Worked
+    entries back below the fold and part-way through their fade. axe then
+    reported them as contrast failures — which, at that instant, they were.
+    axe reads the whole document whatever the scroll position, so there is
+    nothing to gain by rewinding and a real failure to invent.
+
+    Then wait for the staggered entries themselves, rather than for a
+    duration that happened to be long enough on two devices out of three.
+  */
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          [...document.querySelectorAll(".exp-entry")].every(
+            (e) => Number(getComputedStyle(e).opacity) > 0.99,
+          ),
+        ),
+      { timeout: 25_000, intervals: [200, 400, 600, 1000] },
+    )
+    .toBe(true);
 }
 
 /*

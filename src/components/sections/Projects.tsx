@@ -309,9 +309,39 @@ export default function Projects() {
               }}
             >
               Selected projects across web, mobile, and full-stack development.
-              <br />
-              Scroll sideways — whichever project reaches the middle comes
-              forward.
+            </p>
+
+            {/*
+              The cue, shown rather than described.
+
+              This read "Scroll sideways — whichever project reaches the
+              middle comes forward", which is an instruction and a
+              description of a mechanic nobody needs told. A reader does not
+              want to know how the rail works; they want to know that it
+              moves.
+
+              Two cues, because the gesture is not the same on both: keys
+              where there is a pointer, a swipe where there is not. The
+              arrows really are the keys that work, so this is a legend and
+              not a decoration. Both carry a text alternative, and the
+              travelling highlight stops under prefers-reduced-motion with
+              everything else.
+            */}
+            <div className="rail-cue" aria-hidden="true">
+              <span className="rail-cue-keys">
+                <kbd>←</kbd>
+                <kbd>→</kbd>
+              </span>
+              <span className="rail-cue-swipe">
+                <span className="rail-cue-track">
+                  <span className="rail-cue-dot" />
+                </span>
+              </span>
+            </div>
+
+            <p className="sr-only">
+              Use the left and right arrow keys, or swipe, to move through the
+              work.
             </p>
           </div>
         </div>

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Project } from "@/lib/data/projects";
-import Button from "@/components/ui/Button";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -21,17 +20,18 @@ const LABEL: React.CSSProperties = {
   color: "var(--accent-ink)",
 };
 
+const SECTION: React.CSSProperties = {
+  marginTop: "26px",
+  paddingTop: "22px",
+  borderTop: "1px solid rgb(var(--grey-rgb) / 0.18)",
+};
+
 const BODY: React.CSSProperties = {
   margin: 0,
   color: "var(--warm-grey)",
   fontSize: "var(--t-small)",
   lineHeight: 1.85,
   maxWidth: "66ch",
-};
-
-const SECTION: React.CSSProperties = {
-  paddingBlock: "28px",
-  borderTop: "1px solid rgb(var(--grey-rgb) / 0.14)",
 };
 
 /*
@@ -152,6 +152,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         direction === "next" ? "Next screenshot" : "Previous screenshot"
       }
       style={{
+        /*
+          44px so it clears the WCAG 2.5.8 target minimum with room.
+        */
         width: "44px",
         height: "44px",
         borderRadius: "999px",
@@ -259,7 +262,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: "rgb(var(--charcoal-rgb) / 0.05)",
+                  /*
+                    The dialog's own cream, not a grey tint.
+
+                    Every browser screenshot here is landscape and this pane
+                    is nearly square, so a wide shot letterboxes top and
+                    bottom and the phone shot letterboxes left and right. On
+                    a tinted pane that reads as two grey bands; on the same
+                    colour as the dialog it reads as a mount, and the image
+                    simply sits on the page. It is the trick the rail cards
+                    already use.
+                  */
+                  background: "var(--cream)",
+                  padding: "clamp(16px, 2vw, 32px)",
                 }}
               >
                 {isMobile ? (
@@ -293,32 +308,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   />
                 )}
 
-                {hasMultipleScreenshots && (
-                  <>
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                      }}
-                    >
-                      {arrow("prev")}
-                    </div>
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "12px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                      }}
-                    >
-                      {arrow("next")}
-                    </div>
-                  </>
-                )}
+                {hasMultipleScreenshots && <></>}
               </div>
 
+              {/*
+                The screenshot controls, below the picture rather than on it.
+
+                They used to float over the image, and these are screenshots
+                of websites — the Zowasel storefront has a carousel of its
+                own, so the dialog's left arrow landed 15px from the
+                storefront's left arrow and the two were indistinguishable.
+                A control that sits inside the thing it is pointing at will
+                be read as part of it.
+              */}
               {hasMultipleScreenshots && (
                 <div
                   style={{
@@ -326,10 +328,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "2px",
-                    padding: "10px 12px",
+                    gap: "6px",
+                    padding: "6px 12px 14px",
                   }}
                 >
+                  {arrow("prev")}
+
                   {project.screenshots.map((_, index) => (
                     <button
                       key={index}
@@ -369,6 +373,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       />
                     </button>
                   ))}
+
+                  {arrow("next")}
                 </div>
               )}
             </div>
@@ -381,212 +387,226 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               and a pane you can only read with a mouse is a pane some
               readers do not have.
             */}
-            <div
-              className="project-dialog-copy"
-              tabIndex={0}
-              role="region"
-              aria-label="Case study details"
-            >
-              <p
-                style={{
-                  ...LABEL,
-                  marginBottom: "10px",
-                  color: "var(--warm-grey)",
-                }}
-              >
-                {project.exhibitLabel ?? "Project"}
-                {project.exhibitSubtitle ? ` — ${project.exhibitSubtitle}` : ""}
-              </p>
+            <div className="project-dialog-copy">
+              <div className="dialog-head">
+                {/*
+                  No eyebrow. It read "CURRENT WORK — B2B AGRICULTURAL
+                  MARKETPLACE": the exhibit label repeated from the rail,
+                  the subtitle repeating what the description underneath
+                  says in plainer words, in uppercase above the title. It
+                  was the first thing a reader met and it told them nothing
+                  the next two lines did not.
+                */}
+                <h2
+                  id={titleId}
+                  style={{
+                    margin: "0 0 6px",
+                    /*
+                      The same setting as a job title in Where I've Worked:
+                      Inter, bold, body size, a title's leading.
 
-              <h2
-                id={titleId}
-                style={{
-                  margin: "0 0 12px",
-                  fontFamily: "var(--font-playfair)",
-                  fontSize: "var(--t-h2)",
-                  lineHeight: 1.1,
-                  color: "var(--charcoal)",
-                }}
-              >
-                {project.title}
-              </h2>
+                      It was the display serif at --t-h2 — 33px of Didone
+                      over a panel of 13.6px prose, which read as a magazine
+                      cover stapled to a document. A case study is something
+                      you read, and the heading it most resembles on this
+                      site is a job title, not a masthead.
+                    */
+                    fontFamily: "var(--font-inter)",
+                    fontSize: "var(--t-h2)",
+                    fontWeight: "var(--weight-strong)",
+                    lineHeight: 1.15,
+                    letterSpacing: "var(--track-display)",
+                    color: "var(--charcoal)",
+                  }}
+                >
+                  {project.title}
+                </h2>
 
-              <p
-                style={{
-                  ...BODY,
-                  fontSize: "var(--t-body)",
-                  color: "var(--charcoal)",
-                  marginBottom: "18px",
-                }}
-              >
-                {project.tagline}
-              </p>
+                <p
+                  style={{
+                    ...BODY,
+                    /*
+                      Three steps, not two. The title, this, and the stack
+                      were 16 / 13.6 / 13.6 — the description and the stack
+                      set identically, so the panel had a title and then one
+                      undifferentiated block. It is --t-h2 / --t-body /
+                      --t-label now, and each step is visible.
+                    */
+                    fontSize: "var(--t-body)",
+                    lineHeight: 1.55,
+                    color: "var(--warm-grey)",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {project.tagline}
+                </p>
 
-              <div
-                style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}
-                aria-label="Technologies"
-              >
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      padding: "5px 10px",
-                      border: "1px solid rgb(var(--grey-rgb) / 0.2)",
-                      fontSize: "var(--t-label)",
-                      fontWeight: "var(--weight-label)",
-                      letterSpacing: "var(--track-label)",
-                      color: "var(--warm-grey)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
+                {/*
+                The stack, as a line rather than as chips.
+
+                Nine bordered boxes above a panel of prose was the loudest
+                thing in the dialog, and the loudest thing in it should not
+                be a list of libraries. Same information, set like the rest
+                of the writing — the tools are context for the case study,
+                not its headline.
+              */}
+                <p
+                  style={{
+                    ...BODY,
+                    /*
+                      Caption size, not label size. The three steps are
+                      --t-h2 / --t-body / --t-caption; putting this at
+                      --t-label would have made it the only thing on the
+                      site at label size and NOT medium weight, which is the
+                      one rule the type test enforces — and it was right to,
+                      because something set at label size reads as a label.
+                    */
+                    lineHeight: 1.7,
+                    marginTop: "10px",
+                    /*
+                      Full --warm-grey, not a faded one. At 0.8 over cream
+                      this composited to roughly 3.3:1, under the 4.5:1 that
+                      12px text needs, and axe caught it on the next run.
+                      The line is quiet because it is small, which is the
+                      right way to make a line quiet.
+                    */
+                    color: "var(--warm-grey)",
+                  }}
+                  aria-label="Built with"
+                >
+                  {project.tags.join("  ·  ")}
+                </p>
               </div>
 
-              <section style={SECTION}>
-                <h3 style={LABEL}>Story</h3>
-                <p style={{ ...BODY, whiteSpace: "pre-line" }}>
-                  {project.story}
-                </p>
-              </section>
-
-              {project.role && (
+              {/*
+                The scrollable one is this, not the pane around it, so this
+                is the one that has to be reachable from a keyboard. That is
+                the third time on this site that a region started scrolling
+                and lost the focusable contents that used to make it
+                reachable — the rail when its cards became images, this pane
+                when the dialog first learned to scroll, and now here, with
+                the links moved out to the cards and the headings no longer
+                buttons. Worth saying out loud: a scroll container that
+                holds only prose is never keyboard-reachable by accident.
+              */}
+              <div
+                className="dialog-body"
+                tabIndex={0}
+                role="region"
+                aria-label="Case study details"
+              >
                 <section style={SECTION}>
-                  <h3 style={LABEL}>Role</h3>
-                  <p style={BODY}>{project.role}</p>
-                </section>
-              )}
-
-              {project.highlights && project.highlights.length > 0 && (
-                <section style={SECTION}>
-                  <h3 style={LABEL}>Highlights</h3>
-                  <ul
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                      margin: 0,
-                      paddingLeft: "20px",
-                      listStyle: "disc",
-                    }}
-                    className="dialog-list"
-                  >
-                    {project.highlights.map((item) => (
-                      <li key={item} style={BODY}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {project.contributions && project.contributions.length > 0 && (
-                <section style={SECTION}>
-                  <h3 style={LABEL}>Contributions</h3>
-                  <ul
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                      margin: 0,
-                      paddingLeft: "20px",
-                      listStyle: "disc",
-                    }}
-                    className="dialog-list"
-                  >
-                    {project.contributions.map((item) => (
-                      <li key={item} style={BODY}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {project.caseStudy?.map((block) => (
-                <section key={block.heading} style={SECTION}>
-                  <h3 style={LABEL}>{block.heading}</h3>
+                  <h3 style={LABEL}>Story</h3>
                   <p style={{ ...BODY, whiteSpace: "pre-line" }}>
-                    {block.body}
+                    {project.story}
                   </p>
                 </section>
-              ))}
 
-              {project.phoneScreenshots &&
-                project.phoneScreenshots.length > 0 && (
+                {project.role && (
                   <section style={SECTION}>
-                    <h3 style={LABEL}>On a phone</h3>
-                    <div
-                      style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}
-                    >
-                      {project.phoneScreenshots.map((shot, i) => (
-                        <div
-                          key={shot}
-                          style={{
-                            width: "118px",
-                            borderRadius: "16px",
-                            overflow: "hidden",
-                            background: "var(--white)",
-                            boxShadow:
-                              "0 12px 30px rgb(var(--black-rgb) / 0.12)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              position: "relative",
-                              aspectRatio: "9 / 19.5",
-                            }}
-                          >
-                            <Image
-                              src={shot}
-                              alt={`${project.title} on a phone, ${i + 1} of ${project.phoneScreenshots!.length}`}
-                              fill
-                              sizes="118px"
-                              style={{ objectFit: "cover" }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <h3 style={LABEL}>Role</h3>
+                    <p style={BODY}>{project.role}</p>
                   </section>
                 )}
 
-              {(project.liveUrl || project.githubUrl) && (
-                <div
-                  style={{
-                    ...SECTION,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "12px",
-                    paddingBottom: "4px",
-                  }}
-                >
-                  {project.liveUrl && (
-                    <Button
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="filled"
-                      size="sm"
-                      showArrow
+                {project.highlights && project.highlights.length > 0 && (
+                  <section style={SECTION}>
+                    <h3 style={LABEL}>Highlights</h3>
+                    <ul
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                        margin: 0,
+                        paddingLeft: "20px",
+                        listStyle: "disc",
+                      }}
+                      className="dialog-list"
                     >
-                      Live Site
-                    </Button>
-                  )}
+                      {project.highlights.map((item) => (
+                        <li key={item} style={BODY}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
 
-                  {project.githubUrl && (
-                    <Button
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outline"
-                      size="sm"
+                {project.contributions && project.contributions.length > 0 && (
+                  <section style={SECTION}>
+                    <h3 style={LABEL}>Contributions</h3>
+                    <ul
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                        margin: 0,
+                        paddingLeft: "20px",
+                        listStyle: "disc",
+                      }}
+                      className="dialog-list"
                     >
-                      GitHub
-                    </Button>
+                      {project.contributions.map((item) => (
+                        <li key={item} style={BODY}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {project.caseStudy?.map((block) => (
+                  <section key={block.heading} style={SECTION}>
+                    <h3 style={LABEL}>{block.heading}</h3>
+                    <p style={{ ...BODY, whiteSpace: "pre-line" }}>
+                      {block.body}
+                    </p>
+                  </section>
+                ))}
+
+                {project.phoneScreenshots &&
+                  project.phoneScreenshots.length > 0 && (
+                    <section style={SECTION}>
+                      <h3 style={LABEL}>On a phone</h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "14px",
+                        }}
+                      >
+                        {project.phoneScreenshots.map((shot, i) => (
+                          <div
+                            key={shot}
+                            style={{
+                              width: "118px",
+                              borderRadius: "16px",
+                              overflow: "hidden",
+                              background: "var(--white)",
+                              boxShadow:
+                                "0 12px 30px rgb(var(--black-rgb) / 0.12)",
+                            }}
+                          >
+                            <div
+                              style={{
+                                position: "relative",
+                                aspectRatio: "9 / 19.5",
+                              }}
+                            >
+                              <Image
+                                src={shot}
+                                alt={`${project.title} on a phone, ${i + 1} of ${project.phoneScreenshots!.length}`}
+                                fill
+                                sizes="118px"
+                                style={{ objectFit: "cover" }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
                   )}
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </motion.div>
